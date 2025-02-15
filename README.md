@@ -1,2 +1,2 @@
-# minishell
-42 minishell project
+# lurama
+42 minishell projec
