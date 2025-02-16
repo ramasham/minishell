@@ -104,3 +104,36 @@
 // }
 
 
+// void    check_redirection(t_data *data)
+// {
+//     char    *operators;
+//     char    *ptr;
+//     int     i;
+//     int     j;
+
+//     i = 0;
+//     j = 0;
+//     operators = "<>|";
+//     ptr = data->input;
+//     while (ptr[i])
+//     {
+//         if (ft_strchr(operators, ptr[i]))
+//         {
+//             j = i + 1;
+//             while (ptr[j] && is_space(ptr[j]))
+//                 j++;
+//             if (ptr[j] && ft_strchr(operators, ptr[j]))
+//             {
+//                if (!((ptr[i] == '>' && ptr[i + 1] == '>') || 
+//                       (ptr[i] == '<' && ptr[i + 1] == '<')))
+//                 {
+//                     ft_putstr_fd("Syntax error: Invalid redirection\n", 2);
+//                     exit(1);
+//                 }
+//             }
+//             i = j;
+//         }
+//         else
+//             i++;
+//     }
+// }

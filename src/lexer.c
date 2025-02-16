@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 18:39:17 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/16 19:26:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,117 +25,6 @@ TokenType get_token_type(const char *token)
     else if (ft_strcmp(token, "<<") == 0)
         return (HERE_DOC);
     return (ARG);
-}
-void    check_unclosed_quotes(t_data *data)
-{
-    char    *ptr;
-    int     double_quotes;
-    int     single_quotes;
-
-    ptr = data->input;
-    double_quotes = 0;
-    single_quotes = 0;
-    while (*ptr)
-    {
-        if (*ptr == '"')
-            double_quotes++;            
-        if (*ptr == '\'')
-            single_quotes++;
-        ptr++;
-    }
-    if (double_quotes % 2 != 0 || single_quotes % 2 != 0)
-    {
-        ft_putstr_fd("Syntax error: Unclosed quotes\n", 2);
-        exit(1);
-    }
-}
-int     is_space(char c)
-{
-    return (c == ' ' || c == '\t');
-}
-void    check_redirection(t_data *data)
-{
-    char    *operators;
-    char    *ptr;
-    int     i;
-    int     j;
-
-    i = 0;
-    j = 0;
-    operators = "<>|";
-    ptr = data->input;
-    while (ptr[i])
-    {
-        if (ft_strchr(operators, ptr[i]))
-        {
-            j = i + 1;
-            while (ptr[j] && is_space(ptr[j]))
-                j++;
-            if (ptr[j] && ft_strchr(operators, ptr[j]))
-            {
-               if (!((ptr[i] == '>' && ptr[i + 1] == '>') || 
-                      (ptr[i] == '<' && ptr[i + 1] == '<')))
-                {
-                    ft_putstr_fd("Syntax error: Invalid redirection\n", 2);
-                    exit(1);
-                }
-            }
-            i = j;
-        }
-        else
-            i++;
-    }
-}
-
-void    check_operators(t_data *data)
-{
-    char    *ptr;
-    char    *operators;
-    int     i;
-    int     j;
-    
-    i = 0;
-    j = 0;
-    operators = "|<>";
-    ptr = data->input;
-    while (operators[i])
-    {
-        if (ptr[0] == operators[i])
-        {
-            ft_putstr_fd("invalid syntax in start\n", 2);
-            exit(1);
-        }
-        i++;
-    }
-    i = 0;
-    while (ptr[j])
-        j++;
-    j--;
-    while (operators[i])
-    {
-        if (ptr[j] == operators[i] && ptr[j + 1] == '\0')
-        {
-            ft_putstr_fd("invalid syntax in end \n", 2);
-            exit(1);
-        }
-        i++;
-    }
-}
-
-void    check_multiple_pipes(t_data *data)
-{
-    char    *ptr;
-
-    ptr = data->input;
-    while(*ptr)
-    {
-        if (*ptr == '|' && *(ptr + 1) == '|')
-        {
-            ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-            exit(1);
-        }
-        ptr++;
-    }
 }
 
 void    split_input(t_data *data) 
@@ -214,7 +103,7 @@ void trim_operators(t_data *data)
         {
             new_node = create_node(token);
             ft_nodeadd_back(new_lst, new_node);
-            token = strtok(NULL, delimiters);
+            token = ft_strtok(NULL, delimiters);
         }
         if (ft_strchr(current->content, '|'))
             ft_nodeadd_back(new_lst, create_node("|"));
@@ -231,14 +120,6 @@ void trim_operators(t_data *data)
     }
     *(data->node) = *new_lst;
     free(new_lst);
-}
-
-void    validate_input(t_data *data)
-{
-    check_unclosed_quotes(data);
-    check_multiple_pipes(data);
-    check_redirection(data);
-    check_operators(data);
 }
 
 void  tokenizer(t_data *data)

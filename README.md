@@ -22,26 +22,28 @@ Lexer → Expander → Parser → Execution.
 -----------------------------------------------------------------------------------------------------------------
 1️⃣  Tokenizer(lexer):
 📌 Goal: Convert user input into structured tokens.
-	1. Split input by spaces while respecting quotes (", '). ✅️
-	2. Recognize special tokens (|, <, >, >>, <<). ✅️
-	3. Store tokens in a linked list. ✅️
+	✅️ 1. Split input by spaces while respecting quotes (", ').
+	✅️ 2. Recognize special tokens (|, <, >, >>, <<).
+	✅️ 3. Store tokens in a linked list.
 	
 🔴 Error Handling:
-	- Unclosed quotes: echo "hello → Syntax error. ✅️
-	- Redundant pipes: ls || wc → Syntax error. ✅️
+	✅️ - Unclosed quotes: echo "hello → Syntax error.
+	✅️ - Redundant pipes: ls || wc → Syntax error.
 	🟠 - Special Tokens without Arguments: echo hello      
-	- Invalid Redirection: ls >| wc ✅️
-	- after operators there's an argumant ✅️
-	- Extra Space After Pipe:
-		Expected Behavior: Tokenizer should handle spaces and still tokenize correctly.
+	✅️ - Invalid Redirection: ls >| wc.
+	✅️ - after operators there's an argumant.
+	✅️ - Tokenizer should handle spaces and still tokenize correctly.
+	✅️ - check >>> or <<<
+
 Example:
 Input: echo "hello world" > file
 Output: [echo] ["hello world"] [>] [file]
 
 🟠 Incomplete :
-1- write strtok
-2- 2 fucntions more than 25 lines
-3- if needed (realloc)
+	✅️ 1- write strtok
+	2- 2 fucntions more than 25 lines
+	3- if needed (realloc)
+	4- frees
 
 ✅ TEAM: Person A
 -----------------------------------------------------------------------------------------------------------------
