@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:48:52 by rsham             #+#    #+#             */
-/*   Updated: 2024/12/10 17:40:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/16 10:41:31 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strtok(char *str, const char *delim)
 		next++;
 	if (*next)
 	{
-		next = '\0';
+		// next = '\0';
 		next++;
 	}
 	return (start);

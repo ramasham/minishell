@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/15 19:05:36 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/16 18:20:51 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ TokenType   get_token_type(const char *token);
 void	free_list(t_node **node);
 void    check_multiple_pipes(t_data *data);
 void    check_unclosed_quotes(t_data *data);
+void    check_redirection(t_data *data);
+void    check_operators(t_data *data);
+
+
 
 
 
