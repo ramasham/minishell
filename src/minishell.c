@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/15 17:39:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/16 11:28:58 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int main()
     }
     while (1)
     {
+        init_data(data);
         if (isatty(STDIN_FILENO))
             data->input = readline("\033[1;35mminishell$\033[0m ");
         tokenizer(data);

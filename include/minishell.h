@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/15 19:05:36 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/16 19:46:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ void        split_input(t_data *data);
 void        trim_operators(t_data *data);
 t_node      *create_node(const char *token);
 TokenType   get_token_type(const char *token);
-// void   trim_pipe(t_data *data);
 void	free_list(t_node **node);
 void    check_multiple_pipes(t_data *data);
 void    check_unclosed_quotes(t_data *data);
-
-
+void    check_redirection(t_data *data);
+void    operator_at_end(t_data *data);
+void    operator_at_start(t_data *data);
+void    check_append_heredoc(t_data *data);
+int     is_space(char c);
+void    validate_input(t_data *data);
+int     has_invalid_redirection(char *ptr);
 
 
 
