@@ -19,7 +19,7 @@ minishell/
 └── minishell.c
  
 Lexer → Expander → Parser → Execution. 
------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 1️⃣  Tokenizer(lexer):
 📌 Goal: Convert user input into structured tokens.
 	✅️ 1. Split input by spaces while respecting quotes (", ').
@@ -34,7 +34,7 @@ Lexer → Expander → Parser → Execution.
 	✅️ - after operators there's an argumant.
 	✅️ - Tokenizer should handle spaces and still tokenize correctly.
 	✅️ - check >>> or <<<
-
+	
 Example:
 Input: echo "hello world" > file
 Output: [echo] ["hello world"] [>] [file]
@@ -42,11 +42,11 @@ Output: [echo] ["hello world"] [>] [file]
 🟠 Incomplete :
 	✅️ 1- write strtok
 	2- 2 fucntions more than 25 lines
-	3- if needed (realloc)
-	4- frees
+	4- valgrind
+	5- " '" && '"' should output correctly
 
 ✅ TEAM: Person A
------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 2️⃣  Expander:
 📌 Goal: Replace variables ($VAR) with their values.
 	1. Traverse tokens and detect variables ($).
@@ -61,7 +61,7 @@ Output: [echo] ["hello world"] [>] [file]
 	- No expansion inside single quotes:
 
 ✅ TEAM: Person A
-----------------------------------------------------------------------------------------------------------------	
+----------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: Convert tokens into structured commands with pipes and redirections.	
 	1. Build command structures (cmd, args, redir, pipe).
@@ -74,7 +74,7 @@ Output: [echo] ["hello world"] [>] [file]
 	- Disallow special tokens together: ls >| wc is invalid. 
 	
 ✅ TEAM: Person B
------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 ⚠️  Test that lexer and expander work together.
 
 4️⃣  Execution & Built-ins
@@ -92,7 +92,7 @@ Output: [echo] ["hello world"] [>] [file]
 	- Handling exit errors: exit 99999999999 → Exit value out of range
 
 ✅ TEAM: Person B and A
-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 5️⃣  Redirections (<, >, >>, <<)
 📌 Goal: Implement file redirections correctly.
 	1. > → Redirect stdout to a file (overwrite).
@@ -105,7 +105,7 @@ Output: [echo] ["hello world"] [>] [file]
 	- Heredoc issues (interrupted input should stop gracefully).
 
 ✅ TEAM: Person A and B
-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 6️⃣  Signals:
 📌 Goal: Handle user interruptions (CTRL+C, CTRL+D, CTRL+).
 	#signals:
@@ -113,10 +113,9 @@ Output: [echo] ["hello world"] [>] [file]
 		2. CTRL+D (EOF): Exit only if input is empty.
 		3. CTRL+\ (SIGQUIT): Ignore for interactive shell.
 ✅ TEAM: Person B
------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 7️⃣  Testing & Memory Management:
 📌 Goal: Ensure stability and fix memory leaks.
 
 ✅ TEAM: Both
-------------------------------------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------

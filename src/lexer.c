@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 19:26:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/17 10:33:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,29 +98,41 @@ void trim_operators(t_data *data)
             ft_putstr_fd("allocation failed", 2);
             exit(1);
         }
-        token = strtok(copy, delimiters);
-        while (token)
+        if (current->type != DQUOTES && current->type != SQUOTES)
         {
-            new_node = create_node(token);
-            ft_nodeadd_back(new_lst, new_node);
-            token = ft_strtok(NULL, delimiters);
+            token = strtok(copy, delimiters);
+            while (token)
+            {
+                new_node = create_node(token);
+                ft_nodeadd_back(new_lst, new_node);
+                token = strtok(NULL, delimiters);
+            }
         }
-        if (ft_strchr(current->content, '|'))
-            ft_nodeadd_back(new_lst, create_node("|"));
-        else if (ft_strncmp(current->content, ">>", 2) == 0)
-            ft_nodeadd_back(new_lst, create_node(">>"));
-        else if (ft_strncmp(current->content, "<<", 2) == 0)
-            ft_nodeadd_back(new_lst, create_node("<<"));
-        else if (ft_strchr(current->content, '>'))
-            ft_nodeadd_back(new_lst, create_node(">"));
-        else if (ft_strchr(current->content, '<'))
-            ft_nodeadd_back(new_lst, create_node("<"));
+        else
+        {
+            new_node = create_node(copy);
+            ft_nodeadd_back(new_lst, new_node);
+        }
+         if (current->type != DQUOTES && current->type != SQUOTES)
+        {
+            if (ft_strchr(current->content, '|'))
+                ft_nodeadd_back(new_lst, create_node("|"));
+            else if (ft_strncmp(current->content, ">>", 2) == 0)
+                ft_nodeadd_back(new_lst, create_node(">>"));
+            else if (ft_strncmp(current->content, "<<", 2) == 0)
+                ft_nodeadd_back(new_lst, create_node("<<"));
+            else if (ft_strchr(current->content, '>'))
+                ft_nodeadd_back(new_lst, create_node(">"));
+            else if (ft_strchr(current->content, '<'))
+                ft_nodeadd_back(new_lst, create_node("<"));
+        }
         free(copy);
         current = current->next;
     }
     *(data->node) = *new_lst;
     free(new_lst);
 }
+
 
 void  tokenizer(t_data *data)
 {
