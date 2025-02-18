@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 10:22:15 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:50:56 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,53 +17,67 @@
 //if yes -> replace the content
 //if no -> error
 
-char   *get_env(t_data *env_node)
+char   *get_env(t_node *env_node)
 {
-    // t_data  *env_node;
     char    *env_value;
+    char    *env_cpy;
 
-    // env_value = NULL;
-    // env_node = NULL;
-    (*env_node->node)->content++;
-    if ((*env_node->node)->content == NULL)
-        return (NULL);
-    if (((*env_node->node)->content[0] >= 'a' && (*env_node->node)->content[0] <= 'z') 
-       || ((*env_node->node)->content[0] >= 'A' && (*env_node->node)->content[0] <= 'Z'))
-
+    ft_printf("content[0] in get env %c\n", (env_node->content[0]));
+    if(!env_node && !env_node->content&& !(*env_node->content))
     {
-        env_value = getenv((*env_node->node)->content);
+        return (ft_printf("error 8 \n"), NULL);
+    }
+    if ((env_node->content[0] == '$' ) && (env_node->content[1] >= 'a' && env_node->content[1] <= 'z') 
+    || (env_node->content[1] >= 'A' && env_node->content[1] <= 'Z'))
+    {
+        env_value = getenv((env_node->content) + 1);
         if (env_value)
         {
-            (*env_node->node)->content = env_value;
+            env_cpy = ft_strdup(env_value);
+            if (!env_cpy)
+                return (ft_printf("error 3\n"),NULL);
+            //free((*env_node->node)->content); 
+            (env_node->content) = env_cpy;
+            return (ft_printf("error 4\n"),env_value);
         }
-        return (env_value);
     }
     return (NULL);
 }
 
-//if no
-//no env so return
-
 int    detect_env(t_data *data)
 {
+    ft_printf("error 6\n");
     t_node  *current;
-
-    current = *(data->node);
+    ft_printf("error 7\n");
+    
+    current = (*data->node);
+    
+    ft_printf("content[0] before while %s\n", current->content);
+    // printf("nodelist:\n");
+    // print_list(*(data->node));
     while(current)
     {
+        if(!current->content)
+        {
+            return (ft_printf("error 9\n"), 1);
+        }
+        ft_printf("content[0] afetr while %s\n", current->content);
+        printf("nodelist:\n");
+        print_list(*(data->node));
+        ft_printf("dollar %c\n", current->content[0]);
         if (current->content[0] == '$')
         {
-            if (get_env(data) == NULL)
-                return (1); //if an error occurs
+            if (get_env(current->content) == NULL)
+                return (ft_printf("error 1\n"), 1); //if an error occurs
         }
         current = current->next;
     }
-    return (0);
+    return (ft_printf("error 2\n"),0);
 }
 
 void    expander(t_data *data)
 {
-    printf("Expander:\n");
+    ft_printf("Expander:\n");
     detect_env(data);
     print_list(*(data->node));
 }
