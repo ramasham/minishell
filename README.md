@@ -51,7 +51,7 @@ Output: [echo] ["hello world"] [>] [file]
 📌 Goal: Replace variables ($VAR) with their values.
 	1. Traverse tokens and detect variables ($).
 		- echo $HOME → echo /Users/yourname
-		- $? → Last exit status.
+		🟠 - $? → Last exit status.
 	2. Replace with corresponding values from envp.
 ⚠️  Ignore expansion inside single quotes ('), but allow in double quotes (").
 

@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 15:02:53 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:05:41 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,29 @@
 //if yes -> replace the content
 //if no -> error
 
+static void    remove_last_char(char *str)
+{
+    if (str && *str)
+        str[ft_strlen(str) - 1] = '\0';
+}
 char   *get_env(t_node *env_node, int i)
 {
     char    *env_value;
     char    *env_cpy;
-
+    
     if(!env_node && !env_node->content&& !(*env_node->content))
     {
         return (NULL);
     }
-    if ((env_node->content[0] == '$') && ((env_node->content[1] >= 'a'
-        && env_node->content[1] <= 'z')
-        || (env_node->content[1] >= 'A' && env_node->content[1] <= 'Z')))
+    if (((env_node->content[i] >= 'a' && env_node->content[i] <= 'z')
+        || (env_node->content[i] >= 'A' && env_node->content[i] <= 'Z')))
     {
-        env_value = getenv((env_node->content) + 1);
+        env_node->content += i;
+        if (i == 2)
+            remove_last_char(env_node->content);
+        env_value = getenv(env_node->content);
+        if (!env_value)
+            env_value = "";
         if (env_value)
         {
             env_cpy = ft_strdup(env_value);
@@ -43,23 +52,24 @@ char   *get_env(t_node *env_node, int i)
     return (NULL);
 }
 
-int    detect_env(t_data *data)
+int detect_env(t_data *data)
 {
     t_node  *current;
-    
-    current = (*data->node);
+    int     i;
 
-    while(current)
+    current = (*data->node);
+    while (current)
     {
-        if(!current->content)
-        {
+        if (!current->content)
             return (1);
+        i = 0;
+        if (current->content[i] == '"')
+            i++;
+        if (current->content[i] == '$')
+        {
+            if (get_env(current, i + 1) == NULL)
+                return (1);
         }
-        if (current->content[0] == '$')
-            get_env(current, 1);
-        if (current->content[0] == '"')
-            get_env(current, 2);
-            
         current = current->next;
     }
     return (0);
@@ -75,7 +85,7 @@ int    detect_env(t_data *data)
 void    expander(t_data *data)
 {
     ft_printf("Expander:\n");
-    expander_split(data);
+    
     detect_env(data);
     print_list(*(data->node));
 }
