@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 13:46:57 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:02:53 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //if yes -> replace the content
 //if no -> error
 
-char   *get_env(t_node *env_node)
+char   *get_env(t_node *env_node, int i)
 {
     char    *env_value;
     char    *env_cpy;
@@ -56,18 +56,26 @@ int    detect_env(t_data *data)
             return (1);
         }
         if (current->content[0] == '$')
-        {
-            if (get_env(current) == NULL)
-                return (1); //if an error occurs
-        }
+            get_env(current, 1);
+        if (current->content[0] == '"')
+            get_env(current, 2);
+            
         current = current->next;
     }
     return (0);
 }
 
+// expander_split(t_data *data)
+// {
+//     t_node *current_node;
+
+//     current_node = (*data->input);
+    
+// }
 void    expander(t_data *data)
 {
     ft_printf("Expander:\n");
+    expander_split(data);
     detect_env(data);
     print_list(*(data->node));
 }

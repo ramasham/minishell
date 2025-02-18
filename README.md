@@ -57,7 +57,7 @@ Output: [echo] ["hello world"] [>] [file]
 
 🔴 Error Handling:
 	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.
-	- No expansion inside single quotes:
+	✅ - No expansion inside single quotes:
 
 ✅ TEAM: Person A
 ----------------------------------------------------------------------------------------
