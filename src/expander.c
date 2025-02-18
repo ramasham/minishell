@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 10:22:15 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:35:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char   *get_env(t_data *env_node)
 
     // env_value = NULL;
     // env_node = NULL;
-    (*env_node->node)->content++;
+    // (*env_node->node)->content++;
     if ((*env_node->node)->content == NULL)
         return (NULL);
     if (((*env_node->node)->content[0] >= 'a' && (*env_node->node)->content[0] <= 'z') 

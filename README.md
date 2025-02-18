@@ -28,8 +28,7 @@ Lexer → Expander → Parser → Execution.
 	
 🔴 Error Handling:
 	✅️ - Unclosed quotes: echo "hello → Syntax error.
-	✅️ - Redundant pipes: ls || wc → Syntax error.
-	🟠 - Special Tokens without Arguments: echo hello      
+	✅️ - Redundant pipes: ls || wc → Syntax error.      
 	✅️ - Invalid Redirection: ls >| wc.
 	✅️ - after operators there's an argumant.
 	✅️ - Tokenizer should handle spaces and still tokenize correctly.
@@ -44,6 +43,7 @@ Output: [echo] ["hello world"] [>] [file]
 	2- 2 fucntions more than 25 lines
 	4- valgrind
 	5- " '" && '"' should output correctly
+	6- remove exit from error handling 
 
 ✅ TEAM: Person A
 ----------------------------------------------------------------------------------------
@@ -51,7 +51,11 @@ Output: [echo] ["hello world"] [>] [file]
 📌 Goal: Replace variables ($VAR) with their values.
 	1. Traverse tokens and detect variables ($).
 		- echo $HOME → echo /Users/yourname
+<<<<<<< HEAD
 		- $? → Last exit status.
+=======
+		- $? → Last exit status. "get it from env"
+>>>>>>> 6ab5488 (working on expander)
 	2. Replace with corresponding values from envp.
 ⚠️  Ignore expansion inside single quotes ('), but allow in double quotes (").
 
@@ -66,6 +70,7 @@ Output: [echo] ["hello world"] [>] [file]
 	1. Build command structures (cmd, args, redir, pipe).
 	2. Validate syntax before execution.
 	3. Ensure correct precedence of execution (e.g., echo hello > file should write output to file).
+	4. Special Tokens without Arguments: echo hello
 	
 🔴 Error Handling:
 	- Missing file after redirection: echo hello > → Syntax error.
@@ -89,6 +94,16 @@ Output: [echo] ["hello world"] [>] [file]
 	- Invalid redirection targets: cat < non_existing_file.txt should return an error.
 	- Invalid cd paths: cd /wrong/path → Error.
 	- Handling exit errors: exit 99999999999 → Exit value out of range
+
+🟡 Notes:
+	- export test="echo hi"
+	$test --> hi
+	- export test="echo hi |ls|cat"
+	$test --> hi| ls |cat
+	- echo hi | ls | cat 
+	--> core ...
+	- echo "hi | ls | cat"
+	--> hi | ls | cat
 
 ✅ TEAM: Person B and A
 ----------------------------------------------------------------------------------------

@@ -6,7 +6,11 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/18 10:20:47 by laburomm         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/17 19:32:58 by rsham            ###   ########.fr       */
+>>>>>>> 6ab5488 (working on expander)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +21,10 @@ void init_data(t_data *data)
     data->input = NULL;
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
     t_data  *data;
     
     data = malloc(sizeof(t_data));

@@ -6,7 +6,11 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/17 14:10:08 by laburomm         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/17 19:41:07 by rsham            ###   ########.fr       */
+>>>>>>> 6ab5488 (working on expander)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +77,6 @@ void    split_input(t_data *data)
     }
 }
 
-
 void trim_operators(t_data *data)
 {
     t_node  *current;
@@ -133,9 +136,9 @@ void trim_operators(t_data *data)
     free(new_lst);
 }
 
-
 void  tokenizer(t_data *data)
 {
+    printf("Tokenizer:\n");
     validate_input(data);
     split_input(data);
     trim_operators(data);
