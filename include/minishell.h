@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/18 17:51:14 by rsham            ###   ########.fr       */
+=======
+/*   Updated: 2025/02/18 17:31:42 by laburomm         ###   ########.fr       */
+>>>>>>> c25553894572353dd63e2e16af4c975f58ad4fd9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +72,10 @@ int     has_invalid_redirection(char *ptr);
 void    expander(t_data *data);
 int    detect_env(t_data *data);
 char   *get_env(t_node *env_node, int i);
-
+void expander_split(t_data *data);
+void process_dollar(t_node *current, int *i, char **buffer);
+void replace_in_content(t_node *current, char *buffer, int start, int end);
+void search_for_env(t_node *current_node, int *i, char **buffer);
+char *ft_strjoin_three(char *s1, char *s2, char *s3);
 
 #endif
