@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 13:37:08 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:46:57 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ char   *get_env(t_node *env_node)
     {
         return (NULL);
     }
-    if ((env_node->content[0] == '$') && ((env_node->content[1] >= 'a' && env_node->content[1] <= 'z') || (env_node->content[1] >= 'A' && env_node->content[1] <= 'Z')))
+    if ((env_node->content[0] == '$') && ((env_node->content[1] >= 'a'
+        && env_node->content[1] <= 'z')
+        || (env_node->content[1] >= 'A' && env_node->content[1] <= 'Z')))
     {
         env_value = getenv((env_node->content) + 1);
         if (env_value)
