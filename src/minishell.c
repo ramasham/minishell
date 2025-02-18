@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 12:35:09 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:49:42 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@ int main()
         init_data(data);
         if (isatty(STDIN_FILENO))
             data->input = readline("\033[1;35mminishell$\033[0m ");
-        tokenizer(data);
-        // print_list(*(data->node));
-        expander(data);
+        if (tokenizer(data) == 1)
+        {
+            free(data->input);
+            free(data);
+        }
+        else if (tokenizer(data) == 0)
+        {
+            expander(data);
+        }
         if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
         {
             printf("exit\n");
@@ -44,9 +50,6 @@ int main()
         if (*data->input)
             add_history(data->input);
         free(data->input);
-        // rl_replace_line("", 0);
-        // rl_on_new_line();
-        // rl_redisplay();
     }
     return (0);
 }

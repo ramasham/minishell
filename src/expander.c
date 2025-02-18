@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 15:02:32 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 15:13:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ char   *get_env(t_node *env_node, int i)
     char    *env_value;
     char    *env_cpy;
     
-    if(!env_node && !env_node->content&& !(*env_node->content))
-    {
+    if(!env_node && !env_node->content && !(*env_node->content))
         return (NULL);
-    }
     if (((env_node->content[i] >= 'a' && env_node->content[i] <= 'z')
         || (env_node->content[i] >= 'A' && env_node->content[i] <= 'Z')))
     {

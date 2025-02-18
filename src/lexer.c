@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 12:34:50 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:50:13 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,21 +131,17 @@ void trim_operators(t_data *data)
         current = current->next;
     }
     *(data->node) = *new_lst;
-    // while (current)
-    // {
-    //     ft_printf("content = %s\n", current->content);
-    //     current = current->next;
-    // }
     free(new_lst);
 }
 
 
-void  tokenizer(t_data *data)
+int  tokenizer(t_data *data)
 {
-    
-    validate_input(data);
+    if (validate_input(data))
+        return (1);
     split_input(data);
     trim_operators(data);
+    return (0);
     // print_list(*(data->node));
     // free_list((data->node));
     // data->node = NULL; 
