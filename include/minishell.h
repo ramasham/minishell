@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 10:21:30 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:49:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_data
 {
     char        *input; 
     t_node      **node;
+    int         exit_status;
 } t_data;
 
 void        tokenizer(t_data *data);

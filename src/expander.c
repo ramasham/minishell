@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 10:22:15 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 11:58:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ char   *get_env(t_data *env_node)
 
     // env_value = NULL;
     // env_node = NULL;
-    (*env_node->node)->content++;
+    // (*env_node->node)->content++;
     if ((*env_node->node)->content == NULL)
         return (NULL);
-    if (((*env_node->node)->content[0] >= 'a' && (*env_node->node)->content[0] <= 'z') 
-       || ((*env_node->node)->content[0] >= 'A' && (*env_node->node)->content[0] <= 'Z'))
+    if (((*env_node->node)->content[1] >= 'a' && (*env_node->node)->content[1] <= 'z') 
+       || ((*env_node->node)->content[1] >= 'A' && (*env_node->node)->content[1] <= 'Z'))
 
     {
         env_value = getenv((*env_node->node)->content);
@@ -53,12 +53,21 @@ int    detect_env(t_data *data)
     {
         if (current->content[0] == '$')
         {
-            if (get_env(data) == NULL)
-                return (1); //if an error occurs
+            if (current->content[1] == '?')
+                exit_status(data);
+            else
+                get_env(data);
         }
         current = current->next;
     }
     return (0);
+}
+
+int     exit_status(t_data *data)
+{
+    t_node  *current;
+
+    current = *(data->node);
 }
 
 void    expander(t_data *data)
