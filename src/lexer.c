@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/17 14:10:08 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:34:50 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void trim_operators(t_data *data)
             new_node = create_node(copy);
             ft_nodeadd_back(new_lst, new_node);
         }
-         if (current->type != DQUOTES && current->type != SQUOTES)
+        if (current->type != DQUOTES && current->type != SQUOTES)
         {
             if (ft_strchr(current->content, '|'))
                 ft_nodeadd_back(new_lst, create_node("|"));
@@ -127,19 +127,26 @@ void trim_operators(t_data *data)
                 ft_nodeadd_back(new_lst, create_node("<"));
         }
         free(copy);
+        ft_printf("current is %s\n", current->content);
         current = current->next;
     }
     *(data->node) = *new_lst;
+    // while (current)
+    // {
+    //     ft_printf("content = %s\n", current->content);
+    //     current = current->next;
+    // }
     free(new_lst);
 }
 
 
 void  tokenizer(t_data *data)
 {
+    
     validate_input(data);
     split_input(data);
     trim_operators(data);
-    print_list(*(data->node));
-    free_list((data->node));
-    data->node = NULL; 
+    // print_list(*(data->node));
+    // free_list((data->node));
+    // data->node = NULL; 
 }
