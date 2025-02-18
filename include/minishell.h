@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 11:49:11 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 14:23:57 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void    validate_input(t_data *data);
 int     has_invalid_redirection(char *ptr);
 void    expander(t_data *data);
 int    detect_env(t_data *data);
-char   *get_env(t_data *env_node);
+char   *get_env(t_node *env_node, int i);
 
 
 #endif

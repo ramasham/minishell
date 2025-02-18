@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 13:55:02 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 15:02:32 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,68 +17,68 @@
 //if yes -> replace the content
 //if no -> error
 
-char   *get_env(t_node *env_node)
+static void    remove_last_char(char *str)
+{
+    if (str && *str)
+        str[ft_strlen(str) - 1] = '\0';
+}
+char   *get_env(t_node *env_node, int i)
 {
     char    *env_value;
     char    *env_cpy;
-
-    ft_printf("content[0] in get env %c\n", (env_node->content[0]));
+    
     if(!env_node && !env_node->content&& !(*env_node->content))
     {
-        return (ft_printf("error 8 \n"), NULL);
+        return (NULL);
     }
-    if ((env_node->content[0] == '$' ) && (env_node->content[1] >= 'a' && env_node->content[1] <= 'z') 
-    || (env_node->content[1] >= 'A' && env_node->content[1] <= 'Z'))
+    if (((env_node->content[i] >= 'a' && env_node->content[i] <= 'z')
+        || (env_node->content[i] >= 'A' && env_node->content[i] <= 'Z')))
     {
-        env_value = getenv((env_node->content) + 1);
+        env_node->content += i;
+        if (i == 2)
+            remove_last_char(env_node->content);
+        env_value = getenv(env_node->content);
+        if (!env_value)
+            env_value = "";
         if (env_value)
         {
             env_cpy = ft_strdup(env_value);
             if (!env_cpy)
-                return (ft_printf("error 3\n"),NULL);
-            //free((*env_node->node)->content); 
+                return (NULL);
             (env_node->content) = env_cpy;
-            return (ft_printf("error 4\n"),env_value);
+            return (env_value);
         }
     }
     return (NULL);
 }
 
-int    detect_env(t_data *data)
+int detect_env(t_data *data)
 {
-    ft_printf("error 6\n");
     t_node  *current;
-    ft_printf("error 7\n");
-    
+    int     i;
+
     current = (*data->node);
-    
-    ft_printf("content[0] before while %s\n", current->content);
-    // printf("nodelist:\n");
-    // print_list(*(data->node));
-    while(current)
+    while (current)
     {
-        if(!current->content)
+        if (!current->content)
+            return (1);
+        i = 0;
+        if (current->content[i] == '"')
+            i++;
+        if (current->content[i] == '$')
         {
-            return (ft_printf("error 9\n"), 1);
-        }
-        ft_printf("content[0] afetr while %s\n", current->content);
-        printf("nodelist:\n");
-        print_list(*(data->node));
-        ft_printf("dollar %c\n", current->content[0]);
-        if (current->content[0] == '$')
-        {
-            if (get_env(current->content) == NULL)
-                return (ft_printf("error 1\n"), 1); //if an error occurs
+            if (get_env(current, i + 1) == NULL)
+                return (1);
         }
         current = current->next;
     }
-    return (ft_printf("error 2\n"),0);
+    return (0);
 }
-
 
 void    expander(t_data *data)
 {
     ft_printf("Expander:\n");
+    
     detect_env(data);
     print_list(*(data->node));
 }
