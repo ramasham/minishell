@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 10:21:30 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:34:44 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void    validate_input(t_data *data);
 int     has_invalid_redirection(char *ptr);
 void    expander(t_data *data);
 int    detect_env(t_data *data);
-char   *get_env(t_data *env_node);
-
+char   *get_env(t_node *env_node);
 
 #endif
