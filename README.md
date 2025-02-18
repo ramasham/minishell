@@ -53,11 +53,12 @@ Output: [echo] ["hello world"] [>] [file]
 		- echo $HOME → echo /Users/yourname
 		🟠 - $? → Last exit status.
 	2. Replace with corresponding values from envp.
-⚠️  Ignore expansion inside single quotes ('), but allow in double quotes (").
+	3. spliting the node to search for $anything
 
 🔴 Error Handling:
 	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.
 	✅ - No expansion inside single quotes:
+	✅️ Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 ✅ TEAM: Person A
 ----------------------------------------------------------------------------------------
