@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 11:28:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 10:20:47 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int main()
         if (isatty(STDIN_FILENO))
             data->input = readline("\033[1;35mminishell$\033[0m ");
         tokenizer(data);
+        expander(data);
         if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
         {
             printf("exit\n");

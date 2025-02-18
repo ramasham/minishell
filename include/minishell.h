@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 19:46:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 10:21:30 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include <stdio.h>
+# include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -63,7 +64,9 @@ void    check_append_heredoc(t_data *data);
 int     is_space(char c);
 void    validate_input(t_data *data);
 int     has_invalid_redirection(char *ptr);
-
+void    expander(t_data *data);
+int    detect_env(t_data *data);
+char   *get_env(t_data *env_node);
 
 
 #endif

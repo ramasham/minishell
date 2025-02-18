@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# minishell
-42 minishell projec
-=======
 # SpaghettiShell
 42 minishell project
 
@@ -56,7 +52,6 @@ Output: [echo] ["hello world"] [>] [file]
 	1. Traverse tokens and detect variables ($).
 		- echo $HOME → echo /Users/yourname
 		- $? → Last exit status.
-		- ~ → Expand to home directory.
 	2. Replace with corresponding values from envp.
 ⚠️  Ignore expansion inside single quotes ('), but allow in double quotes (").
 
@@ -123,4 +118,3 @@ Output: [echo] ["hello world"] [>] [file]
 
 ✅ TEAM: Both
 ----------------------------------------------------------------------------------------
->>>>>>> origin/rama
