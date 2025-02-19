@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 18:49:42 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/19 10:20:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int main()
             data->input = readline("\033[1;35mminishell$\033[0m ");
         if (tokenizer(data) == 1)
         {
-            free(data->input);
-            free(data);
+            // free(data->input);
+            // free(data);
         }
-        else if (tokenizer(data) == 0)
-        {
-            expander(data);
-        }
+        // else if (tokenizer(data) == 0)
+        // {
+        //     expander(data);
+        // }
         if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
         {
             printf("exit\n");
