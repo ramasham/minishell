@@ -55,7 +55,7 @@ Output: [echo] ["hello world"] [>] [file]
 📌 Goal: Replace variables ($VAR) with their values.
 	1. Traverse tokens and detect variables ($).
 		- echo $HOME → echo /Users/yourname
-		🟠 - $? → Last exit status.
+		🟠 - $? → Last exit status. (handle it the execution part)
 	2. Replace with corresponding values from envp.
 	3. spliting the node to search for $anything
 
@@ -63,6 +63,10 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.
 	✅ - No expansion inside single quotes:
 	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
+
+🟠 Incomplete :
+	1- 123$123 -> 123123
+	2- $0
 --------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.
