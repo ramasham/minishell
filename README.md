@@ -43,7 +43,13 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ 1- write strtok
 	2- 2 fucntions more than 25 lines
 	4- valgrind
-	5- " '" && '"' should output correctly
+	✅️ 5- " '" && '"' should output correctly:
+		- "rama'" is valid because the single quote is inside double quotes.
+		- 'rama"' is valid for the same reason.
+		- 'rama' is valid because the single quotes are correctly closed.
+		- "rama" is valid for the same reason.
+		- 'rama or "rama is invalid because they are unclosed.
+
 
 ✅ TEAM: Person A
 ----------------------------------------------------------------------------------------
@@ -58,7 +64,7 @@ Output: [echo] ["hello world"] [>] [file]
 🔴 Error Handling:
 	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.
 	✅ - No expansion inside single quotes:
-	✅️ Ignore expansion inside single quotes ('), but allow in double quotes (").
+	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 ✅ TEAM: Person A
 ----------------------------------------------------------------------------------------

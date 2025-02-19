@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:23:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 19:48:56 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/18 18:42:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    check_unclosed_quotes(t_data *data)
+int    check_unclosed_quotes(t_data *data)
 {
     char    *ptr;
     int     double_quotes;
@@ -23,19 +23,21 @@ void    check_unclosed_quotes(t_data *data)
     single_quotes = 0;
     while (*ptr)
     {
-        if (*ptr == '"')
-            double_quotes++;            
-        if (*ptr == '\'')
-            single_quotes++;
+        if (*ptr == '"' && single_quotes == 0)
+        {
+            double_quotes = !double_quotes;
+        }            
+        else if (*ptr == '\'' && double_quotes == 0)
+            single_quotes = !single_quotes;
         ptr++;
     }
-    if (double_quotes % 2 != 0 || single_quotes % 2 != 0)
+    if (double_quotes || single_quotes)
     {
         ft_putstr_fd("Syntax error: Unclosed quotes\n", 2);
-        exit(1);
+        return (1);
     }
+    return (0);
 }
-
 
 int has_invalid_redirection(char *ptr)
 {
@@ -66,17 +68,18 @@ int has_invalid_redirection(char *ptr)
     return (0);
 }
 
-void check_redirection(t_data *data)
+
+int check_redirection(t_data *data)
 {
     if (has_invalid_redirection(data->input))
     {
         ft_putstr_fd("Syntax error: Invalid redirection\n", 2);
-        exit(1);
+        return (1);
     }
+    return (0);
 }
 
-
-void    check_append_heredoc(t_data *data)
+int    check_append_heredoc(t_data *data)
 {
     char    *ptr;
     int     i;
@@ -88,18 +91,19 @@ void    check_append_heredoc(t_data *data)
         if (ptr[i] == '>' && ptr[i + 2] == '>')
         {
             ft_putstr_fd("invalid operator\n", 2);
-            exit(1);
+            return (1);
         }
         else if (ptr[i] == '<' && ptr[i + 2] == '<')
         {
             ft_putstr_fd("invalid operator\n", 2);
-            exit(1);
+            return (1);
         }
         i++;
     }
+    return (0);
 }
 
-void    operator_at_end(t_data *data)
+int    operator_at_end(t_data *data)
 {
     char    *ptr;
     char    *operators;
@@ -118,13 +122,14 @@ void    operator_at_end(t_data *data)
         if (ptr[j] == operators[i] && ptr[j + 1] == '\0')
         {
             ft_putstr_fd("invalid syntax in end \n", 2);
-            exit(1);
+            return (1);
         }
         i++;
     }
+    return (0);
 }
 
-void    operator_at_start(t_data *data)
+int    operator_at_start(t_data *data)
 {
     char    *ptr;
     char    *operators;
@@ -138,13 +143,14 @@ void    operator_at_start(t_data *data)
         if (ptr[0] == operators[i])
         {
             ft_putstr_fd("invalid syntax in start\n", 2);
-            exit(1);
+            return (1);
         }
         i++;
     }
+    return (0);
 }
 
-void    check_multiple_pipes(t_data *data)
+int    check_multiple_pipes(t_data *data)
 {
     char    *ptr;
 
@@ -154,18 +160,26 @@ void    check_multiple_pipes(t_data *data)
         if (*ptr == '|' && *(ptr + 1) == '|')
         {
             ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-            exit(1);
+            return (1);
         }
         ptr++;
     }
+    return (0);
 }
 
-void    validate_input(t_data *data)
+int    validate_input(t_data *data)
 {
-    check_unclosed_quotes(data);
-    check_multiple_pipes(data);
-    check_redirection(data);
-    operator_at_start(data);
-    operator_at_end(data);
-    check_append_heredoc(data);
+    if (operator_at_start(data))
+        return (1);   
+    if (check_unclosed_quotes(data))
+        return (1);
+    if (check_multiple_pipes(data))
+        return (1);
+    if (check_redirection(data))
+        return (1);
+    if (operator_at_end(data))
+        return (1);
+    if (check_append_heredoc(data))
+        return (1);
+    return (0);
 }
