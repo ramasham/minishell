@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 17:31:42 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:40:20 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,17 @@ void    check_append_heredoc(t_data *data);
 int     is_space(char c);
 void    validate_input(t_data *data);
 int     has_invalid_redirection(char *ptr);
-void    expander(t_data *data);
+//expander
+int    expander(t_data *data);
 int    detect_env(t_data *data);
-char   *get_env(t_node *env_node, int i);
-void expander_split(t_data *data);
-void process_dollar(t_node *current, int *i, char **buffer);
-void replace_in_content(t_node *current, char *buffer, int start, int end);
-void search_for_env(t_node *current_node, int *i, char **buffer);
-char *ft_strjoin_three(char *s1, char *s2, char *s3);
+char *replace_env_var(char *content, int i);
+char *extract_env_name(char *s);
+int process_node(t_node *current);
+//expander utils
+int process_env_if_needed(t_node *current, int *i, int in_single);
+int process_env_var(t_node *current, int *i, int in_single);
+void handle_quotes(char c, int *in_single, int *in_double);
+int is_q(char c);
+int     trim_quotes(t_node *node);
 
 #endif

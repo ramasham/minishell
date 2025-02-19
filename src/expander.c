@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/18 17:40:34 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:39:37 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,57 +17,90 @@
 //if yes -> replace the content
 //if no -> error
 
-static void    remove_last_char(char *str)
+
+char *extract_env_name(char *s)
 {
-    if (str && *str)
-        str[ft_strlen(str) - 1] = '\0';
+    int i;
+    char *var_name;
+
+    if(!s || s[0] != '$')
+        return (NULL);
+    i = 1;
+    while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+        i++;
+    var_name = ft_substr(s, 1 , i - 1);
+    return(var_name);
+    
 }
 
-char *get_env(t_node *env_node, int i)
+char *replace_env_var(char *content, int i)
 {
+    char *var_name;
     char *env_value;
-    char *env_cpy;
+    char *new_str;
+    char *before;
+    char *after;
     
-    if (!env_node || !env_node->content || !(*env_node->content))
+    var_name = extract_env_name(content + i);
+    after = ft_strdup(content + i + ft_strlen(var_name) + 1);
+    if (!var_name)
         return (NULL);
-    if (((env_node->content[i] >= 'a' && env_node->content[i] <= 'z')
-         || (env_node->content[i] >= 'A' && env_node->content[i] <= 'Z')))
+    env_value= getenv(var_name);
+    free(var_name);
+    if (!env_value)
+        env_value = "";
+    before = ft_substr(content, 0, i);
+    new_str = ft_strjoin(before, env_value);
+    free(before);
+    before = ft_strjoin(new_str, after);
+    free(new_str);
+    free(after);
+    if (before[0] == '"' || before[ft_strlen(before) - 1] == '"')
+        before = ft_strtrim(before, "\"");
+    return(before);
+}
+
+int process_node(t_node *current)
+{
+    int i;
+    int in_single;
+    int in_double;
+    char *trimmed;
+
+    i = -1;
+    in_single = 0;
+    in_double = 0;
+    while(current->content[++i])
     {
-        char *temp = ft_strdup(env_node->content + i);
-        if (!temp)
-            return (NULL);
-        if (i == 2)
-            remove_last_char(temp);
-        env_value = getenv(temp);
-        free(temp);
-        if (!env_value)
-            env_value = "";
-        env_cpy = ft_strdup(env_value);
-        if (!env_cpy)
-            return (NULL);
-        free(env_node->content);
-        env_node->content = env_cpy;
-        return (env_cpy);
+        handle_quotes(current->content[i] , &in_single , &in_double);
+        if (!in_single && current->content[i] == '$' &&
+			(ft_isalpha(current->content[i + 1]) || current->content[i + 1] == '_'))
+            if (process_env_if_needed(current, &i, in_single))
+                return (1);
     }
-    return (NULL);
+   if (in_double && current->content[0] == '"' &&
+        current->content[ft_strlen(current->content) - 1] == '"')
+        {
+            trimmed = ft_strtrim(current->content, "\"");
+            free(current->content);
+            current->content = trimmed;
+        }
+    return (0);
 }
 
 int detect_env(t_data *data)
 {
     t_node *current;
-    int i;
 
     current = (*data->node);
+   
     while (current)
     {
-        if (!current->content || !*(current->content)) // Check if content is empty
+        if (!current->content || !*(current->content))
             return (1);
-        i = 0;
-        if (current->content[i] == '"')
-            i++;
-        if (current->content[i] == '$')
+        if (trim_quotes(current) == 1)
         {
-            if (get_env(current, i + 1) == NULL)
+            if (process_node(current))
                 return (1);
         }
         current = current->next;
@@ -75,12 +108,12 @@ int detect_env(t_data *data)
     return (0);
 }
 
-
-void    expander(t_data *data)
+int     expander(t_data *data)
 {
     ft_printf("Expander:\n");
-    if (!detect_env(data))
-        expander_split(data);
+    if(detect_env(data))
+        return(1);
     print_list(*(data->node));
+    return(0);
 }
 

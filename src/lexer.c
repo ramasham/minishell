@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/18 12:34:50 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:22:46 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void trim_operators(t_data *data)
                 ft_nodeadd_back(new_lst, create_node("<"));
         }
         free(copy);
-        ft_printf("current is %s\n", current->content);
+        //ft_printf("current is %s\n", current->content);
         current = current->next;
     }
     *(data->node) = *new_lst;
