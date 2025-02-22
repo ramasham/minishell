@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/19 19:01:09 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/22 21:20:01 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int main()
             data->input = readline("\033[1;35mminishell$\033[0m ");
         if (tokenizer(data) == 0)
         {
-            // expander(data);
+            expander(data);
+            get_commands(data, (*data->node));
+            // handle_pipes((*data->node));
             // free(data->input);
             // free(data);
         }

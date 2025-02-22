@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:57:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/15 17:01:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/22 15:36:14 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 void ft_nodeadd_back(t_node **head, t_node *new_node)
 {
+    t_node  *temp;
+
     if (!head || !new_node)
         return;
     if (*head == NULL)
     {
         *head = new_node;
-        return;
+        return ;
     }
-    t_node *temp = *head;
+    temp = *head;
     while (temp->next)
         temp = temp->next;
     temp->next = new_node;

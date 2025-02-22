@@ -41,7 +41,7 @@ Output: [echo] ["hello world"] [>] [file]
 
 🟠 Incomplete :
 	✅️ 1- write strtok
-	   2- 2 fucntions more than 25 lines
+	✅️   2- 2 fucntions more than 25 lines
 	🟡 4- valgrind
 	✅️ 5- " '" && '"' should output correctly:
 		- "rama'" is valid because the single quote is inside double quotes.
@@ -74,27 +74,40 @@ Output: [echo] ["hello world"] [>] [file]
 1️⃣ Create parse_tokens() function.
 2️⃣ Initialize the command list (cmds).
 3️⃣ Loop through tokens & process them:
-✅ If command, store in full_cmd[].
-✅ If argument, add to full_cmd[].
-✅ If redirection, set infile or outfile.
-✅ If pipe (|), create a new command.
+	✅ If command, store in full_cmd[].
+	✅ If argument, add to full_cmd[].
+	✅ If redirection, set infile or outfile.
+	✅ If pipe (|), create a new command.
 4️⃣ Store parsed commands in cmds linked list.
 5️⃣ Handle syntax errors.
 6️⃣ Return the parsed list to the execution step.
 
+
+1️⃣ Handle Redirections First
+2️⃣ Handle Pipes (|)
+3️⃣ Build the Command Linked List (t_command)
+5️⃣ Finally, pass the list to the executor.
+
+- Redirection handling: Inside t_node, you check for redirection tokens and modify the input/output file descriptors.
+
+- Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.
+
+- Final command list: Each command (with its arguments and redirections) is added to the command list for further execution.
+
+
 	🔹 Step 1: Create the Parsing Function:
-		input: linked list from lexer.
+		input: linked list from expander
 		output: linked list of parsed command structures
 	
 	🔹 Step 2: Initialize Parsing:
 	🔸 Inside parse_tokens(), do the following:
-		1- Create an empty list (t_list *cmds) to store parsed commands.
-		2- Initialize a t_mini structure to store the first command.
+		1- Create an empty list to store parsed commands.
+		2- Initialize structure to store the first command.
 		3- Loop through the token list and process each token one by one.
 	
 	🔹 Step 3: Process Each Token:
 	1️⃣ If the token is a command (e.g., ls, echo):
-		✔️ Start a new t_mini node if no command is open.
+		✔️ Start a new node if no command is open.
 		✔️ Store it as full_cmd[0] (command name).
 	2️⃣ If the token is an argument (e.g., -l, "hello")
 		✔️ Add it to full_cmd[] as an argument.
@@ -116,10 +129,24 @@ Output: [echo] ["hello world"] [>] [file]
 		✔️ After looping through tokens, store the final command node in cmds.
 		✔️ Return cmds to be used in the execution step.
 
+🔸example :
+	🔹Command 1:
+		argv = ["echo", "hello", NULL]
+		infile = STDIN_FILENO
+		outfile = STDOUT_FILENO
+		next → Command 2
+
+	🔹Command 2:
+		argv = ["grep", "test", NULL]
+		infile = PIPE (read from Command 1 output)
+		outfile = File descriptor for "output.txt"
+		next → NULL
+
 🔴 Error Handling:
 	- Missing file after redirection: echo hello > → Syntax error.
 	- Unmatched pipes: | echo hello → Syntax error.
 	- Disallow special tokens together: ls >| wc is invalid.
+	- Permission issues
 ----------------------------------------------------------------------------------------
 ⚠️  Test that lexer and expander work together.
 

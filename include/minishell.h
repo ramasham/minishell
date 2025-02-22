@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/19 19:51:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/22 21:17:44 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <fcntl.h>
+
+#define REDIR_OUT1 ">"
+#define APPEND1 ">>"
+#define REDIR_IN1 "<"
+#define HERE_DOC1 "<<"
+#define PIPES "|"
 
 typedef enum
 {
@@ -40,10 +47,20 @@ typedef struct s_node
     struct s_node  *next;
 } t_node;
 
+typedef struct s_command
+{
+    char    **full_cmd;
+    char    *full_path;
+    int     infile;
+    int     outfile;
+    struct s_command *next;
+} t_command;
+
 typedef struct s_data
 {
     char        *input; 
     t_node      **node;
+    t_command   *commands;
     int         exit_status;
 } t_data;
 
@@ -96,6 +113,20 @@ void        init_data(t_data *data);
 t_node      *create_node(const char *token);
 void	    free_list(t_node **node);
 int         is_space(char c);
+
+//redirections
+void    handle_redirections(t_node *current, int *infile, int *outfile);
+int     handle_output_redirection(char *operator, char *filename);
+int     handle_input_redirection(char  *filename);
+
+
+
+//parser
+t_command   *init_cmd();
+void get_commands(t_data *data, t_node *tokens);
+void    cmd_list(t_data *data, t_command *new_cmd);
+
+
 
 
 #endif
