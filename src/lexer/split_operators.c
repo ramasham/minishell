@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: luji <luji@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/19 19:57:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 12:59:42 by luji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void process_content(t_node **new_lst, char *content)
         }
     }
 }
+
 
 void trim_operators(t_data *data)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: luji <luji@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 12:25:07 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 15:38:39 by luji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_node
 
 typedef struct s_command
 {
-    char    **full_cmd;
+    char    *full_cmd;
     char    *full_path;
     int     infile;
     int     outfile;
@@ -60,7 +60,7 @@ typedef struct s_data
 {
     char        *input; 
     t_node      **node;
-    t_command   *commands;
+    t_command   **commands;
     int         exit_status;
 } t_data;
 
@@ -122,11 +122,11 @@ int     handle_input_redirection(char  *filename);
 
 
 //parser
-t_command   *init_cmd();
-t_command *get_commands(t_node *tokens);
-void    cmd_list(t_data *data, t_command *new_cmd);
-
-
-
+t_command *create_new_command();
+void    init_to_file(void);
+void add_argument(char ***cmd_args, char *new_arg);
+void print_command(t_command *newcmd);
+void get_command(t_data *node_lst, t_node *current);
+void add_command(t_data *data, t_command *new_cmd);
 
 #endif

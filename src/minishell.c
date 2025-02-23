@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: luji <luji@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 12:26:05 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 15:24:16 by luji             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void init_data(t_data *data)
 {
     data->input = NULL;
+    data->node = NULL;
 }
 
 int main()
@@ -35,7 +36,7 @@ int main()
         if (tokenizer(data) == 0)
         {
             expander(data);
-            get_commands(*data->node);
+            get_command(data, *(data->node));
             // handle_pipes((*data->node));
             // free(data->input);
             // free(data);
