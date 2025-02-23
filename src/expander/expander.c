@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/19 17:31:28 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 17:43:27 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ char *extract_env_name(char *s)
     if(!s || s[0] != '$')
         return (NULL);
     i = 1;
-    while (s[i] && (ft_isalnum(s[i]) || s[i] == '_'))
+    if (ft_isdigit(s[i]))
+    {
+        var_name = ft_substr(s, 1 , 1);
+        return(var_name);
+    }
+    while (s[i] && (ft_isalpha(s[i]) || s[i] == '_'))
         i++;
     var_name = ft_substr(s, 1 , i - 1);
     return(var_name);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luji <luji@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 15:38:39 by luji             ###   ########.fr       */
+/*   Updated: 2025/02/23 17:25:50 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,11 @@ int     handle_output_redirection(char *operator, char *filename);
 int     handle_input_redirection(char  *filename);
 
 
-
 //parser
 t_command *create_new_command();
 void    init_to_file(void);
 void add_argument(char ***cmd_args, char *new_arg);
-void print_command(t_command *newcmd);
+void print_command(t_data *newcmd);
 void get_command(t_data *node_lst, t_node *current);
 void add_command(t_data *data, t_command *new_cmd);
 
