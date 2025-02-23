@@ -6,45 +6,25 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 17:21:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 19:32:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-// handle pipe process
-// if (|) -> create a pipe
-// pipe_fd[0]: Read end → Connects to the next command’s infile.
-// pipe_fd[1]: Write end → Connects to the current command’s outfile.
-// assign fds
-// set outfile -> pipe_fd[1]
-// set infile -> pipe_fd[0]
-
-#include <stdio.h>
-
-// Create and initialize a new command node
 t_command *create_new_command()
 {
-    t_command *new_cmd = malloc(sizeof(t_command));
+    t_command *new_cmd;
+
+    new_cmd = malloc(sizeof(t_command));
     if (!new_cmd)
         return NULL;
-
-    // new_cmd->infile = infile;
-    // new_cmd->outfile = outfile;
     new_cmd->full_cmd = NULL;
     new_cmd->full_path = NULL;
     new_cmd->next = NULL;
-    return new_cmd;
+    return (new_cmd);
 }
-//initialize in/out files
-// void    init_io_file(int infile, int outfile)
-// {
-//     infile = STDIN_FILENO;
-//     outfile = STDOUT_FILENO;
-// }
 
-// To print the new commands
 void print_command(t_data *newcmd)
 {
     int i = 0;
@@ -59,16 +39,29 @@ void print_command(t_data *newcmd)
         i++;
     }
 }
+// static void print_node_list(t_node *node)
+// {
+//     int i = 0;
+//     while (node)
+//     {
+//         ft_printf("Node %d: content = %s\n", i, node->content);  // Print the content of each node
+//         node = node->next;  // Move to the next node in the list
+//         i++;
+//     }
+// }
 
 void get_command(t_data *node_lst, t_node *current)
 {
-    t_command   *new_cmd;
     char        *tmp;
     char        *joined;
+    t_command   *new_cmd;
 
+    joined = NULL;
+    tmp = NULL;
     new_cmd = create_new_command();
     if (!new_cmd)
         return ;
+    
     while (current)
     {
         while (current && ft_strcmp(current->content, "|") != 0)
@@ -105,9 +98,9 @@ void get_command(t_data *node_lst, t_node *current)
         if (!new_cmd)
             return ;
     }
+    free_list(node_lst->node);
     print_command(node_lst);
 }
-
 
 void add_command(t_data *data, t_command *new_cmd)
 {
