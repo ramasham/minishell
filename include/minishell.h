@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/22 21:17:44 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/23 12:25:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int     handle_input_redirection(char  *filename);
 
 //parser
 t_command   *init_cmd();
-void get_commands(t_data *data, t_node *tokens);
+t_command *get_commands(t_node *tokens);
 void    cmd_list(t_data *data, t_command *new_cmd);
 
 
