@@ -70,18 +70,6 @@ Output: [echo] ["hello world"] [>] [file]
 --------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.
-	
-1️⃣ Create parse_tokens() function.
-2️⃣ Initialize the command list (cmds).
-3️⃣ Loop through tokens & process them:
-	✅ If command, store in full_cmd[].
-	✅ If argument, add to full_cmd[].
-	✅ If redirection, set infile or outfile.
-	✅ If pipe (|), create a new command.
-4️⃣ Store parsed commands in cmds linked list.
-5️⃣ Handle syntax errors.
-6️⃣ Return the parsed list to the execution step.
-
 
 1️⃣ Handle Redirections First
 2️⃣ Handle Pipes (|)
@@ -93,41 +81,6 @@ Output: [echo] ["hello world"] [>] [file]
 - Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.
 
 - Final command list: Each command (with its arguments and redirections) is added to the command list for further execution.
-
-
-	🔹 Step 1: Create the Parsing Function:
-		input: linked list from expander
-		output: linked list of parsed command structures
-	
-	🔹 Step 2: Initialize Parsing:
-	🔸 Inside parse_tokens(), do the following:
-		1- Create an empty list to store parsed commands.
-		2- Initialize structure to store the first command.
-		3- Loop through the token list and process each token one by one.
-	
-	🔹 Step 3: Process Each Token:
-	1️⃣ If the token is a command (e.g., ls, echo):
-		✔️ Start a new node if no command is open.
-		✔️ Store it as full_cmd[0] (command name).
-	2️⃣ If the token is an argument (e.g., -l, "hello")
-		✔️ Add it to full_cmd[] as an argument.
-	3️⃣ If the token is a redirection (>, >>, <, <<)
-		✔️ The next token must be a filename (or delimiter for heredoc).
-		✔️ For >, >>, < (regular redirections):
-		-Open the file using open() and store the file descriptor in infile or outfile.
-		
-		✔️ For heredoc (<<):
-		- The next token is the delimiter (e.g., EOF).
-		- Read user input line by line until the delimiter is entered.
-		- Store the heredoc content in a temporary file or buffer.
-		- Set infile in t_mini to read from this stored content.
-	4️⃣ If the token is a pipe (|):
-		✔️ Finish the current command by adding it to the cmds list.
-		✔️ Start a new command node (t_mini) and link it to the previous one.
-	
-	🔹 Step 4: Store the Parsed Commands
-		✔️ After looping through tokens, store the final command node in cmds.
-		✔️ Return cmds to be used in the execution step.
 
 🔸example :
 	🔹Command 1:
