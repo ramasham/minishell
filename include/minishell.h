@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 16:29:42 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/24 10:52:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,9 @@ int     extract_word(const char *content, int i, char *token);
 void	process_char(t_data *data, char c, char *token, int *i);
 int     extract_operator(const char *content, int i, char *op);
 void    process_content(t_node **new_lst, char *content);
-// void	add_token(t_node **new_lst, char *token);
 void	add_token_to_list_split(t_data *data, char *token, int *i);
-// void	process_operators(t_node **new_lst, char *content);
 
-// lexer_checking
+// exer_checking
 int     check_unclosed_quotes(t_data *data);
 int     has_invalid_redirection(char *ptr);
 int     check_redirection(t_data *data);
@@ -86,10 +84,10 @@ int     operator_at_start(t_data *data);
 int     check_multiple_pipes(t_data *data);
 int     validate_input(t_data *data);
 
-// lexer
-void	trim_operators(t_data *data);
-void	split_input(t_data *data);
-int     tokenizer(t_data *data);
+//lexer
+void        trim_operators(t_data *data);
+void        split_input(t_data *data);
+int         tokenizer(t_data *data);
 TokenType   get_token_type(const char *token);
 
 //expander utils
@@ -110,23 +108,23 @@ int     process_node(t_node *current);
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
 void        print_list(t_node *head);
 void        init_data(t_data *data);
-t_node      *create_node(const char *token);
 void	    free_list(t_node **node);
 int         is_space(char c);
+t_node      *create_node(const char *token);
 
 //redirections
 void    handle_redirections(t_node *current, int *infile, int *outfile);
 int     handle_output_redirection(char *operator, char *filename);
 int     handle_input_redirection(char  *filename);
 
+//parser_utils
+void        print_command(t_data *newcmd);
+void        add_command(t_data *data, t_command *new_cmd);
+t_command   *create_new_command();
 
 
 //parser
-t_command *create_new_command();
-void    init_to_file(void);
-void add_argument(char ***cmd_args, char *new_arg);
-void print_command(t_data *newcmd);
-void get_command(t_data *node_lst, t_node *current);
-void add_command(t_data *data, t_command *new_cmd);
+void    print_command(t_data *newcmd);
+void    get_command(t_data *node_lst, t_node *current);
 
 #endif
