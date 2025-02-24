@@ -6,11 +6,27 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 10:48:12 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/24 18:42:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_list_cmd(t_command **node)
+{
+	t_command	*tmp;
+
+	if (!node || !*node)
+		return ;
+	while (*node)
+	{
+		tmp = *node;
+		*node = (*node)->next;
+		free(tmp->full_cmd);
+		free(tmp);
+	}
+	*node = NULL;
+}
 
 void get_command(t_data *node_lst, t_node *current)
 {
@@ -60,5 +76,7 @@ void get_command(t_data *node_lst, t_node *current)
             return ;
     }
     free_list(node_lst->node);
-    print_command(node_lst);
+    // print_command(node_lst);
+    print_command_info(*(node_lst->commands));
+    // free_list_cmd(node_lst->commands);
 }

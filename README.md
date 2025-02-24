@@ -23,7 +23,7 @@ Lexer → Expander → Parser → Executor.
 1️⃣  Tokenizer(lexer):
 📌 Goal: Convert user input into structured tokens.
 	✅️ 1. Split input by spaces while respecting quotes (", ').
-	✅️ 2. Recognize special tokens (|, <, >, >>, <<).
+	✅️ 2. Recognize special tokens (|, <, >, >>, <<). 
 	✅️ 3. Store tokens in a linked list.
 	
 🔴 Error Handling:
@@ -49,7 +49,6 @@ Output: [echo] ["hello world"] [>] [file]
 		- 'rama' is valid because the single quotes are correctly closed.
 		- "rama" is valid for the same reason.
 		- 'rama or "rama is invalid because they are unclosed.
-
 --------------------------------------------------------------------------------------
 2️⃣  Expander:
 📌 Goal: Replace variables ($VAR) with their values.
@@ -65,7 +64,7 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 🟠 Incomplete :
-	1- 123$123 -> 123123
+	✅️  1- 123$123 -> 123123
 	2- $0
 --------------------------------------------------------------------------------------
 3️⃣ Parser
@@ -76,14 +75,14 @@ Output: [echo] ["hello world"] [>] [file]
 3️⃣ Build the Command Linked List (t_command)
 5️⃣ Finally, pass the list to the executor.
 
-- Redirection handling: Inside t_node, you check for redirection tokens and modify the input/output file descriptors.
+✅️ - Redirection handling: Inside t_node, you check for redirection tokens and modify the input/output file descriptors.
 
-- Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.
+✅️ - Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.
 
 - Final command list: Each command (with its arguments and redirections) is added to the command list for further execution.
 
 🔸example :
-	🔹Command 1:
+
 		argv = ["echo", "hello", NULL]
 		infile = STDIN_FILENO
 		outfile = STDOUT_FILENO
@@ -100,6 +99,8 @@ Output: [echo] ["hello world"] [>] [file]
 	- Unmatched pipes: | echo hello → Syntax error.
 	- Disallow special tokens together: ls >| wc is invalid.
 	- Permission issues
+🟠 Incomplete :
+	- heredoc
 ----------------------------------------------------------------------------------------
 ⚠️  Test that lexer and expander work together.
 
@@ -110,6 +111,12 @@ Output: [echo] ["hello world"] [>] [file]
 		cd, exit, echo, pwd, export, unset, env.
 	3. Manages pipes and redirections.
 	
+- Forking Processes: After parsing and setting up redirection, the shell forks a child process for each command. Each child process is responsible for executing a specific command in the pipeline (if it's part of a chain of commands), while the parent shell process continues managing the execution.
+
+- Executing Commands: Inside each child process, the shell uses exec() or a similar function to replace the child process with the command it needs to execute. This is the point where the actual program (like echo, wc, etc.) runs.
+
+- Parent Process Waits: After forking, the parent shell process typically waits for the child processes to finish executing using waitpid() or wait(). Once all child processes have finished, the shell proceeds to handle any post-execution tasks (like cleanup or printing results).
+
 🔴 Error Handling:
 	- Command not found: hello → command not found error.
 	- Permission denied: ./file.sh without chmod +x should return an error.

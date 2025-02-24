@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luji <luji@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 15:24:16 by luji             ###   ########.fr       */
+/*   Updated: 2025/02/24 18:42:45 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void init_data(t_data *data)
+void    init_data(t_data *data)
 {
     data->input = NULL;
     data->node = NULL;
+    data->commands = NULL;
 }
 
 int main()
@@ -37,14 +38,10 @@ int main()
         {
             expander(data);
             get_command(data, *(data->node));
-            // handle_pipes((*data->node));
+            // run_pipeline(*(data->commands), *(data->node));
             // free(data->input);
             // free(data);
         }
-        // else if (tokenizer(data) == 0)
-        // {
-        //     expander(data);
-        // }
         if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
         {
             printf("exit\n");
