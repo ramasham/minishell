@@ -65,8 +65,8 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 🟠 Incomplete :
-	1- 123$123 -> 123123
-	2- $0
+	✅ 1- 123$123 -> 123123
+	✅ 2- $0
 --------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.

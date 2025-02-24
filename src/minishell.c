@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/23 17:34:57 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:41:17 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main()
         if (tokenizer(data) == 0)
         {
             expander(data);
-            get_command(data, *(data->node));
+            //get_command(data, *(data->node));
             // handle_pipes((*data->node));
             // free(data->input);
             // free(data);

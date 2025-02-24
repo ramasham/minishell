@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/24 11:10:06 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:08:24 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int     detect_env(t_data *data);
 char    *replace_env_var(char *content, int i);
 char    *extract_env_name(char *s);
 int     process_node(t_node *current);
+char *get_env_value(char *var_name);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
