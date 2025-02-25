@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 11:24:54 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:06:40 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int	detect_env(t_data *data)
 
 int	expander(t_data *data)
 {
-	ft_printf("Expander:\n");
+	// ft_printf("Expander:\n");
 	if (detect_env(data))
 		return (1);
-	print_list(*(data->node));
+	// print_list(*(data->node));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 13:33:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:44:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    init_data(t_data *data)
     data->commands = NULL;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
     (void)argc;
     (void)argv;
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         if (tokenizer(data) == 0)
         {
             expander(data);
-            get_command(data, *(data->node));
+            set_commands(data, envp);
             // run_pipeline(*(data->commands), *(data->node));
             // free(data->input);
             // free(data);

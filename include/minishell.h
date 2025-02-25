@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 13:30:47 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 18:59:15 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,23 @@ int     handle_input_redirection(char  *filename);
 void        print_command(t_data *newcmd);
 void        add_command(t_data *data, t_command *new_cmd);
 t_command   *create_new_command();
-void print_command_info(t_command *cmd);
-void run_pipeline(t_command *cmds, t_node *tokens);
-void    create_pipe(t_command *cmds);
+void        print_command_info(t_command *cmd);
+void        run_pipeline(t_command *cmds, t_node *tokens);
+void        create_pipe(t_command *cmds);
+void        get_cmd_path(t_command *cmd, char **envp);
+void        set_commands(t_data *data, char **envp);
+void        ft_free(char **str);
+char        **find_path(char **envp);
+int         check_access(t_command *cmd, char  *path);
+char        *join_path_cmd(char  *path, char *cmd);
+void        get_cmd_path(t_command *cmd, char **envp);
+
+
+
+
+
+
+
 
 
 
