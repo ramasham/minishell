@@ -6,10 +6,9 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 19:05:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:20:54 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -32,12 +31,14 @@ void	free_list_cmd(t_command **node)
 void get_command(t_data *node_lst, t_node *current)
 {
     t_command   *new_cmd;
-    t_node      *temp;
     int         arg_count;
+    int         i;
+    t_node *temp;
 
     new_cmd = create_new_command();
     if (!new_cmd)
         return;
+
     while (current)
     {
         arg_count = 0;
@@ -50,7 +51,7 @@ void get_command(t_data *node_lst, t_node *current)
         new_cmd->full_cmd = malloc(sizeof(char *) * (arg_count + 1));
         if (!new_cmd->full_cmd)
             return;
-        int i = 0;
+        i = 0;
         while (current && ft_strcmp(current->content, "|") != 0)
         {
             new_cmd->full_cmd[i] = ft_strdup(current->content);
@@ -70,4 +71,3 @@ void get_command(t_data *node_lst, t_node *current)
     free_list(node_lst->node);
     // print_command_info(*(node_lst->commands));
 }
-

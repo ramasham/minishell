@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:40 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:09:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ int	process_node(t_node *current)
 	while (current->content[++i])
 	{
 		handle_quotes(current->content[i], &in_single, &in_double);
-		if (!in_single && current->content[i] == '$' &&
-			(ft_isalnum(current->content[i + 1]) || current->content[i
-					+ 1] == '_'))
+		if (!in_single && current->content[i] == '$' && current->content[i + 1])
 			if (process_env_if_needed(current, &i, in_single))
 				return (1);
 	}
-	if (in_double && current->content[0] == '"' &&
+	if (!in_double && current->content[0] == '"' &&
 		current->content[ft_strlen(current->content) - 1] == '"')
 	{
-		trimmed = ft_strtrim(current->content, "\"");
+		trimmed = ft_strremove(ft_strtrim(current->content, "\""), "\"");
 		free(current->content);
 		current->content = trimmed;
 	}

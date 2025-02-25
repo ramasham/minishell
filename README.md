@@ -111,12 +111,19 @@ Output: [echo] ["hello world"] [>] [file]
 		cd, exit, echo, pwd, export, unset, env.
 	3. Manages pipes and redirections.
 
-🟠 - $? → Last exit status. (handle it the execution part)	
-- Forking Processes: After parsing and setting up redirection, the shell forks a child process for each command. Each child process is responsible for executing a specific command in the pipeline (if it's part of a chain of commands), while the parent shell process continues managing the execution.
+🟠 - $? → Last exit status. (handle it the execution part)
 
-- Executing Commands: Inside each child process, the shell uses exec() or a similar function to replace the child process with the command it needs to execute. This is the point where the actual program (like echo, wc, etc.) runs.
+	-Set Up Pipes Before Forking:
+		If you have n commands, create n - 1 pipes to connect them.
 
-- Parent Process Waits: After forking, the parent shell process typically waits for the child processes to finish executing using waitpid() or wait(). Once all child processes have finished, the shell proceeds to handle any post-execution tasks (like cleanup or printing results).
+	-Handle infile and outfile Before Execution:
+		Use dup2() to redirect standard input (STDIN_FILENO) or standard output (STDOUT_FILENO).
+		For >, open the file using open() with flags like O_WRONLY | O_CREAT | O_TRUNC.
+	-Fork Processes for Commands:
+		Each command should:
+		Inherit the correct input/output file descriptors.
+		Execute using execve().
+
 
 🔴 Error Handling:
 	- Command not found: hello → command not found error.

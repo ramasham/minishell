@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   building_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 19:21:39 by rsham            ###   ########.fr       */
+/*   Created: 2025/02/25 12:23:44 by laburomm          #+#    #+#             */
+/*   Updated: 2025/02/25 13:40:18 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 
-//forking
-//for each command
-//pipe, fork, redirect, execute, close unused pipes
-
-// int forking(t_command *cmd)
+// void export()
 // {
     
+// }
+
+// void unset()
+// {
+    
+// }
+
+// void env(char **env)
+// {
+//     int i;
+
+//     i = 0;
+//     while (env[i])
+//     {
+//         ft_printf("%s\n", env[i]);
+//         i++;
+//     }
 // }

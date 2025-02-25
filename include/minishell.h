@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 18:59:15 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:11:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int     detect_env(t_data *data);
 char    *replace_env_var(char *content, int i);
 char    *extract_env_name(char *s);
 int     process_node(t_node *current);
-char *get_env_value(char *var_name);
+char    *get_env_value(char *var_name);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
@@ -112,6 +112,7 @@ void        init_data(t_data *data);
 void	    free_list(t_node **node);
 int         is_space(char c);
 t_node      *create_node(const char *token);
+char *ft_strremove(char *str, const char *remove);
 
 //redirections
 void    handle_redirections(t_command *cmd, t_node *tokens);
@@ -140,7 +141,14 @@ void        get_cmd_path(t_command *cmd, char **envp);
 
 
 
+//exectuter
+int     built_ins(t_command *command , char **envp);
 
+//execution utils
+void    pwd(void);
+void	ft_cd(char *path);
+void    exit();
+void    env(char **env);
 
 
 

@@ -6,36 +6,39 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 13:35:01 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:08:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include "minishell.h"
 
-// void pwd(void)
+
+// int executer(t_command *cmd, char **envp)
 // {
-       
-// }
-// void echo(t_command *command)
-// {
+//     //if built_ins
+//     //built_ins
+//     //if not
+//     //external_exec.
+//     //if not 
+//     //pipe
+//     //if not 
+//     //rediection
     
 // }
-// void cd(t_command *command)
+// int built_ins(t_command *command , char **envp)
 // {
-    
-// }
-// int built_ins(t_command *command)
-// {
-//     if (command == "echo")
-//         echo(command);
-//     else if (command = "pwd")
+//     if (ft_strcmp(command, "echo") == 0)
+//         echo();
+//     else if (ft_strcmp(command, "pwd") == 0)
 //         pwd();
-//     else if (command = "cd")
-//         cd(command);
-//     else if (command = "export")
-//         export(command);
+//     else if (ft_strcmp(command, "cd") == 0)
+//         cd();
+//     else if (ft_strcmp(command, "export") == 0)
+//         export();
 //     else if (command = "unset")
-//         unset(command);
-        
-        
+//         unset();
+//     else if (ft_strcmp(command, "exit") == 0)
+//         ft_exit();
+//     else if (strcmp(command, "env") == 0)
+//         env(envp);
 // }
