@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 17:19:43 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:01:05 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ int	process_node(t_node *current)
 	while (current->content[++i])
 	{
 		handle_quotes(current->content[i], &in_single, &in_double);
-		// if (!in_single && current->content[i] == '$' &&
-		// 	(ft_isalnum(current->content[i + 1]) || current->content[i
-		// 			+ 1] == '_'))
 		if (!in_single && current->content[i] == '$' && current->content[i + 1])
 			if (process_env_if_needed(current, &i, in_single))
 				return (1);

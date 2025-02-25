@@ -6,44 +6,13 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 17:52:53 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:00:45 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// char *extract_env_name(char *s)
-// {
-//     int i;
-//     char *var_name;
 
-//     if(!s || s[0] != '$')
-//         return (NULL);
-//     i = 1;
-//     if (s[i] == '0')
-//     {
-//         var_name = ft_strdup("0");
-//         return (var_name);
-//     }
-//     if (s[i] == '!')
-//     {
-//         var_name = ft_strdup("!");
-//         return (var_name);
-//     }
-//     if (ft_isdigit(s[i]))
-//     {
-//         i--;
-//         var_name = ft_substr(s, i, i + 1);
-//     }
-//     else
-//     {
-//         while (s[i] && (ft_isalpha(s[i]) || s[i] == '_'
-//             || (i > 1 && ft_isdigit(s[i]))))
-//             i++;
-//         var_name = ft_substr(s, 1 , i - 1);
-//     }
-//     return(var_name);
-// }
 char *extract_env_name(char *s)
 {
     int i;
@@ -75,7 +44,7 @@ char *get_env_value(char *var_name)
 {
     if (ft_strcmp(var_name, "0") == 0)
         return ("minishell");
-    if (ft_strcmp(var_name, "!") == 0) // Handle $! as a special case
+    if (ft_strcmp(var_name, "!") == 0)
         return (""); 
     if (ft_isdigit(var_name[0]))
         return ("");
@@ -126,17 +95,6 @@ int process_env_var(t_node *current, int *i, int in_single)
     return (0); 
 }
 
-// int process_env_if_needed(t_node *current, int *i, int in_single)
-// {
-//     if (current->content[*i] == '$' && !in_single
-//         && (ft_isalnum(current->content[*i + 1])
-//         || current->content[*i + 1] == '_'))
-//         {
-//             if(process_env_var(current, i, in_single))
-//                 return(1);
-//         }
-//     return (0);
-// }
 int process_env_if_needed(t_node *current, int *i, int in_single)
 {
     if (current->content[*i] == '$' && !in_single)
@@ -147,7 +105,6 @@ int process_env_if_needed(t_node *current, int *i, int in_single)
             if (process_env_var(current, i, in_single))
                 return (1);
         }
-        // Handle other environment variables (alphanumeric or underscore)
         else if (ft_isalnum(current->content[*i + 1])
             || current->content[*i + 1] == '_')
         {
