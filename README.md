@@ -64,8 +64,8 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 🟠 Incomplete :
-	✅️  1- 123$123 -> 123123
-	2- $0
+		1- 123$123 -> 123123 -> still need to handle without quotations
+	✅️  2- $0
 --------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.
@@ -110,7 +110,8 @@ Output: [echo] ["hello world"] [>] [file]
 	2. Implement built-ins (without fork() when needed).
 		cd, exit, echo, pwd, export, unset, env.
 	3. Manages pipes and redirections.
-	
+
+🟠 - $? → Last exit status. (handle it the execution part)	
 - Forking Processes: After parsing and setting up redirection, the shell forks a child process for each command. Each child process is responsible for executing a specific command in the pipeline (if it's part of a chain of commands), while the parent shell process continues managing the execution.
 
 - Executing Commands: Inside each child process, the shell uses exec() or a similar function to replace the child process with the command it needs to execute. This is the point where the actual program (like echo, wc, etc.) runs.
