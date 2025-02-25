@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 11:25:28 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:58:00 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_node
 
 typedef struct s_command
 {
-    char                *full_cmd;
+    char                **full_cmd;
     char                *full_path;
     int                 infile;
     int                 outfile;
@@ -103,7 +103,7 @@ int     detect_env(t_data *data);
 char    *replace_env_var(char *content, int i);
 char    *extract_env_name(char *s);
 int     process_node(t_node *current);
-char *get_env_value(char *var_name);
+char    *get_env_value(char *var_name);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
@@ -112,6 +112,7 @@ void        init_data(t_data *data);
 void	    free_list(t_node **node);
 int         is_space(char c);
 t_node      *create_node(const char *token);
+char *ft_strremove(char *str, const char *remove);
 
 //redirections
 void    handle_redirections(t_command *cmd, t_node *tokens);
@@ -122,11 +123,18 @@ int     handle_input_redirection(char  *filename);
 void        print_command(t_data *newcmd);
 void        add_command(t_data *data, t_command *new_cmd);
 t_command   *create_new_command();
-void print_command_info(t_command *cmd);
-void run_pipeline(t_command *cmds, t_node *tokens);
+void    print_command_info(t_command *cmd);
+void    run_pipeline(t_command *cmds, t_node *tokens);
 void    create_pipe(t_command *cmds);
 
+//exectuter
+int     built_ins(t_command *command , char **envp);
 
+//execution utils
+void    pwd(void);
+void	ft_cd(char *path);
+void    exit();
+void    env(char **env);
 
 
 
