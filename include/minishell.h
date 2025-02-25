@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 16:08:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 16:18:13 by rsham            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/25 13:30:47 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 # ifndef MINISHELL_H
 # define MINISHELL_H
@@ -49,7 +50,7 @@ typedef struct s_node
 
 typedef struct s_command
 {
-    char                *full_cmd;
+    char                **full_cmd;
     char                *full_path;
     int                 infile;
     int                 outfile;
@@ -102,6 +103,7 @@ int     detect_env(t_data *data);
 char    *replace_env_var(char *content, int i);
 char    *extract_env_name(char *s);
 int     process_node(t_node *current);
+char *get_env_value(char *var_name);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);

@@ -5,10 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 18:42:45 by rsham            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/25 13:33:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+
 
 #include "minishell.h"
 
@@ -19,8 +22,10 @@ void    init_data(t_data *data)
     data->commands = NULL;
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
     t_data  *data;
     
     data = malloc(sizeof(t_data));

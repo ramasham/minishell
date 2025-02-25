@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:46:52 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 18:41:44 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 13:34:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void print_command_info(t_command *cmd)
         {
             printf("  Command Args: ");
             for (int j = 0; cmd->full_cmd[j]; j++)
-                printf("%c", cmd->full_cmd[j]);
+                printf("%s", cmd->full_cmd[j]);
             printf("\n");
         }
         else
