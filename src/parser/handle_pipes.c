@@ -6,12 +6,28 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/24 11:09:52 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:26:05 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minishell.h"
+
+void	free_list_cmd(t_command **node)
+{
+	t_command	*tmp;
+
+	if (!node || !*node)
+		return ;
+	while (*node)
+	{
+		tmp = *node;
+		*node = (*node)->next;
+		free(tmp->full_cmd);
+		free(tmp);
+	}
+	*node = NULL;
+}
 
 void get_command(t_data *node_lst, t_node *current)
 {
@@ -61,5 +77,7 @@ void get_command(t_data *node_lst, t_node *current)
             return ;
     }
     free_list(node_lst->node);
-    print_command(node_lst);
+    // print_command(node_lst);
+    print_command_info(*(node_lst->commands));
+    // free_list_cmd(node_lst->commands);
 }

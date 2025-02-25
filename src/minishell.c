@@ -5,17 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 16:12:02 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 13:41:17 by laburomm         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/02/25 11:25:51 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
+
 #include "minishell.h"
 
-void init_data(t_data *data)
+void    init_data(t_data *data)
 {
     data->input = NULL;
     data->node = NULL;
+    data->commands = NULL;
 }
 
 int main()
@@ -36,15 +40,11 @@ int main()
         if (tokenizer(data) == 0)
         {
             expander(data);
-            //get_command(data, *(data->node));
-            // handle_pipes((*data->node));
+            get_command(data, *(data->node));
+            // run_pipeline(*(data->commands), *(data->node));
             // free(data->input);
             // free(data);
         }
-        // else if (tokenizer(data) == 0)
-        // {
-        //     expander(data);
-        // }
         if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
         {
             printf("exit\n");

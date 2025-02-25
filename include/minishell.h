@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/24 14:08:24 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:25:28 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 # include <readline/history.h>
 #include <fcntl.h>
 
-#define REDIR_OUT1 ">"
-#define APPEND1 ">>"
-#define REDIR_IN1 "<"
-#define HERE_DOC1 "<<"
-#define PIPES "|"
+#define D_REDIR_OUT ">"
+#define D_APPEND ">>"
+#define D_REDIR_IN "<"
+#define D_HERE_DOC "<<"
+#define D_PIPE "|"
 
 typedef enum
 {
@@ -50,11 +50,11 @@ typedef struct s_node
 
 typedef struct s_command
 {
-    char    *full_cmd;
-    char    *full_path;
-    int     infile;
-    int     outfile;
-    struct s_command *next;
+    char                *full_cmd;
+    char                *full_path;
+    int                 infile;
+    int                 outfile;
+    struct s_command    *next;
 } t_command;
 
 typedef struct s_data
@@ -64,7 +64,6 @@ typedef struct s_data
     t_command   **commands;
     int         exit_status;
 } t_data;
-
 
 // lexer_utils
 void	handle_quotes_lex(int *inside_quotes, char *token, int *i, char c);
@@ -115,7 +114,7 @@ int         is_space(char c);
 t_node      *create_node(const char *token);
 
 //redirections
-void    handle_redirections(t_node *current, int *infile, int *outfile);
+void    handle_redirections(t_command *cmd, t_node *tokens);
 int     handle_output_redirection(char *operator, char *filename);
 int     handle_input_redirection(char  *filename);
 
@@ -123,6 +122,12 @@ int     handle_input_redirection(char  *filename);
 void        print_command(t_data *newcmd);
 void        add_command(t_data *data, t_command *new_cmd);
 t_command   *create_new_command();
+void print_command_info(t_command *cmd);
+void run_pipeline(t_command *cmds, t_node *tokens);
+void    create_pipe(t_command *cmds);
+
+
+
 
 
 //parser
