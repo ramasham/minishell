@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 14:58:00 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:18:29 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,11 @@ int     built_ins(t_command *command , char **envp);
 //execution utils
 void    pwd(void);
 void	ft_cd(char *path);
-void    exit();
+void    ft_exit();
 void    env(char **env);
-
+void    pwd(void);
+void    env(char **env);
+void    echo(t_command *command);
 
 
 //parser

@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 18:00:45 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:05:36 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char *extract_env_name(char *s)
     }
     return(var_name);
 }
+
 
 char *get_env_value(char *var_name)
 {
