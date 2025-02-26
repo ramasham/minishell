@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 18:56:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/26 18:53:54 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char    **find_path(char **envp)
     paths = ft_split(envp[i] + 5, ':');
     if (!paths)
         return (NULL);
-    return (paths);
+    return (paths);+
 }
 
 int     check_access(t_command *cmd, char  *path)
@@ -78,7 +78,7 @@ char    *join_path_cmd(char  *path, char *cmd)
     return (path_with_cmd);
 }
 
-void    get_cmd_path(t_command *cmd, char **envp)
+int    get_cmd_path(t_command *cmd, char **envp)
 {
     char    *path;
     char    **paths;
@@ -86,7 +86,7 @@ void    get_cmd_path(t_command *cmd, char **envp)
     
     paths = find_path(envp);
     if (!paths)
-        return ;
+        return (1);
     while (cmd)
     {
         i = -1;
@@ -94,9 +94,13 @@ void    get_cmd_path(t_command *cmd, char **envp)
         {
             path = join_path_cmd(paths[i], cmd->full_cmd[0]);
             if (check_access(cmd, path) == 0)
-                break;
+            {
+                ft_free(paths);
+                return (0);
+            }
         }
         cmd = cmd->next;
     }
     ft_free(paths);
+    return (1);
 }

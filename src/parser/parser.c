@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 19:38:17 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/26 10:15:18 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 // {
     
 // }
+
 void    set_commands(t_data *data, char **envp)
 {
     get_command(data, *(data->node));

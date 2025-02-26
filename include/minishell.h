@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 19:11:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/26 18:54:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,13 +126,12 @@ t_command   *create_new_command();
 void        print_command_info(t_command *cmd);
 void        run_pipeline(t_command *cmds, t_node *tokens);
 void        create_pipe(t_command *cmds);
-void        get_cmd_path(t_command *cmd, char **envp);
 void        set_commands(t_data *data, char **envp);
 void        ft_free(char **str);
 char        **find_path(char **envp);
 int         check_access(t_command *cmd, char  *path);
 char        *join_path_cmd(char  *path, char *cmd);
-void        get_cmd_path(t_command *cmd, char **envp);
+int    get_cmd_path(t_command *cmd, char **envp);
 
 
 
