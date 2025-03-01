@@ -14,7 +14,7 @@
 
 void export()
 {
-    //here it should appear all the env var in the programm
+    //here it should appear all the env var used in the programm
 }
 
 void unset()

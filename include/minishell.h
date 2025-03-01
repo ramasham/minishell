@@ -92,18 +92,18 @@ TokenType   get_token_type(const char *token);
 
 //expander utils
 int     is_q(char c);
-int     process_env_if_needed(t_node *current, int *i, int in_single);
-int     process_env_var(t_node *current, int *i, int in_single);
+int     process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_status);
+int     process_env_var(t_node *current, int *i, int in_single, int last_exit_status);
 void    handle_quotes(char c, int *in_single, int *in_double);
 int     trim_quotes(t_node *node);
 
 //expander
-int     expander(t_data *data);
-int     detect_env(t_data *data);
-char    *replace_env_var(char *content, int i);
+int     expander(t_data *data, int last_exit_status);
+int     detect_env(t_data *data, int last_exit_status);
+char    *replace_env_var(char *content, int i, int last_exit_status);
 char    *extract_env_name(char *s);
-int     process_node(t_node *current);
-char    *get_env_value(char *var_name);
+int     process_node(t_node *current, int last_exit_status);
+char    *get_env_value(char *var_namem , int last_exit_status);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);

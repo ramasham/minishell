@@ -32,6 +32,9 @@ void handle_quotes(char c, int *in_single, int *in_double)
 int     trim_quotes(t_node *node)
 {
     char    *trimmed;
+
+    if (!node->content)
+        return(1);
     
     if (node->content[0] == '\'' && node->content[ft_strlen(node->content) - 1] == '\'')
     {
