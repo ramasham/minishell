@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/26 18:53:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:32:57 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char    **find_path(char **envp)
     paths = ft_split(envp[i] + 5, ':');
     if (!paths)
         return (NULL);
-    return (paths);+
+    return (paths);
 }
 
 int     check_access(t_command *cmd, char  *path)

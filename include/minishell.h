@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/26 18:54:37 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:43:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,15 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 #include <fcntl.h>
+#include <sys/wait.h> 
 
 #define D_REDIR_OUT ">"
 #define D_APPEND ">>"
 #define D_REDIR_IN "<"
 #define D_HERE_DOC "<<"
 #define D_PIPE "|"
+
+extern char **environ;
 
 typedef enum
 {
@@ -62,7 +65,9 @@ typedef struct s_data
     char        *input; 
     t_node      **node;
     t_command   **commands;
+    int         cmd_count;
     int         exit_status;
+    char                **envp;
 } t_data;
 
 // lexer_utils
@@ -115,7 +120,7 @@ t_node      *create_node(const char *token);
 char *ft_strremove(char *str, const char *remove);
 
 //redirections
-void    handle_redirections(t_command *cmd, t_node *tokens);
+// void    handle_redirections(t_command *cmd, t_node *tokens);
 int     handle_output_redirection(char *operator, char *filename);
 int     handle_input_redirection(char  *filename);
 
@@ -142,6 +147,16 @@ int    get_cmd_path(t_command *cmd, char **envp);
 
 //exectuter
 int     built_ins(t_command *command , char **envp);
+int     count_commnads(t_command *cmds);
+int     is_external(t_command *cmd, char **envp);
+int     validate_cmd(t_command *cmds, char **envp);
+void piping(t_data *data, int **pipe_fd);
+void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
+void create_children(t_data *data, int *pipe_fd, pid_t *pids);
+void close_pipes(int *pipe_fd, int cmd_count);
+void executor(t_data *data);
+void handle_redirections(t_command *cmd, t_data *data);
+
 
 //execution utils
 void    pwd(void);

@@ -132,6 +132,23 @@ Output: [echo] ["hello world"] [>] [file]
 	- Invalid cd paths: cd /wrong/path → Error.
 	- Handling exit errors: exit 99999999999 → Exit value out of range
 
+
+int execute_pipeline(t_command *cmds, char **envp)
+{
+    1. Count how many commands there are.
+    2. Allocate pipes (each command needs a pipe except the last one).
+    3. Loop through each command:
+       a. Fork a new process
+       b. In the child process:
+          - Set up input/output redirections
+          - Close unused pipe ends
+          - Execute the command
+       c. In the parent process:
+          - Move to the next command
+    4. Close all pipes in the parent.
+    5. Wait for all child processes.
+}
+
 --------------------------------------------------------------------------------------
 6️⃣  Signals:
 📌 Goal: Handle user interruptions (CTRL+C, CTRL+D, CTRL+).

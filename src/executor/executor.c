@@ -6,60 +6,25 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/26 19:00:36 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/01 17:21:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     get_cmd_no(t_command *cmds)
+int     count_commnads(t_command *cmds)
 {
-    int     size;
-    if (cmds)
-        size = ft_lstsize(cmds);
-    return (size);
-}
-
-int   create_pipes(t_command *cmds, int num_cmds)
-{
-    int     pipes_fd[2 * (num_cmds - 1)];
-    int     i;
-
-    i = 0;
-    while(i < num_cmds)
-    {
-        if (pipe(pipes_fd) == -1)
-        {
-            perror("pipe: ");
-            return (-1);
-        }
-        i++;
-    }
-    return (0);
-}
-void    fork_and_execute(t_command *cmds)
-{
-    
-}
-
-void    execute_pipeline(t_command *cmds)
-{
-    int no_of_cmds;
     int i;
 
     i = 0;
-    no_of_cmds = get_cmd_no(cmds);
-    if (create_pipes(cmds, no_of_cmds))
+    if (!cmds)
+        return (0);
+    while (cmds)
     {
-        ft_putstr_fd("error creating pipes\n", 2);
-        return (1);
+        i++;
+        cmds = cmds->next;
     }
-    while (i < no_of_cmds)
-    {
-        fork_and_execute(cmds,)
-    }
-    
-    
+    return (i);
 }
 
 int     is_external(t_command *cmd, char **envp)
@@ -70,56 +35,110 @@ int     is_external(t_command *cmd, char **envp)
         return (0);
 }
 
-int     validate_cmd(t_command *cmds, char **envp)
-{
-    int multiple_cmds;
+// int     validate_cmd(t_command *cmds, char **envp)
+// {
+//     int multiple_cmds;
     
-    multiple_cmds = 0;
-    if (get_cmd_no(cmds) > 1)
-        multiple_cmds = 1;
-    if (built_ins(cmds, envp) && !multiple_cmds)
-        execute_builtins(cmds);
-    else if ((built_ins(cmds, envp) && multiple_cmds) || is_external(cmds, envp))
-        execute_externals();
-    else
+//     multiple_cmds = 0;
+//     if (get_cmd_no(cmds) > 1)
+//     multiple_cmds = 1;
+//     if (built_ins(cmds, envp) && !multiple_cmds)
+//     execute_builtins(cmds);
+//     else if ((built_ins(cmds, envp) && multiple_cmds) || is_external(cmds, envp))
+//     execute_externals();
+//     else
+//     {
+//         ft_putstr_fd("command not found\n", 2);
+//         return (1);
+//     }
+//     return (0);
+// }
+
+
+void piping(t_data *data, int **pipe_fd)
+{
+    int i;
+
+    *pipe_fd = malloc(sizeof(int) * 2 * (data->cmd_count - 1));
+    if (!*pipe_fd)
+        exit(1);
+    i = 0;
+    while (i < data->cmd_count - 1)
     {
-        ft_putstr_fd("command not found\n", 2);
-        return (1);
+        if (pipe(*pipe_fd + (i * 2)) == -1)
+        {
+            perror("pipe");
+            exit(1);
+        }
+        i++;
     }
-    return (0);
 }
 
-int     executor(t_command *cmds)
+void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
-    if ()
+    int i = 0;
+
+    // Handle redirections
+    handle_redirections(cmd, data);
+
+    if (index > 0) 
+        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);  // Input from previous pipe
+    if (index < data->cmd_count - 1)
+        dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);  // Output to next pipe
+
+    // Close all pipe file descriptors
+    while (i < 2 * (data->cmd_count - 1))
+        close(pipe_fd[i++]);
+
+    // Execute the command
+    if (execvp(cmd->full_cmd[0], cmd->full_cmd) == -1) 
+    {
+        perror("execvp");
+        exit(127);
+    }
 }
-/*
-functtion to get #no of cmds -> pipes[2 * (num_cmds - 1)];
-1- Create multiple pipes:
-2- Fork multiple child processes:
-3- Redirect input and output for each command:
 
-
-
-if (is_buildins(cmd) && !multiple_cmds)
-    execute_builin(cmd);
-else
-    fork_and_execute(cmd);
-
-// fork_and_execute() -> 
-
-fork_and_execute(cmd, envp)
+void create_children(t_data *data, int *pipe_fd, pid_t *pids)
 {
-    get_cmd_path()
-    if (path)
+    t_command *cmd;
+    int i = 0;
 
-    if (is_exit_command(cmd)) {
-    if (is_in_pipeline(cmd)) {
-        // Skip the exit command in the pipeline (don't fork a child)
+    cmd = (*data->commands);
+    while (cmd)
+    {
+        pids[i] = fork();
+        if (pids[i] == 0)
+            child_process(data, cmd, pipe_fd, i);
+        cmd = cmd->next;
+        i++;
+    }
+}
+
+void close_pipes(int *pipe_fd, int cmd_count)
+{
+    int i = 0;
+
+    while (i < 2 * (cmd_count - 1))
+        close(pipe_fd[i++]);
+}
+
+void executor(t_data *data)
+{
+    int *pipe_fd;
+    pid_t *pids;
+    int i = 0;
+
+    data->cmd_count = count_commnads(*data->commands);
+    if (data->cmd_count == 0)
         return;
-    } else {
-        // Execute exit in the parent shell (exit the program)
-        exit(0);
-    }       
+    pids = malloc(sizeof(pid_t) * data->cmd_count);
+    if (!pids)
+        exit(1);
+    piping(data, &pipe_fd);
+    create_children(data, pipe_fd, pids);
+    close_pipes(pipe_fd, data->cmd_count);
+    while (i < data->cmd_count)
+        waitpid(pids[i++], NULL, 0);
+    free(pipe_fd);
+    free(pids);
 }
-*/

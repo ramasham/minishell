@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:23:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/26 12:16:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:32:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,4 @@ int    check_append_heredoc(t_data *data)
         i++;
     }
     return (0);
-}
-
-void    forking(t_command  *cmd)
-{
-    int  child_1;
-    while (cmd)
-    {
-       cmd = fork();
-       cmd = cmd->next;    
-    }
-    if (!cmd)
-        return;
 }

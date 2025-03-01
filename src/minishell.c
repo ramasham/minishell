@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/25 19:10:18 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/01 16:30:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void    init_data(t_data *data)
     data->input = NULL;
     data->node = NULL;
     data->commands = NULL;
+    data->exit_status = 0;
+    data->envp = environ;
 }
 
 int main(int argc, char **argv, char **envp)
@@ -43,7 +45,7 @@ int main(int argc, char **argv, char **envp)
         {
             expander(data);
             set_commands(data, envp);
-            // run_pipeline(*(data->commands), *(data->node));
+            executor(data);
             // free(data->input);
             // free(data);
         }
