@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   buildins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
 /*   Updated: 2025/02/26 17:36:27 by laburomm         ###   ########.fr       */

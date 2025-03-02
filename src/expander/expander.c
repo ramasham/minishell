@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
 /*   Updated: 2025/02/26 12:36:18 by laburomm         ###   ########.fr       */
@@ -79,6 +79,6 @@ int	expander_internal(t_data *data, int last_exit_status)
 	ft_printf("Expander:\n");
 	if (detect_env(data, last_exit_status))
 		return (1);
-	print_list(*(data->node));
+	// print_list(*(data->node));
 	return (0);
 }

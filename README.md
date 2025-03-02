@@ -64,8 +64,8 @@ Output: [echo] ["hello world"] [>] [file]
 	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
 🟠 Incomplete :
-	✅ 1- 123$123 -> 123123
-	✅ 2- $0
+		1- 123$123 -> 123123 -> still need to handle without quotations
+	✅️  2- $0
 --------------------------------------------------------------------------------------
 3️⃣ Parser
 📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.
@@ -110,12 +110,20 @@ Output: [echo] ["hello world"] [>] [file]
 	2. Implement built-ins (without fork() when needed).
 		cd, exit, echo, pwd, export, unset, env.
 	3. Manages pipes and redirections.
-	
-- Forking Processes: After parsing and setting up redirection, the shell forks a child process for each command. Each child process is responsible for executing a specific command in the pipeline (if it's part of a chain of commands), while the parent shell process continues managing the execution.
 
-- Executing Commands: Inside each child process, the shell uses exec() or a similar function to replace the child process with the command it needs to execute. This is the point where the actual program (like echo, wc, etc.) runs.
+🟠 - $? → Last exit status. (handle it the execution part)
 
-- Parent Process Waits: After forking, the parent shell process typically waits for the child processes to finish executing using waitpid() or wait(). Once all child processes have finished, the shell proceeds to handle any post-execution tasks (like cleanup or printing results).
+	-Set Up Pipes Before Forking:
+		If you have n commands, create n - 1 pipes to connect them.
+
+	-Handle infile and outfile Before Execution:
+		Use dup2() to redirect standard input (STDIN_FILENO) or standard output (STDOUT_FILENO).
+		For >, open the file using open() with flags like O_WRONLY | O_CREAT | O_TRUNC.
+	-Fork Processes for Commands:
+		Each command should:
+		Inherit the correct input/output file descriptors.
+		Execute using execve().
+
 
 🔴 Error Handling:
 	- Command not found: hello → command not found error.
@@ -123,6 +131,23 @@ Output: [echo] ["hello world"] [>] [file]
 	- Invalid redirection targets: cat < non_existing_file.txt should return an error.
 	- Invalid cd paths: cd /wrong/path → Error.
 	- Handling exit errors: exit 99999999999 → Exit value out of range
+
+
+int execute_pipeline(t_command *cmds, char **envp)
+{
+    1. Count how many commands there are.
+    2. Allocate pipes (each command needs a pipe except the last one).
+    3. Loop through each command:
+       a. Fork a new process
+       b. In the child process:
+          - Set up input/output redirections
+          - Close unused pipe ends
+          - Execute the command
+       c. In the parent process:
+          - Move to the next command
+    4. Close all pipes in the parent.
+    5. Wait for all child processes.
+}
 
 --------------------------------------------------------------------------------------
 6️⃣  Signals:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 14:30:42 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:38:02 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ int    validate_input(t_data *data)
 int  tokenizer(t_data *data)
 {
     if (validate_input(data))
+    {
+        free(data);
         return (1);
+    }
     split_input(data);
     trim_operators(data);
-    print_list(*(data->node));
+    // print_list(*(data->node));
     return (0);
     free_list((data->node));
     // data->node = NULL; 

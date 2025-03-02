@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:57:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/22 15:36:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 19:06:26 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,3 @@ t_node *create_node(const char *token)
     return (new_node);
 }
 
-void    print_list(t_node *head)
-{
-    while (head)
-    {
-        printf("token: %s - type: %d\n", head->content, head->type);
-        head = head->next;
-    }
-}

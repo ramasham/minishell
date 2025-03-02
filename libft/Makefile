@@ -28,7 +28,7 @@ SRS = \
 		functions/ft_string/ft_toupper.c			\
 		functions/ft_string/ft_atoi.c				\
 		functions/ft_string/ft_strtok.c			\
-		functions/ft_string/ft_split.c		
+		functions/ft_string/ft_split.c		\
 
 SRS +=	\
 		functions/ft_memory/ft_bzero.c			\

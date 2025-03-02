@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 22:23:08 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/16 19:17:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/02/25 16:32:38 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strchr_gnl(char *s, int c);
 char				*ft_strtok(char *str, const char *delim);
+char				**ft_split(char const *s, char c);
+
 
 
 #endif
