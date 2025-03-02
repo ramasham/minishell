@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/01 17:21:04 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/02 21:59:50 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ int     count_commnads(t_command *cmds)
     return (i);
 }
 
-int     is_external(t_command *cmd, char **envp)
-{
-    if (get_cmd_path(cmd, envp) == 0)
-        return (1);
-    else
-        return (0);
-}
+// int     is_external(t_command *cmd, t_data *data)
+// {
+//     if (get_cmd_path(cmd, data) == 0)
+//         return (1);
+//     else
+//         return (0);
+// }
 
-// int     validate_cmd(t_command *cmds, char **envp)
+// int     validate_cmd(t_data *data, t_command *cmds, char **envp)
 // {
 //     int multiple_cmds;
     
@@ -43,9 +43,9 @@ int     is_external(t_command *cmd, char **envp)
 //     if (get_cmd_no(cmds) > 1)
 //     multiple_cmds = 1;
 //     if (built_ins(cmds, envp) && !multiple_cmds)
-//     execute_builtins(cmds);
+//         execute_builtins(cmds);
 //     else if ((built_ins(cmds, envp) && multiple_cmds) || is_external(cmds, envp))
-//     execute_externals();
+//         executor(data);
 //     else
 //     {
 //         ft_putstr_fd("command not found\n", 2);
@@ -73,27 +73,37 @@ void piping(t_data *data, int **pipe_fd)
         i++;
     }
 }
+int is_redirection(t_command *cmd)
+{
+    int i;
 
+    i = 0;
+    while (cmd->full_cmd[i])
+    {
+        if (ft_strcmp(cmd->full_cmd[i], ">") == 0)
+            return (1);
+        else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
+            return (1);
+        i++;
+    }
+    return (0);
+}
 void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
-    int i = 0;
+    int i;
 
-    // Handle redirections
-    handle_redirections(cmd, data);
-
+    i = 0;
+    if (is_redirection(cmd))
+        handle_redirections(cmd);
     if (index > 0) 
-        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);  // Input from previous pipe
+        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
     if (index < data->cmd_count - 1)
-        dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);  // Output to next pipe
-
-    // Close all pipe file descriptors
+        dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
     while (i < 2 * (data->cmd_count - 1))
         close(pipe_fd[i++]);
-
-    // Execute the command
-    if (execvp(cmd->full_cmd[0], cmd->full_cmd) == -1) 
+    if (execve(cmd->full_path, cmd->full_cmd, data->envp) == -1) 
     {
-        perror("execvp");
+        perror("execve child process");
         exit(127);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/01 16:43:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/02 22:36:51 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 #define D_HERE_DOC "<<"
 #define D_PIPE "|"
 
-extern char **environ;
 
 typedef enum
 {
@@ -117,12 +116,14 @@ void        init_data(t_data *data);
 void	    free_list(t_node **node);
 int         is_space(char c);
 t_node      *create_node(const char *token);
-char *ft_strremove(char *str, const char *remove);
+char        *ft_strremove(char *str, const char *remove);
 
 //redirections
 // void    handle_redirections(t_command *cmd, t_node *tokens);
 int     handle_output_redirection(char *operator, char *filename);
 int     handle_input_redirection(char  *filename);
+void    handle_redirections(t_command *cmd);
+
 
 //parser_utils
 void        print_command(t_data *newcmd);
@@ -131,16 +132,12 @@ t_command   *create_new_command();
 void        print_command_info(t_command *cmd);
 void        run_pipeline(t_command *cmds, t_node *tokens);
 void        create_pipe(t_command *cmds);
-void        set_commands(t_data *data, char **envp);
+void        set_commands(t_data *data);
 void        ft_free(char **str);
-char        **find_path(char **envp);
 int         check_access(t_command *cmd, char  *path);
 char        *join_path_cmd(char  *path, char *cmd);
-int    get_cmd_path(t_command *cmd, char **envp);
-
-
-
-
+int         get_cmd_path(t_command *cmd, t_data *data);
+char        **find_path(t_data *data);
 
 
 
@@ -150,12 +147,11 @@ int     built_ins(t_command *command , char **envp);
 int     count_commnads(t_command *cmds);
 int     is_external(t_command *cmd, char **envp);
 int     validate_cmd(t_command *cmds, char **envp);
-void piping(t_data *data, int **pipe_fd);
-void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
-void create_children(t_data *data, int *pipe_fd, pid_t *pids);
-void close_pipes(int *pipe_fd, int cmd_count);
-void executor(t_data *data);
-void handle_redirections(t_command *cmd, t_data *data);
+void    piping(t_data *data, int **pipe_fd);
+void    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
+void    create_children(t_data *data, int *pipe_fd, pid_t *pids);
+void    close_pipes(int *pipe_fd, int cmd_count);
+void    executor(t_data *data);
 
 
 //execution utils
@@ -169,5 +165,7 @@ void    env(char **env);
 //parser
 void    print_command(t_data *newcmd);
 void    get_command(t_data *node_lst, t_node *current);
+int     is_redirection(t_command *cmd);
+
 
 #endif

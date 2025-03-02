@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/01 16:32:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/02 21:56:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ void    ft_free(char    **str)
     free(str);
 }
 
-char    **find_path(char **envp)
+char    **find_path(t_data *data)
 {
     int         i;
     char    **paths;
 
     i = 0;
-    while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
+    while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
         i++;
-    if (!envp[i])
+    if (!data->envp[i])
         return (NULL);
-    paths = ft_split(envp[i] + 5, ':');
+    paths = ft_split(data->envp[i] + 5, ':');
     if (!paths)
         return (NULL);
     return (paths);
@@ -65,6 +65,11 @@ char    *join_path_cmd(char  *path, char *cmd)
     char    *temp;
     char    *path_with_cmd;
 
+    if (!path || !cmd)
+    {
+        printf("no path");
+        return (NULL);
+    }
     temp = ft_strjoin(path, "/");
     if (!temp)
         return (NULL);
@@ -78,13 +83,13 @@ char    *join_path_cmd(char  *path, char *cmd)
     return (path_with_cmd);
 }
 
-int    get_cmd_path(t_command *cmd, char **envp)
+int    get_cmd_path(t_command *cmd, t_data *data)
 {
     char    *path;
     char    **paths;
     int     i;
     
-    paths = find_path(envp);
+    paths = find_path(data);
     if (!paths)
         return (1);
     while (cmd)
@@ -95,8 +100,9 @@ int    get_cmd_path(t_command *cmd, char **envp)
             path = join_path_cmd(paths[i], cmd->full_cmd[0]);
             if (check_access(cmd, path) == 0)
             {
-                ft_free(paths);
-                return (0);
+                // ft_free(paths);
+                // return (0);
+                break;
             }
         }
         cmd = cmd->next;

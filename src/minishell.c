@@ -6,11 +6,9 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/01 16:30:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/02 22:28:50 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 
 #include "minishell.h"
@@ -21,8 +19,20 @@ void    init_data(t_data *data)
     data->node = NULL;
     data->commands = NULL;
     data->exit_status = 0;
-    data->envp = environ;
+    data->envp = NULL;
 }
+
+// static void print_envp(char **envp)
+// {
+//     int i = 0;
+
+//     while (envp && envp[i])
+//     {
+//         printf("envp[%d]: %s\n", i, envp[i]);
+//         i++;
+//     }
+// }
+
 
 int main(int argc, char **argv, char **envp)
 {
@@ -30,28 +40,31 @@ int main(int argc, char **argv, char **envp)
     (void)argv;
     t_data  *data;
     
+    
     data = malloc(sizeof(t_data));
     if (!data)
     {
         perror("");
         return (1);
     }
+    init_data(data);
+    data->envp = envp;
     while (1)
     {
-        init_data(data);
+        // init_data(data);
         if (isatty(STDIN_FILENO))
             data->input = readline("\033[1;35mminishell$\033[0m ");
         if (tokenizer(data) == 0)
         {
             expander(data);
-            set_commands(data, envp);
+            set_commands(data);
             executor(data);
+            // print_envp(data->envp);
             // free(data->input);
             // free(data);
         }
-        if (data->input == NULL || ft_strcmp(data->input, "exit") == 0)
+        if (data->input == NULL)
         {
-            printf("exit\n");
             free(data->input);
             break;
         }
