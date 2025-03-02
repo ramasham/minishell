@@ -62,7 +62,7 @@ typedef struct s_data
     char        *input; 
     t_node      **node;
     t_command   **commands;
-    int         exit_status;
+    int         last_exit_status;
 } t_data;
 
 // lexer_utils

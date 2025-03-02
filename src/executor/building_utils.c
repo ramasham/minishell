@@ -12,6 +12,17 @@
 
 #include "minishell.h"
 
+void env(char **env)
+{
+    int i;
+
+    i = 0;
+    while (env[i])
+    {
+        ft_printf("%s\n", env[i]);
+        i++;
+    }
+}
 
 void pwd(void)
 {
@@ -31,27 +42,24 @@ void echo(t_command *command)
     int newline;
     int i;
 
-    newline = 0;
-    i = 0;
-    if (command->full_cmd[1] == "-n")
+    newline = 1;
+    i = 1;
+    if (command->full_cmd[1] && ft_strcmp(command->full_cmd[1] ,"-n") == 0)
     {
-        newline = 1;
-        while(command->next)
-        {
-            echo_output[i] = ft_strcpy(echo_output, command->full_cmd[i + 2]);
-            i++;
-        } 
+        newline = 0;
+        i++;
     }
-    else
+    while (command->full_cmd[i])
     {
-        i = 0;
-        while(command->next)
-        {
-            echo_output[i] = ft_strcpy(echo_output, command->full_cmd[i + 1]);
-            i++;
-        } 
+        ft_printf("%s", command->full_cmd[i]);
+        if (command ->full_cmd[i + 1])
+            write(1, " ", 1);
+        i++;
     }
+    if(newline)
+        write(1, "\n", 1);
 }
+
 void	ft_cd(char *path)
 {
 	if (!path)
@@ -65,17 +73,17 @@ void	ft_cd(char *path)
 
 void ft_exit(t_command *command)
 {
-    while(command->next)
+    int status;
+    status = 0;
+    if (command->full_cmd[1])
     {
-        if(command->full_cmd[0] == "exit" && command->next == NULL)
-        {
-            write (1, "exit\n", 5);
-            exit(0);
-        }
-        else
-        {
-            if(command)
-        }
-        
+        status = ft_atoi(command->full_cmd[1]);
+        printf("exit\n");
+        exit(status);
+    }
+    else
+    {
+        printf("exit\n");
+        exit(0);
     }
 }

@@ -60,7 +60,21 @@ int	detect_env(t_data *data, int last_exit_status)
 	return (0);
 }
 
-int	expander(t_data *data, int last_exit_status)
+int execute_command(t_data *data)
+{
+    int exit_status = exec_command(data->commands);
+
+    data->last_exit_status = exit_status;
+
+    return (exit_status);
+}
+
+int expander(t_data *data)
+{
+	return (expander_internal(data, data->last_exit_status));
+}
+
+int	expander_internal(t_data *data, int last_exit_status)
 {
 	ft_printf("Expander:\n");
 	if (detect_env(data, last_exit_status))

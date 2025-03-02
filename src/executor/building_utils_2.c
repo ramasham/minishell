@@ -12,24 +12,10 @@
 
 #include "minishell.h"
 
-void export()
+void ft_export(char *arg)
 {
-    //here it should appear all the env var used in the programm
+
 }
 
-void unset()
-{
-    
-}
 
-void env(char **env)
-{
-    int i;
 
-    i = 0;
-    while (env[i])
-    {
-        ft_printf("%s\n", env[i]);
-        i++;
-    }
-}
