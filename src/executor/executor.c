@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/02 21:59:50 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 00:34:58 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,20 +93,26 @@ void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
     int i;
 
     i = 0;
-    if (is_redirection(cmd))
-        handle_redirections(cmd);
-    if (index > 0) 
-        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
-    if (index < data->cmd_count - 1)
+    set_redi(cmd);
+    if (cmd->heredoc_fd == -1)
+    {
+        if (cmd->infile == STDIN_FILENO && index > 0)
+            dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
+    }
+    // if (cmd->infile == STDIN_FILENO && index > 0)
+    //     dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
+    if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
         dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
     while (i < 2 * (data->cmd_count - 1))
         close(pipe_fd[i++]);
+
     if (execve(cmd->full_path, cmd->full_cmd, data->envp) == -1) 
     {
         perror("execve child process");
         exit(127);
     }
 }
+
 
 void create_children(t_data *data, int *pipe_fd, pid_t *pids)
 {

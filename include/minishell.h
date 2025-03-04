@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/02 22:36:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 00:35:12 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_command
     char                *full_path;
     int                 infile;
     int                 outfile;
+    int                 heredoc_fd;
     struct s_command    *next;
 } t_command;
 
@@ -166,6 +167,15 @@ void    env(char **env);
 void    print_command(t_data *newcmd);
 void    get_command(t_data *node_lst, t_node *current);
 int     is_redirection(t_command *cmd);
+int set_redirection(t_command *cmd, t_node *token);
+void parse_command(t_command *cmd, t_node *tokens);
+// void handle_redirections(t_node *node);
+void set_redi(t_command *cmd);
+int handle_heredoc(char *delimiter);
+
+
+
+
 
 
 #endif
