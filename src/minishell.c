@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/02 22:28:50 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 00:41:23 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    init_data(t_data *data)
     data->input = NULL;
     data->node = NULL;
     data->commands = NULL;
-    data->exit_status = 0;
+    // data->exit_status = 0;
     data->envp = NULL;
 }
 

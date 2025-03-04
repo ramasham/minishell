@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:42:41 by rsham             #+#    #+#             */
-/*   Updated: 2024/12/10 17:38:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 00:40:19 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	get_len(int nbr)
+static int	get_len(int nbr)
 {
 	int	count;
 

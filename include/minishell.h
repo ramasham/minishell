@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/02/26 12:18:29 by laburomm         ###   ########.fr       */
-/*   Updated: 2025/03/02 22:36:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 01:57:07 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 # ifndef MINISHELL_H
@@ -67,7 +67,6 @@ typedef struct s_data
     t_command   **commands;
     int         last_exit_status;
     int         cmd_count;
-    int         exit_status;
     char                **envp;
 } t_data;
 
@@ -98,18 +97,18 @@ TokenType   get_token_type(const char *token);
 
 //expander utils
 int     is_q(char c);
-int     process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_status);
-int     process_env_var(t_node *current, int *i, int in_single, int last_exit_status);
+int     process_env_if_needed(t_node *current, int *i, int in_single, t_data *data);
+int     process_env_var(t_node *current, int *i, int in_single, t_data *data);
 void    handle_quotes(char c, int *in_single, int *in_double);
 int     trim_quotes(t_node *node);
 
 //expander
-int     expander(t_data *data, int last_exit_status);
-int     detect_env(t_data *data, int last_exit_status);
-char    *replace_env_var(char *content, int i, int last_exit_status);
+int     expander(t_data *data);
+int     detect_env(t_data *data);
+char    *replace_env_var(t_data *data, char *content, int i);
 char    *extract_env_name(char *s);
-int     process_node(t_node *current, int last_exit_status);
-char    *get_env_value(char *var_namem , int last_exit_status);
+int     process_node(t_node *current, t_data *data);
+char    *get_env_value(t_data *data ,char *var_name);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
@@ -145,7 +144,7 @@ char        **find_path(t_data *data);
 
 
 //exectuter
-int     built_ins(t_command *command , char **envp);
+int     built_ins(t_command *command, t_data *data);
 int     count_commnads(t_command *cmds);
 int     is_external(t_command *cmd, char **envp);
 int     validate_cmd(t_command *cmds, char **envp);
@@ -157,13 +156,13 @@ void    executor(t_data *data);
 
 
 //execution utils
-void    pwd(void);
 void	ft_cd(char *path);
-void    ft_exit();
-void    env(char **env);
-void    pwd(void);
-void    env(char **env);
-void    echo(t_command *command);
+void    ft_exit(t_command *command, t_data *data);
+void    ft_export(t_data *data, t_command *command);
+void    ft_pwd(void);
+void    ft_env(char **env);
+void    ft_echo(t_command *command);
+void    ft_unset(t_data *data, t_command *command);
 
 
 //parser

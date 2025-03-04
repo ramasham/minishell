@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/26 10:05:36 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/05 00:33:21 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,27 @@ char *extract_env_name(char *s)
     return(var_name);
 }
 
+//the original code
+// char *get_env_value(char *var_name)
+// {
+//     if (ft_strcmp(var_name, "0") == 0)
+//         return ("minishell");
+//     if (ft_strcmp(var_name, "!") == 0)
+//         return (""); 
+//     if (ft_isdigit(var_name[0]))
+//         return ("");
+//     return (getenv(var_name));
+// }
 
-char *get_env_value(char *var_name, int last_exit_status)
+char *get_env_value(t_data *data, char *var_name)
 {
+    // if (ft_strcmp(var_name, "?") == 0)
     if (ft_strcmp(var_name, "?") == 0)
-        return (ft_itoa(last_exit_status));
+    {
+        char *exit_status;
+        exit_status = ft_itoa(data->last_exit_status);
+        return (exit_status);
+    }
     if (ft_strcmp(var_name, "0") == 0)
         return ("minishell");
     if (ft_strcmp(var_name, "!") == 0)
@@ -54,8 +70,36 @@ char *get_env_value(char *var_name, int last_exit_status)
     return (getenv(var_name));
 }
 
+//the original code
+// char *replace_env_var(char *content, int i)
+// {
+//     char *var_name;
+//     char *env_value;
+//     char *new_str;
+//     char *before;
+//     char *after;
+    
+//     var_name = extract_env_name(content + i);
+//     after = ft_strdup(content + i + ft_strlen(var_name) + 1);
+//     if (!var_name)
+//         return (NULL);
+//     env_value= get_env_value(var_name);
+//     free(var_name);
+//     if (!env_value)
+//         env_value = "";
+//     before = ft_substr(content, 0, i);
+//     new_str = ft_strjoin(before, env_value);
+//     free(before);
+//     before = ft_strjoin(new_str, after);
+//     free(new_str);
+//     free(after);
+//     if (before[0] == '"' || before[ft_strlen(before) - 1] == '"')
+//         before = ft_strremove(ft_strtrim(before, "\""), "\"");
+//     return(before);
+// }
 
-char *replace_env_var(char *content, int i, int last_exit_status)
+
+char *replace_env_var(t_data *data, char *content, int i)
 {
     char *var_name;
     char *env_value;
@@ -67,7 +111,7 @@ char *replace_env_var(char *content, int i, int last_exit_status)
     after = ft_strdup(content + i + ft_strlen(var_name) + 1);
     if (!var_name)
         return (NULL);
-    env_value= get_env_value(var_name, last_exit_status);
+    env_value= get_env_value(data, var_name);
     free(var_name);
     if (!env_value)
         env_value = "";
@@ -81,7 +125,8 @@ char *replace_env_var(char *content, int i, int last_exit_status)
         before = ft_strremove(ft_strtrim(before, "\""), "\"");
     return(before);
 }
-int process_env_var(t_node *current, int *i, int in_single, int last_exit_status)
+
+int process_env_var(t_node *current, int *i, int in_single, t_data *data)
 {
     char *new_content;
     // int env_len;
@@ -89,7 +134,7 @@ int process_env_var(t_node *current, int *i, int in_single, int last_exit_status
     if(in_single)
         return(0);
     //env_len = 0;
-    new_content = replace_env_var(current->content, *i, last_exit_status);
+    new_content = replace_env_var(data, current->content, *i);
     if(!new_content)
         return(1);
     free(current->content);
@@ -98,13 +143,13 @@ int process_env_var(t_node *current, int *i, int in_single, int last_exit_status
     return (0); 
 }
 
-int process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_status)
+int process_env_if_needed(t_node *current, int *i, int in_single , t_data *data)
 {
     if (current->content[*i] == '$' && !in_single)
     {
         if (current->content[*i + 1] == '?')
         {
-            if (process_env_var(current, i, in_single, last_exit_status))
+            if (process_env_var(current, i, in_single, data))
                 return (1);
         }
         // Handle $! as a special case
@@ -117,7 +162,7 @@ int process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_
         else if (ft_isalnum(current->content[*i + 1])
             || current->content[*i + 1] == '_')
         {
-            if (process_env_var(current, i, in_single, last_exit_status))
+            if (process_env_var(current, i, in_single, data))
                 return (1);
         }
     }

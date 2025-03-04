@@ -3,45 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/26 12:36:18 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/05 00:54:19 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_node(t_node *current, int last_exit_status)
-{
-	int		i;
-	int		in_single;
-	int		in_double;
-	char	*trimmed;
 
-	i = -1;
-	in_single = 0;
-	in_double = 0;
-	if(!current->content)
-		return (1);
-	while (current->content[++i])
-	{
-		handle_quotes(current->content[i], &in_single, &in_double);
-		if (!in_single && current->content[i] == '$' && current->content[i + 1])
-			if (process_env_if_needed(current, &i, in_single ,last_exit_status))
-				return (1);
-	}
-	if (!in_double && current->content[0] == '"' &&
-		current->content[ft_strlen(current->content) - 1] == '"')
-	{
-		trimmed = ft_strremove(ft_strtrim(current->content, "\""), "\"");
-		free(current->content);
-		current->content = trimmed;
-	}
-	return (0);
+// int process_node(t_node *current, t_data *data)
+// {
+//     int i = -1;
+//     int in_single = 0;
+//     int in_double = 0;
+//     char *trimmed;
+
+//     if (!current->content)
+//         return (1);
+//     while (current->content[++i])
+//     {
+//         handle_quotes(current->content[i], &in_single, &in_double);
+//         if (!in_single && current->content[i] == '$' && current->content[i + 1])
+//         {
+//             if (current->content[i + 1] == '?') // Handle $?
+//             {
+//                 char *exit_status = ft_itoa(data->last_exit_status);
+//                 if (!exit_status)
+//                     return (1);
+//                 free(current->content);
+//                 current->content = exit_status;
+//                 break; // Exit the loop after replacing $?
+//             }
+//             else if (process_env_if_needed(current, &i, in_single, data))
+//                 return (1);
+//         }
+//     }
+//     if (!in_double && current->content[0] == '"' &&
+//         current->content[ft_strlen(current->content) - 1] == '"')
+//     {
+//         trimmed = ft_strremove(ft_strtrim(current->content, "\""), "\"");
+//         free(current->content);
+//         current->content = trimmed;
+//     }
+//     return (0);
+// }
+
+static int handle_exit_status(t_node *current, t_data *data)
+{
+    char *exit_status;
+
+    exit_status = ft_itoa(data->last_exit_status);
+    if (!exit_status)
+        return (1);
+    free(current->content);
+    current->content = exit_status;
+    return (0);
 }
 
-int	detect_env(t_data *data, int last_exit_status)
+static int handle_quotes_and_trim(t_node *current, int in_double)
+{
+    char *trimmed;
+
+    if (!in_double && current->content[0] == '"' &&
+        current->content[ft_strlen(current->content) - 1] == '"')
+    {
+        trimmed = ft_strremove(ft_strtrim(current->content, "\""), "\"");
+        if (!trimmed)
+            return (1);
+        free(current->content);
+        current->content = trimmed;
+    }
+    return (0);
+}
+
+int process_node(t_node *current, t_data *data)
+{
+    int i;
+    int in_single;
+    int in_double;
+
+    if (!current->content)
+        return (1);
+    i = -1;
+    in_single = 0;
+    in_double = 0;
+    while (current->content[++i])
+    {
+        handle_quotes(current->content[i], &in_single, &in_double);
+        if (!in_single && current->content[i] == '$' && current->content[i + 1])
+        {
+            if (current->content[i + 1] == '?')
+                return (handle_exit_status(current, data));
+            else if (process_env_if_needed(current, &i, in_single, data))
+                return (1);
+        }
+    }
+    return (handle_quotes_and_trim(current, in_double));
+}
+
+
+
+
+int	detect_env(t_data *data)
 {
 	t_node	*current;
 
@@ -52,7 +117,7 @@ int	detect_env(t_data *data, int last_exit_status)
 			return (1);
 		if (trim_quotes(current) == 1)
 		{
-			if (process_node(current, last_exit_status))
+			if (process_node(current, data))
 				return (1);
 		}
 		current = current->next;
@@ -60,25 +125,12 @@ int	detect_env(t_data *data, int last_exit_status)
 	return (0);
 }
 
-int execute_command(t_data *data)
-{
-    int exit_status = exec_command(data->commands);
 
-    data->last_exit_status = exit_status;
-
-    return (exit_status);
-}
-
-int expander(t_data *data)
-{
-	return (expander_internal(data, data->last_exit_status));
-}
-
-int	expander_internal(t_data *data, int last_exit_status)
+int	expander(t_data *data)
 {
 	ft_printf("Expander:\n");
-	if (detect_env(data, last_exit_status))
+	if (detect_env(data))
 		return (1);
-	// print_list(*(data->node));
+	print_list(*(data->node));
 	return (0);
 }

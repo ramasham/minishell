@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/02 21:59:50 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 01:50:29 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int is_redirection(t_command *cmd)
     }
     return (0);
 }
+
+
 void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
     int i;
@@ -107,6 +109,7 @@ void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
         exit(127);
     }
 }
+
 
 void create_children(t_data *data, int *pipe_fd, pid_t *pids)
 {
@@ -136,10 +139,16 @@ void executor(t_data *data)
 {
     int *pipe_fd;
     pid_t *pids;
-    int i = 0;
+    int i;
+    int status;
 
+    i = 0;
+    status = 0;
     data->cmd_count = count_commnads(*data->commands);
     if (data->cmd_count == 0)
+        return;
+    //for built ins
+    if (data->cmd_count == 1 && built_ins(*data->commands, data))
         return;
     pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!pids)
@@ -148,7 +157,13 @@ void executor(t_data *data)
     create_children(data, pipe_fd, pids);
     close_pipes(pipe_fd, data->cmd_count);
     while (i < data->cmd_count)
-        waitpid(pids[i++], NULL, 0);
+    {
+        waitpid(pids[i++], &status, 0);
+        if((status & 0xFF) == 0)
+            data->last_exit_status = (status >> 8) & 0xFF;
+        else
+            data->last_exit_status = 127;
+    } 
     free(pipe_fd);
     free(pids);
 }

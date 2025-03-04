@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_additional.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 17:31:22 by rsham             #+#    #+#             */
-/*   Updated: 2024/09/08 19:50:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 00:40:38 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	get_len(int num)
+static int	get_len(int num)
 {
 	int	count;
 
