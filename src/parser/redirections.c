@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/04 00:36:33 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 00:41:38 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ int handle_output_redirection(char *operator, char *filename)
     fd = open(filename, flags, 0644);
     if (fd == -1)
     {
-        perror("Output redirection failed");
+        ft_putstr_fd("Permission denied\n", 2);
+        // perror("Output redirection failed");
+        exit(1);
     }
     return (fd);
 }
@@ -100,6 +102,9 @@ int handle_input_redirection(char  *filename)
     }
     fd = open(filename, O_RDONLY);
     if (fd == -1)
-        perror("Input redirection failed");
+    {
+        ft_putstr_fd("No such file or directory\n", 2);
+        exit(1);
+    }
     return (fd);
 }

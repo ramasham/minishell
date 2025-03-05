@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/04 00:34:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 23:33:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     count_commnads(t_command *cmds)
+int     count_commands(t_command *cmds)
 {
     int i;
 
@@ -27,32 +27,35 @@ int     count_commnads(t_command *cmds)
     return (i);
 }
 
-// int     is_external(t_command *cmd, t_data *data)
-// {
-//     if (get_cmd_path(cmd, data) == 0)
-//         return (1);
-//     else
-//         return (0);
-// }
+int     is_external(t_command *cmd, t_data *data)
+{
+    if (get_cmd_path(cmd, data) == 0)
+        return (1);
+    else
+        return (0);
+}
 
-// int     validate_cmd(t_data *data, t_command *cmds, char **envp)
-// {
-//     int multiple_cmds;
-    
-//     multiple_cmds = 0;
-//     if (get_cmd_no(cmds) > 1)
-//     multiple_cmds = 1;
-//     if (built_ins(cmds, envp) && !multiple_cmds)
-//         execute_builtins(cmds);
-//     else if ((built_ins(cmds, envp) && multiple_cmds) || is_external(cmds, envp))
-//         executor(data);
-//     else
-//     {
-//         ft_putstr_fd("command not found\n", 2);
-//         return (1);
-//     }
-//     return (0);
-// }
+int     validate_cmd(t_data *data, t_command *cmds)
+{
+    if (get_cmd_path(cmds, data))
+    {
+        ft_putstr_fd("command not found\n", 2);
+        return (1);
+    }
+    if (!cmds->full_path)
+        return (1);
+    if (access(cmds->full_path, F_OK) == -1)
+    {
+        perror(cmds->full_path);
+        exit(127);
+    }
+    if (access(cmds->full_path, X_OK) == -1)
+    {
+        ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+        exit (126);
+    }
+    return (0);
+}
 
 
 void piping(t_data *data, int **pipe_fd)
@@ -94,7 +97,7 @@ void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
 
     i = 0;
     set_redi(cmd);
-    if (cmd->heredoc_fd == -1)
+    if (cmd->heredoc_fd != -1)
     {
         if (cmd->infile == STDIN_FILENO && index > 0)
             dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
@@ -105,7 +108,13 @@ void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
         dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
     while (i < 2 * (data->cmd_count - 1))
         close(pipe_fd[i++]);
-
+    if (validate_cmd(data, cmd))
+        exit(1);
+    // if (get_cmd_path(cmd, data) == 1)
+    // {
+    //     ft_putstr_fd("command not found\n", 2);
+    //     exit (1);
+    // }
     if (execve(cmd->full_path, cmd->full_cmd, data->envp) == -1) 
     {
         perror("execve child process");
@@ -144,7 +153,7 @@ void executor(t_data *data)
     pid_t *pids;
     int i = 0;
 
-    data->cmd_count = count_commnads(*data->commands);
+    data->cmd_count = count_commands(*data->commands);
     if (data->cmd_count == 0)
         return;
     pids = malloc(sizeof(pid_t) * data->cmd_count);

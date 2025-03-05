@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/04 00:35:12 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 22:44:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ typedef struct s_data
     char        *input; 
     t_node      **node;
     t_command   **commands;
+    int         last_exit_status;
     int         cmd_count;
     int         exit_status;
     char                **envp;
+    char        *heredoc;
 } t_data;
 
 // lexer_utils
@@ -97,18 +99,20 @@ TokenType   get_token_type(const char *token);
 
 //expander utils
 int     is_q(char c);
-int     process_env_if_needed(t_node *current, int *i, int in_single);
-int     process_env_var(t_node *current, int *i, int in_single);
+int     process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_status);
+int     process_env_var(t_node *current, int *i, int in_single, int last_exit_status);
 void    handle_quotes(char c, int *in_single, int *in_double);
 int     trim_quotes(t_node *node);
 
 //expander
-int     expander(t_data *data);
-int     detect_env(t_data *data);
-char    *replace_env_var(char *content, int i);
+int expander(t_data *data);
+
+int	expander_internal(t_data *data, int last_exit_status);
+int     detect_env(t_data *data, int last_exit_status);
+char    *replace_env_var(char *content, int i, int last_exit_status);
 char    *extract_env_name(char *s);
-int     process_node(t_node *current);
-char    *get_env_value(char *var_name);
+int     process_node(t_node *current, int last_exit_status);
+char    *get_env_value(char *var_namem , int last_exit_status);
 
 //utils
 void        ft_nodeadd_back(t_node **head, t_node *new_node);
@@ -146,8 +150,8 @@ char        **find_path(t_data *data);
 //exectuter
 int     built_ins(t_command *command , char **envp);
 int     count_commnads(t_command *cmds);
-int     is_external(t_command *cmd, char **envp);
-int     validate_cmd(t_command *cmds, char **envp);
+int     is_external(t_command *cmd, t_data *data);
+// int     validate_cmd(t_command *cmds, char **envp);
 void    piping(t_data *data, int **pipe_fd);
 void    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
 void    create_children(t_data *data, int *pipe_fd, pid_t *pids);
@@ -158,9 +162,11 @@ void    executor(t_data *data);
 //execution utils
 void    pwd(void);
 void	ft_cd(char *path);
-void    exit();
+void    ft_exit();
 void    env(char **env);
-
+void    pwd(void);
+void    env(char **env);
+void    echo(t_command *command);
 
 
 //parser
@@ -172,6 +178,11 @@ void parse_command(t_command *cmd, t_node *tokens);
 // void handle_redirections(t_node *node);
 void set_redi(t_command *cmd);
 int handle_heredoc(char *delimiter);
+int     validate_cmd(t_data *data, t_command *cmds);
+int     count_commands(t_command *cmds);
+
+// int handle_heredoc(t_data *data, char *delimiter);
+
 
 
 

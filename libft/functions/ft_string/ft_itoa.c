@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 17:42:41 by rsham             #+#    #+#             */
-/*   Updated: 2024/12/10 17:38:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 21:16:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	get_len(int nbr)
+int	get_len_itoa(int nbr)
 {
 	int	count;
 
@@ -32,7 +32,7 @@ char	*ft_itoa(int nbr)
 	char	*str;
 	int		len;
 
-	len = get_len(nbr);
+	len = get_len_itoa(nbr);
 	str = (char *)malloc(len + 1);
 	if (!str)
 		return (NULL);

@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/25 19:09:19 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 21:16:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_node(t_node *current)
+int	process_node(t_node *current, int last_exit_status)
 {
 	int		i;
 	int		in_single;
@@ -22,11 +22,13 @@ int	process_node(t_node *current)
 	i = -1;
 	in_single = 0;
 	in_double = 0;
+	if(!current->content)
+		return (1);
 	while (current->content[++i])
 	{
 		handle_quotes(current->content[i], &in_single, &in_double);
 		if (!in_single && current->content[i] == '$' && current->content[i + 1])
-			if (process_env_if_needed(current, &i, in_single))
+			if (process_env_if_needed(current, &i, in_single ,last_exit_status))
 				return (1);
 	}
 	if (!in_double && current->content[0] == '"' &&
@@ -39,7 +41,7 @@ int	process_node(t_node *current)
 	return (0);
 }
 
-int	detect_env(t_data *data)
+int	detect_env(t_data *data, int last_exit_status)
 {
 	t_node	*current;
 
@@ -50,7 +52,7 @@ int	detect_env(t_data *data)
 			return (1);
 		if (trim_quotes(current) == 1)
 		{
-			if (process_node(current))
+			if (process_node(current, last_exit_status))
 				return (1);
 		}
 		current = current->next;
@@ -58,11 +60,26 @@ int	detect_env(t_data *data)
 	return (0);
 }
 
-int	expander(t_data *data)
+// int execute_command(t_data *data)
+// {
+//     int exit_status = exec_command(data->commands);
+
+//     data->last_exit_status = exit_status;
+
+//     return (exit_status);
+// }
+
+
+int	expander_internal(t_data *data, int last_exit_status)
 {
 	// ft_printf("Expander:\n");
-	if (detect_env(data))
-		return (1);
+	if (detect_env(data, last_exit_status))
+	return (1);
 	// print_list(*(data->node));
 	return (0);
+}
+
+int expander(t_data *data)
+{
+	return (expander_internal(data, data->last_exit_status));
 }

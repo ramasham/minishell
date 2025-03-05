@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/02 21:56:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/04 23:31:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ char    **find_path(t_data *data)
     while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
         i++;
     if (!data->envp[i])
+    {
+        ft_putstr_fd("Error: PATH variable not found\n", 2);
         return (NULL);
+    }
     paths = ft_split(data->envp[i] + 5, ':');
     if (!paths)
         return (NULL);
@@ -100,9 +103,9 @@ int    get_cmd_path(t_command *cmd, t_data *data)
             path = join_path_cmd(paths[i], cmd->full_cmd[0]);
             if (check_access(cmd, path) == 0)
             {
-                // ft_free(paths);
-                // return (0);
-                break;
+                ft_free(paths);
+                return (0);
+                // break;
             }
         }
         cmd = cmd->next;
