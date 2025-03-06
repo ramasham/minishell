@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/05 00:49:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/06 22:36:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void    init_data(t_data *data)
     data->input = NULL;
     data->node = NULL;
     data->commands = NULL;
-    data->exit_status = 0;
+    // data->exit_status = 0;
     data->envp = NULL;
 }
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv, char **envp)
     (void)argv;
     t_data  *data;
     
-    
+    // setup_signal_handlers();
     data = malloc(sizeof(t_data));
     if (!data)
     {
@@ -51,27 +51,23 @@ int main(int argc, char **argv, char **envp)
     data->envp = envp;
     while (1)
     {
-        // init_data(data);
+        setup_signal_handlers();
         if (isatty(STDIN_FILENO))
             data->input = readline("\033[1;35mminishell$\033[0m ");
+        if (handle_eof(data->input))
+            break;
         if (data->input[0] == '\0')
         {
+            free(data->input);
             continue ;
         }
-            if (tokenizer(data) == 0)
+        if (!tokenizer(data))
         {
             expander(data);
             set_commands(data);
             executor(data);
-            // print_envp(data->envp);
-            // free(data->input);
-            // free(data);
         }
-        if (data->input == NULL)
-        {
-            free(data->input);
-            break;
-        }
+        data->last_exit_status = g_exit_status;
         if (*data->input)
             add_history(data->input);
         free(data->input);

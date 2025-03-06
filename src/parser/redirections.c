@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 00:41:38 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 19:53:13 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int handle_output_redirection(char *operator, char *filename)
     int flags;
 
     flags = 0;
-    // printf("file = %s\n",filename);
     if (!filename)
     {
         ft_putstr_fd("no file\n", 2);
@@ -85,7 +84,6 @@ int handle_output_redirection(char *operator, char *filename)
     if (fd == -1)
     {
         ft_putstr_fd("Permission denied\n", 2);
-        // perror("Output redirection failed");
         exit(1);
     }
     return (fd);

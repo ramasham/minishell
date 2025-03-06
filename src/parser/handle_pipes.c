@@ -6,39 +6,22 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/03 00:41:33 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 20:28:43 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_list_cmd(t_command **node)
-{
-	t_command	*tmp;
-
-	if (!node || !*node)
-		return ;
-	while (*node)
-	{
-		tmp = *node;
-		*node = (*node)->next;
-		free(tmp->full_cmd);
-		free(tmp);
-	}
-	*node = NULL;
-}
 
 void get_command(t_data *node_lst, t_node *current)
 {
     t_command   *new_cmd;
     int         arg_count;
     int         i;
-    t_node *temp;
+    t_node      *temp;
 
     new_cmd = create_new_command();
     if (!new_cmd)
         return;
-
     while (current)
     {
         arg_count = 0;
@@ -50,13 +33,19 @@ void get_command(t_data *node_lst, t_node *current)
         }
         new_cmd->full_cmd = malloc(sizeof(char *) * (arg_count + 1));
         if (!new_cmd->full_cmd)
+        {
+            free(new_cmd);
             return;
+        }
         i = 0;
         while (current && ft_strcmp(current->content, "|") != 0)
         {
             new_cmd->full_cmd[i] = ft_strdup(current->content);
             if (!new_cmd->full_cmd[i])
+            {
+                free_full_cmd(new_cmd);
                 return;
+            }
             current = current->next;
             i++;
         }

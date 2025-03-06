@@ -370,3 +370,33 @@
 //     print_command_info(*(node_lst->commands));
 //     // free_list_cmd(node_lst->commands);
 // }
+
+// TokenType get_token_type(const char *token)
+// {
+//     if (ft_strcmp(token, "|") == 0)
+//         return (PIPE);
+//     else if (ft_strcmp(token, "<") == 0)
+//         return (REDIR_IN);
+//     else if (ft_strcmp(token, ">") == 0)
+//         return (REDIR_OUT);
+//     else if (ft_strcmp(token, ">>") == 0)
+//         return (APPEND);
+//     else if (ft_strcmp(token, "<<") == 0)
+//         return (HERE_DOC);
+//     return (ARG);
+// }
+
+void print_command(t_data *newcmd)
+{
+    int i = 0;
+    if (!newcmd || !newcmd->commands)
+        return;
+
+    t_command *current = *newcmd->commands;
+    while (current)
+    {
+        ft_printf("%d: command is %s\n", i, current->full_cmd);
+        current = current->next;
+        i++;
+    }
+}

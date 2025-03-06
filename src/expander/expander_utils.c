@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:09:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/26 16:57:30 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/05 00:34:05 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,4 @@ int     trim_quotes(t_node *node)
     }
     return (1);
 }
-// //expand_tilde
-// int     expand_tilde(t_node *node)
-// {
-    
-//     if (node->content[0] = "$")
-//     {
-//         char *name;
-//         if (node->content[1] = "~")
-//         {
-//             name = getenv("HOME");
-//             return (0);
-//         }
-//         else
-//         {
-//             name = NULL;
-//         }
-//         return (1);
-//     }
-// }
+

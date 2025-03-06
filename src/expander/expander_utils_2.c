@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/02/26 10:05:36 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/06 02:30:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ char *extract_env_name(char *s)
     return(var_name);
 }
 
-
-char *get_env_value(char *var_name, int last_exit_status)
+char *get_env_value(t_data *data, char *var_name)
 {
     if (ft_strcmp(var_name, "?") == 0)
-        return (ft_itoa(last_exit_status));
+    {
+        char *exit_status;
+        exit_status = ft_itoa(data->last_exit_status);
+        return (exit_status);
+    }
     if (ft_strcmp(var_name, "0") == 0)
         return ("minishell");
     if (ft_strcmp(var_name, "!") == 0)
@@ -54,8 +57,7 @@ char *get_env_value(char *var_name, int last_exit_status)
     return (getenv(var_name));
 }
 
-
-char *replace_env_var(char *content, int i, int last_exit_status)
+char *replace_env_var(t_data *data, char *content, int i)
 {
     char *var_name;
     char *env_value;
@@ -67,7 +69,7 @@ char *replace_env_var(char *content, int i, int last_exit_status)
     after = ft_strdup(content + i + ft_strlen(var_name) + 1);
     if (!var_name)
         return (NULL);
-    env_value= get_env_value(var_name, last_exit_status);
+    env_value= get_env_value(data, var_name);
     free(var_name);
     if (!env_value)
         env_value = "";
@@ -81,34 +83,31 @@ char *replace_env_var(char *content, int i, int last_exit_status)
         before = ft_strremove(ft_strtrim(before, "\""), "\"");
     return(before);
 }
-int process_env_var(t_node *current, int *i, int in_single, int last_exit_status)
+
+int process_env_var(t_node *current, int *i, int in_single, t_data *data)
 {
     char *new_content;
-    // int env_len;
 
     if(in_single)
         return(0);
-    //env_len = 0;
-    new_content = replace_env_var(current->content, *i, last_exit_status);
+    new_content = replace_env_var(data, current->content, *i);
     if(!new_content)
         return(1);
     free(current->content);
     current->content = new_content;
-    // *i += env_len - 1;
     return (0); 
 }
 
-int process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_status)
+int process_env_if_needed(t_node *current, int *i, int in_single , t_data *data)
 {
     if (current->content[*i] == '$' && !in_single)
     {
         if (current->content[*i + 1] == '?')
         {
-            if (process_env_var(current, i, in_single, last_exit_status))
+            if (process_env_var(current, i, in_single, data))
                 return (1);
         }
-        // Handle $! as a special case
-       else if (current->content[*i + 1] == '!' || current->content[*i + 1] == '#')
+        else if (current->content[*i + 1] == '!' || current->content[*i + 1] == '#')
         {
             ft_printf("minishell: invalid input: %c%c\n",
                 current->content[*i], current->content[*i + 1]);
@@ -117,7 +116,7 @@ int process_env_if_needed(t_node *current, int *i, int in_single, int last_exit_
         else if (ft_isalnum(current->content[*i + 1])
             || current->content[*i + 1] == '_')
         {
-            if (process_env_var(current, i, in_single, last_exit_status))
+            if (process_env_var(current, i, in_single, data))
                 return (1);
         }
     }

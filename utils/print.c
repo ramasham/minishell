@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 19:04:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:32 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/06 02:45:57 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ void    print_list(t_node *head)
     {
         printf("token: %s - type: %d\n", head->content, head->type);
         head = head->next;
+    }
+}
+
+void print_command(t_data *newcmd)
+{
+    int i = 0;
+    if (!newcmd || !newcmd->commands)
+        return;
+
+    t_command *current = *newcmd->commands;
+    while (current)
+    {
+        ft_printf("%d: command is %s\n", i, current->full_cmd);
+        current = current->next;
+        i++;
     }
 }
 

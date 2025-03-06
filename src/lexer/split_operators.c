@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/24 18:36:06 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 20:16:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void trim_operators(t_data *data)
         process_content(&new_lst, current->content);
         current = current->next;
     }
+    free_list(data->node);
     *(data->node) = new_lst;
 }

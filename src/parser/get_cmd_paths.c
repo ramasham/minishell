@@ -6,24 +6,11 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/04 23:31:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/05 20:30:09 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void    ft_free(char    **str)
-{
-    int     i;
-    
-    i = 0;
-    while (str[i])
-    {
-        free(str[i]);
-        i++;
-    }
-    free(str);
-}
 
 char    **find_path(t_data *data)
 {
@@ -103,13 +90,12 @@ int    get_cmd_path(t_command *cmd, t_data *data)
             path = join_path_cmd(paths[i], cmd->full_cmd[0]);
             if (check_access(cmd, path) == 0)
             {
-                ft_free(paths);
+                free_2d(paths);
                 return (0);
-                // break;
             }
         }
         cmd = cmd->next;
     }
-    ft_free(paths);
+    free_2d(paths);
     return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:57:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 19:06:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/06 02:36:32 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ t_node *create_node(const char *token)
         new_node->type = DQUOTES;
     else if (ft_strncmp(new_node->content, "'", 1) == 0)
         new_node->type = SQUOTES;
-    else
-        new_node->type = get_token_type(token);
     new_node->next = NULL;
     return (new_node);
 }

@@ -6,164 +6,39 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/04 23:33:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/06 22:39:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     count_commands(t_command *cmds)
+void    execution_process(t_data *data, int **pipe_fd, pid_t *pids)
 {
-    int i;
-
-    i = 0;
-    if (!cmds)
-        return (0);
-    while (cmds)
-    {
-        i++;
-        cmds = cmds->next;
-    }
-    return (i);
-}
-
-int     is_external(t_command *cmd, t_data *data)
-{
-    if (get_cmd_path(cmd, data) == 0)
-        return (1);
-    else
-        return (0);
-}
-
-int     validate_cmd(t_data *data, t_command *cmds)
-{
-    if (get_cmd_path(cmds, data))
-    {
-        ft_putstr_fd("command not found\n", 2);
-        return (1);
-    }
-    if (!cmds->full_path)
-        return (1);
-    if (access(cmds->full_path, F_OK) == -1)
-    {
-        perror(cmds->full_path);
-        exit(127);
-    }
-    if (access(cmds->full_path, X_OK) == -1)
-    {
-        ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-        exit (126);
-    }
-    return (0);
-}
-
-
-void piping(t_data *data, int **pipe_fd)
-{
-    int i;
-
-    *pipe_fd = malloc(sizeof(int) * 2 * (data->cmd_count - 1));
-    if (!*pipe_fd)
-        exit(1);
-    i = 0;
-    while (i < data->cmd_count - 1)
-    {
-        if (pipe(*pipe_fd + (i * 2)) == -1)
-        {
-            perror("pipe");
-            exit(1);
-        }
-        i++;
-    }
-}
-int is_redirection(t_command *cmd)
-{
-    int i;
-
-    i = 0;
-    while (cmd->full_cmd[i])
-    {
-        if (ft_strcmp(cmd->full_cmd[i], ">") == 0)
-            return (1);
-        else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
-            return (1);
-        i++;
-    }
-    return (0);
-}
-void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
-{
-    int i;
-
-    i = 0;
-    set_redi(cmd);
-    if (cmd->heredoc_fd != -1)
-    {
-        if (cmd->infile == STDIN_FILENO && index > 0)
-            dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
-    }
-    // if (cmd->infile == STDIN_FILENO && index > 0)
-    //     dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
-    if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
-        dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
-    while (i < 2 * (data->cmd_count - 1))
-        close(pipe_fd[i++]);
-    if (validate_cmd(data, cmd))
-        exit(1);
-    // if (get_cmd_path(cmd, data) == 1)
-    // {
-    //     ft_putstr_fd("command not found\n", 2);
-    //     exit (1);
-    // }
-    if (execve(cmd->full_path, cmd->full_cmd, data->envp) == -1) 
-    {
-        perror("execve child process");
-        exit(127);
-    }
-}
-
-
-void create_children(t_data *data, int *pipe_fd, pid_t *pids)
-{
-    t_command *cmd;
-    int i = 0;
-
-    cmd = (*data->commands);
-    while (cmd)
-    {
-        pids[i] = fork();
-        if (pids[i] == 0)
-            child_process(data, cmd, pipe_fd, i);
-        cmd = cmd->next;
-        i++;
-    }
-}
-
-void close_pipes(int *pipe_fd, int cmd_count)
-{
-    int i = 0;
-
-    while (i < 2 * (cmd_count - 1))
-        close(pipe_fd[i++]);
+    piping(data, pipe_fd);
+    create_children(data, *pipe_fd, pids);
+    close_pipes(*pipe_fd, data->cmd_count);
 }
 
 void executor(t_data *data)
 {
-    int *pipe_fd;
+    int   *pipe_fd;
     pid_t *pids;
-    int i = 0;
 
+    pipe_fd = NULL;
     data->cmd_count = count_commands(*data->commands);
     if (data->cmd_count == 0)
+        return;
+    if (data->cmd_count == 1 && built_ins(*data->commands, data))
         return;
     pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!pids)
         exit(1);
-    piping(data, &pipe_fd);
-    create_children(data, pipe_fd, pids);
-    close_pipes(pipe_fd, data->cmd_count);
-    while (i < data->cmd_count)
-        waitpid(pids[i++], NULL, 0);
+    // signal(SIGINT, SIG_DFL);
+    // signal(SIGQUIT, SIG_DFL);
+    execution_process(data, &pipe_fd, pids);
+    wait_for_children(pids, data->cmd_count, &(data->last_exit_status));
+    g_exit_status = data->last_exit_status;
     free(pipe_fd);
     free(pids);
+    free_list_cmd(data->commands);
 }
