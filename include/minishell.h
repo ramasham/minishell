@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/06 22:25:11 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 01:45:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,14 @@ t_command   *create_new_command();
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);
-void	ft_cd(char *path);
+void	ft_cd(char *path, t_data *data);
 void    ft_exit(t_command *command, t_data *data);
 void    ft_export(t_data *data, t_command *command);
 void    ft_pwd(void);
 void    ft_env(char **env);
 void    ft_echo(t_command *command);
 void    ft_unset(t_data *data, t_command *command);
+// int     update_env_var(char ***envp, const char *name, const char *value);
 
 //exectuter
 int     is_external(t_command *cmd, t_data *data);
@@ -145,13 +146,17 @@ void    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
 void    create_children(t_data *data, int *pipe_fd, pid_t *pids);
 void    close_pipes(int *pipe_fd, int cmd_count);
 void    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
-void    wait_for_children(pid_t *pids, int cmd_count, int *exit_status);
+void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
 
 //signals
 int     handle_eof(char *input);
 void    handle_sigint(int sig);
 void    setup_signal_handlers();
 void    handle_sigquit(int sig);
+
+//env
+char *create_env_var(const char *name, const char *value);
+// int update_env_var(char ***envp, const char *name, const char *value);
 
 //free
 void	free_full_cmd(t_command *cmd);

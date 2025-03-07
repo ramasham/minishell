@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 20:16:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 01:31:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,41 @@ void process_content(t_node **new_lst, char *content)
 void trim_operators(t_data *data)
 {
     t_node *current;
-    t_node *new_lst;
-    
-    new_lst = NULL;
+    t_node **new_lst;
+    t_node *new_node;
+    char *token;
+
     current = *(data->node);
+    new_lst = malloc(sizeof(t_node *));
+    if (!new_lst)
+        return;
+    *new_lst = NULL;
     while (current)
     {
-        process_content(&new_lst, current->content);
+        if (ft_strcmp(current->content, ">") == 0 ||
+            ft_strcmp(current->content, "<") == 0 ||
+            ft_strcmp(current->content, ">>") == 0 ||
+            ft_strcmp(current->content, "<<") == 0 ||
+            ft_strcmp(current->content, "|") == 0)
+        {
+            new_node = create_node(current->content);
+            ft_nodeadd_back(new_lst, new_node);
+        }
+        else
+        {
+            token = ft_strdup(current->content);
+            if (!token)
+            {
+                free_list(new_lst);
+                return;
+            }
+            new_node = create_node(token);
+            ft_nodeadd_back(new_lst, new_node);
+            free(token);
+        }
         current = current->next;
     }
     free_list(data->node);
-    *(data->node) = new_lst;
+    *(data->node) = *new_lst;
+    free(new_lst);
 }

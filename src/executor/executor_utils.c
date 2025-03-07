@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/06 02:05:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/07 23:49:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,25 @@ int     validate_cmd(t_data *data, t_command *cmds)
     {
         ft_putstr_fd(cmds->full_cmd[0], 2);
         ft_putstr_fd(": command not found\n", 2);
-        g_exit_status = CMD_NOT_FOUND;
-        return (g_exit_status);
+        data->last_exit_status = CMD_NOT_FOUND;
+        return (data->last_exit_status);
     }
     if (!cmds->full_path)
     {
-        g_exit_status = 1;
-        return (g_exit_status);
+        data->last_exit_status = 1;
+        return (data->last_exit_status);
     }
     if (access(cmds->full_path, F_OK) == -1)
     {
         perror(cmds->full_path);
-        g_exit_status = CMD_NOT_FOUND;
-        exit(g_exit_status);
+        data->last_exit_status = CMD_NOT_FOUND;
+        exit(data->last_exit_status);
     }
     if (access(cmds->full_path, X_OK) == -1)
     {
         ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-        g_exit_status = CMD_NOT_EXECUTABLE;
-        exit(g_exit_status);
+        data->last_exit_status = CMD_NOT_EXECUTABLE;
+        exit(data->last_exit_status);
     }
     return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/06 02:24:32 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 00:52:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int validation(t_command *cmd, t_data *data)
             || validation_result == CMD_NOT_EXECUTABLE)
     {
         free_list_cmd(&cmd);
-        g_exit_status = validation_result;
+        data->last_exit_status = validation_result;
         return (1);
     }
     return (0);
 }
 
-void    wait_for_children(pid_t *pids, int cmd_count, int *exit_status)
+void    wait_for_children(t_data  *data, pid_t *pids, int cmd_count, int *exit_status)
 {
     int i;
     int status;
@@ -37,7 +37,11 @@ void    wait_for_children(pid_t *pids, int cmd_count, int *exit_status)
     {
         waitpid(pids[i], &status, 0);
         if (WIFEXITED(status))
+        {
             *exit_status = WEXITSTATUS(status);
+            if (*exit_status == 0)
+                data->last_exit_status = 0;
+        }
         else if (WIFSIGNALED(status))
             *exit_status = 128 + WTERMSIG(status);
         else
@@ -49,22 +53,27 @@ void    wait_for_children(pid_t *pids, int cmd_count, int *exit_status)
 void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
     set_redi(cmd);
-    if (cmd->heredoc_fd != -1)
-    {
-        if (cmd->infile == STDIN_FILENO && index > 0)
-            dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
-    }
+    if (cmd->heredoc_fd != -1 && cmd->infile == STDIN_FILENO && index > 0)
+        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
     if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
         dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
     close_pipes(pipe_fd, data->cmd_count);
-    if (validation(cmd, data))
-        exit(g_exit_status);
-    if (execve(cmd->full_path, cmd->full_cmd, data->envp) == -1) 
+    if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
     {
-        perror("execve child process");
-        exit(CMD_NOT_FOUND);
+        ft_exit(cmd, data);
+        return;
     }
+    if (built_ins(cmd, data))
+        exit(data->last_exit_status);
+    if (validation(cmd, data))
+        exit(data->last_exit_status);
+    else
+        data->last_exit_status = 0;
+    execve(cmd->full_path, cmd->full_cmd, data->envp);
+    perror("execve child process");
+    exit(CMD_NOT_FOUND);
 }
+
 
 void create_children(t_data *data, int *pipe_fd, pid_t *pids)
 {
