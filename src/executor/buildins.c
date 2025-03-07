@@ -32,3 +32,4 @@ int built_ins(t_command *command, t_data *data)
         return (0);
     return (1);
 }
+

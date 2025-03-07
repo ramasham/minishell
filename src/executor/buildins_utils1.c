@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildins_utils1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:23:46 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/06 02:25:25 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/07 18:11:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ void ft_pwd(void)
         perror("minishell: pwd");
 }
 
+
 void ft_cd(char *path)
 {
+    char cwd[1024];
+    char old_cwd[1024];
+    char *oldpwd;
+    char *newpwd;
+
     if (!path)
     {
         path = getenv("HOME");
@@ -54,9 +60,41 @@ void ft_cd(char *path)
             return;
         }
     }
+    if (!getcwd(old_cwd, sizeof(old_cwd)))
+    {
+        perror("minishell: cd");
+        g_exit_status = 2;
+        return;
+    }
     if (chdir(path) != 0)
     {
         perror("minishell: cd");
         g_exit_status = 2;
+        return;
     }
+    if (!getcwd(cwd, sizeof(cwd)))
+    {
+        perror("minishell: cd");
+        g_exit_status = 2;
+        return;
+    }
+    oldpwd = ft_strjoin("OLDPWD=", old_cwd);
+    if (!oldpwd)
+    {
+        perror("minishell: cd");
+        g_exit_status = 2;
+        return;
+    }
+    newpwd = ft_strjoin("PWD=", cwd);
+    if (!newpwd)
+    {
+        perror("minishell: cd");
+        g_exit_status = 2;
+        free(oldpwd);
+        return;
+    }
+    setenv("OLDPWD", old_cwd, 1);
+    setenv("PWD", cwd, 1);
+    free(oldpwd);
+    free(newpwd);
 }

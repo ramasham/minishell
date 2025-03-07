@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 02:00:04 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/06 23:19:13 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/06 23:28:06 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int handle_heredoc(t_data *data, char *delimiter)
+int handle_heredoc(char *delimiter)
 {
     int pipe_fd[2];
     char    *line;
