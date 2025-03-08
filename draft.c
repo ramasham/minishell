@@ -386,3 +386,49 @@
 //     return (ARG);
 // }
 
+// static int my_setenv(t_data *data, const char *name, const char *value, int overwrite)
+// {
+//     char *env_var;
+//     char *eq_pos;
+//     int index;
+
+//     if (validate_input_cd(name, value) == -1)
+//         return (-1);
+
+//     index = find_env_var(data, name, &env_var, &eq_pos);
+//     if (index != -1 && !overwrite)
+//         return (0); // No update if the variable exists and overwrite is not allowed
+
+//     // Create the new variable and make sure it's allocated
+//     char *new_var = create_new_var(name, value);
+//     if (!new_var)
+//         return (-1);
+
+//     // Debugging to check what we are about to set
+//     printf("Setting env var: %s=%s\n", name, value);
+//     // printf("Inside minishell, getcwd: %s\n", getenv("OLDPWD"));
+//     // Update or add the environment variable to envp
+//     return update_envp(data, index, new_var);
+
+// }
+
+// static int my_setenv(t_data *data, const char *name, const char *value, int overwrite)
+// {
+//     char *env_var;
+//     char *eq_pos;
+//     int index;
+
+//     if (validate_input_cd(name, value) == -1)
+//         return (-1);
+
+//     index = find_env_var(data, name, &env_var, &eq_pos);
+//     if (index != -1 && !overwrite)
+//         return (0);
+
+//     char *new_var = create_new_var(name, value);
+//     if (!new_var)
+//         return (-1);
+
+//     return (update_envp(data, index, new_var));
+// }
+
