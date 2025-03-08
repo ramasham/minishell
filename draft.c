@@ -386,17 +386,3 @@
 //     return (ARG);
 // }
 
-void print_command(t_data *newcmd)
-{
-    int i = 0;
-    if (!newcmd || !newcmd->commands)
-        return;
-
-    t_command *current = *newcmd->commands;
-    while (current)
-    {
-        ft_printf("%d: command is %s\n", i, current->full_cmd);
-        current = current->next;
-        i++;
-    }
-}

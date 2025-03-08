@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 01:45:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 03:17:27 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,11 @@ t_command   *create_new_command();
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);
-void	ft_cd(char *path, t_data *data);
+// int     ft_cd(t_data *data, char **args);
+void ft_cd(t_data *data, char *path);
+
+// void    ft_cd(char *path);
+
 void    ft_exit(t_command *command, t_data *data);
 void    ft_export(t_data *data, t_command *command);
 void    ft_pwd(void);

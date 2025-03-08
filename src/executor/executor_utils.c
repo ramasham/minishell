@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/07 23:49:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 02:01:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int     validate_cmd(t_data *data, t_command *cmds)
     }
     if (access(cmds->full_path, X_OK) == -1)
     {
-        ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+        ft_putstr_fd(": Permission denied\n", 2);
         data->last_exit_status = CMD_NOT_EXECUTABLE;
         exit(data->last_exit_status);
     }

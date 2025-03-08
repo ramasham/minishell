@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/08 01:59:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 03:17:38 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ int	built_ins(t_command *command, t_data *data)
 		ft_echo(command);
 		data->last_exit_status = 0;
 	}
-	// else if (ft_strcmp(command->full_cmd[0], "cd") == 0)
-	// 	ft_cd(command->full_cmd[1], data);
+	else if (ft_strcmp(command->full_cmd[0], "cd") == 0)
+	{
+		ft_cd(data, command->full_cmd[1]);
+		// data->last_exit_status = ft_cd(data, command->full_cmd);
+	}
 	else if (ft_strcmp(command->full_cmd[0], "pwd") == 0)
 	{
 		ft_pwd();
