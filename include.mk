@@ -3,7 +3,7 @@ LIBFT_DIR = ./libft
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I./include
 
-SRCS = src/minishell.c \
+SRCS = src/minishell.c src/init_shell.c \
 	src/lexer/lexer_checking_1.c src/lexer/lexer_checking_2.c src/lexer/split_input.c src/lexer/split_operators.c src/lexer/lexer.c \
 	src/expander/expander_utils.c src/expander/expander_utils_2.c src/expander/expander.c \
 	src/parser/parser.c src/parser/redirections.c src/parser/handle_pipes.c  src/parser/heredoc.c \

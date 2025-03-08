@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 20:30:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 23:32:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,3 +75,23 @@ void	free_list(t_node **node)
 	}
 	*node = NULL;
 }
+
+void	cleanup_shell(t_data *data)
+{
+	if (data->input)
+		free(data->input);
+	if (data->node)
+	{
+		free_list(data->node);
+		free(data->node);
+	}
+	if (data->commands)
+	{
+		free_list_cmd(data->commands);
+		free(data->commands);
+	}
+	if (data->heredoc)
+		free(data->heredoc);
+	free(data);
+}
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 17:25:45 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 17:25:49 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 23:32:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_data
     char        *heredoc;
 } t_data;
 
+//shell
+int	init_shell(t_data **data, char **envp);
 
 //lexer
 int     extract_word(const char *content, int i, char *token);
@@ -123,21 +125,20 @@ void        add_command(t_data *data, t_command *new_cmd);
 void        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
 t_command   *create_new_command();
+t_command   *create_and_initialize_cmd(void);
+void        process_current_cmd(t_node **current, t_command *new_cmd);
+void        fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count);
+int         count_args_before_pipe(t_node *current);
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);
-// int     ft_cd(t_data *data, char **args);
-void ft_cd(t_data *data, char *path);
-
-// void    ft_cd(char *path);
-
+void    ft_cd(t_data *data, char *path);
 void    ft_exit(t_command *command, t_data *data);
 void    ft_export(t_data *data, t_command *command);
 void    ft_pwd(void);
 void    ft_env(char **env);
 void    ft_echo(t_command *command);
 void    ft_unset(t_data *data, t_command *command);
-// int     update_env_var(char ***envp, const char *name, const char *value);
 
 //exectuter
 int     is_external(t_command *cmd, t_data *data);
@@ -163,14 +164,13 @@ int     update_envp(t_data *data, int index, char *new_var);
 int     my_setenv(t_data *data, const char *name, const char *value, int overwrite);
 char    *create_new_var(const char *name, const char *value);
 void    update_env_vars(t_data *data, char *oldpwd, char *newpwd);
-int     check_name_value(const char *name, const char *value);
-
-
 
 //free
 void	free_full_cmd(t_command *cmd);
 void	free_list_cmd(t_command **cmds);
 void    free_2d(char **str);
+void	cleanup_shell(t_data *data);
+
 
 //utils
 int      is_space(char c);

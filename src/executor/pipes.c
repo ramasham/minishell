@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 21:41:53 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 23:43:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void piping(t_data *data, int **pipe_fd)
         {
             perror("pipe failed");
             free(*pipe_fd);
+            free_list_cmd(data->commands);
             exit(1);
         }
         i++;
