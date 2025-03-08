@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 05:01:08 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 16:50:48 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,14 @@ void    setup_signal_handlers();
 void    handle_sigquit(int sig);
 
 //env
-char *create_env_var(const char *name, const char *value);
-// int update_env_var(char ***envp, const char *name, const char *value);
+int     find_env_var(t_data *data, const char *name, char **env_var, char **eq_pos);
+int     update_envp(t_data *data, int index, char *new_var);
+int     my_setenv(t_data *data, const char *name, const char *value, int overwrite);
+char    *create_new_var(const char *name, const char *value);
+void    update_env_vars(t_data *data, char *oldpwd, char *newpwd);
+int     check_name_value(const char *name, const char *value);
+
+
 
 //free
 void	free_full_cmd(t_command *cmd);
