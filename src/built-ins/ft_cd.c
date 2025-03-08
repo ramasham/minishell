@@ -6,20 +6,17 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:51:22 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 16:50:09 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/08 17:32:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-
-static void cd_error(t_data *data)
+static void cd_error(t_data *data, char *oldpwd)
 {
     perror("minishell: cd");
     data->last_exit_status = 2;
-    return ;
+    free(oldpwd);
 }
 
 static int set_home_path(t_data *data, char **path)
@@ -37,23 +34,14 @@ static int set_home_path(t_data *data, char **path)
     return (0);
 }
 
-static int get_current_directory(char **oldpwd)
+static int get_current_directory(char **dir)
 {
     char cwd[1024];
 
     if (!getcwd(cwd, sizeof(cwd)))
         return (0);
-    *oldpwd = ft_strdup(cwd);
-    if (!*oldpwd)
-        return (0);
-    return (1);
-}
-
-static int change_directory(char *path)
-{
-    if (chdir(path) != 0)
-        return (0);
-    return (1);
+    *dir = ft_strdup(cwd);
+	return (*dir != NULL);
 }
 
 static int get_new_directory(char **newpwd)
@@ -68,15 +56,6 @@ static int get_new_directory(char **newpwd)
     return (1);
 }
 
-
-
-void    cd_error_free(t_data *data, char *oldpwd)
-{
-    perror("minishell: cd");
-    data->last_exit_status = 2;
-    free(oldpwd);
-    return ;
-}
 void ft_cd(t_data *data, char *path)
 {
     char *oldpwd;
@@ -85,20 +64,11 @@ void ft_cd(t_data *data, char *path)
     if (set_home_path(data, &path))
         return ;
     if (!get_current_directory(&oldpwd))
-    {
-        cd_error(data);
-        return ;
-    }
-    if (!change_directory(path))
-    {
-        cd_error_free(data, oldpwd);
-        return ;
-    }
+        cd_error(data, NULL);
+    if (chdir(path) != 0)
+        return (cd_error(data, oldpwd));
     if (!get_new_directory(&newpwd))
-    {
-        cd_error_free(data, oldpwd);
-        return ;
-    }
+        return (cd_error(data, oldpwd));
     update_env_vars(data, oldpwd, newpwd);
     free(oldpwd);
     free(newpwd);

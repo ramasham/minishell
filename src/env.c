@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/07 23:15:57 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/07 23:15:57 by marvin           ###   ########.fr       */
+/*   Created: 2025/03/08 17:24:59 by rsham             #+#    #+#             */
+/*   Updated: 2025/03/08 17:24:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,3 @@ void update_env_vars(t_data *data, char *oldpwd, char *newpwd)
         perror("minishell: setenv");
     }
 }
-
