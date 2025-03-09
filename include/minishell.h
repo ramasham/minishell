@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 03:17:27 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 03:44:17 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,29 @@ char    *extract_env_name(char *s);
 char    *get_env_value(t_data *data, char *var_name);
 char    *replace_env_var(t_data *data, char *content, int i);
 void    handle_quotes(char c, int *in_single, int *in_double);
-void    handle_redirections(t_command *cmd);
-void    set_redi(t_command *cmd);
+void    handle_redirections(t_command *cmd, t_data *data);
+void    set_redi(t_command *cmd, t_data *data);
 
 //parser
 int         get_cmd_path(t_command *cmd, t_data *data);
 int         check_access(t_command *cmd, char  *path);
-int         handle_heredoc(char *delimiter);
 char        *join_path_cmd(char  *path, char *cmd);
 char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
 void        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
 t_command   *create_new_command();
+//heredoc and it's utils
+int         handle_heredoc(char *delimiter , t_data *data);
+void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
+int		setup_heredoc_pipe(int pipe_fd[2]);
+int		process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter);
+int		read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter);
+void	free_node(t_node *node);
+void	close_pipe(int pipe_fd[2]);
+char	*expand_heredoc_line(char *line, t_data *data);
+int		process_delimiter(char *line, char *delimiter);
+int		is_quoted_delimiter(char *delimiter);
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);

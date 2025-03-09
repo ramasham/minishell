@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 19:53:13 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 02:34:38 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_redirections(t_command *cmd)
+void handle_redirections(t_command *cmd, t_data *data)
 {
     int i;
 
@@ -35,7 +35,7 @@ void handle_redirections(t_command *cmd)
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
-            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1]);
+            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1],data);
             cmd->infile = cmd->heredoc_fd;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
@@ -44,9 +44,9 @@ void handle_redirections(t_command *cmd)
     }
 }
 
-void set_redi(t_command *cmd)
+void set_redi(t_command *cmd, t_data *data)
 {
-    handle_redirections(cmd);
+    handle_redirections(cmd, data);
     
     if (cmd->infile != STDIN_FILENO)
     {

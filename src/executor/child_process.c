@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 00:52:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 02:36:48 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void    wait_for_children(t_data  *data, pid_t *pids, int cmd_count, int *exit_s
 
 void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
-    set_redi(cmd);
+    set_redi(cmd, data);
     if (cmd->heredoc_fd != -1 && cmd->infile == STDIN_FILENO && index > 0)
         dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
     if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
