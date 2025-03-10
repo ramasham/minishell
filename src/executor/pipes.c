@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/09 00:18:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 21:21:47 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void piping(t_data *data, int **pipe_fd)
+int piping(t_data *data, int **pipe_fd)
 {
     int i;
 
@@ -20,7 +20,8 @@ void piping(t_data *data, int **pipe_fd)
     if (!*pipe_fd)
     {
         perror("malloc fot pipe failed");
-        exit(1);
+        free_list_cmd(data->commands);
+        return(1);
     }
     i = 0;
     while (i < data->cmd_count - 1)
@@ -28,12 +29,13 @@ void piping(t_data *data, int **pipe_fd)
         if (pipe(*pipe_fd + (i * 2)) == -1)
         {
             perror("pipe failed");
-            // free(*pipe_fd);
-            // free_list_cmd(data->commands);
-            exit(1);
+            free(*pipe_fd);
+            free_list_cmd(data->commands);
+            return(1);
         }
         i++;
     }
+    return (0);
 }
 
 void close_pipes(int *pipe_fd, int cmd_count)

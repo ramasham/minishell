@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/09 01:11:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 21:18:14 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ void	free_full_cmd(t_command *cmd)
 			}
 			free(cmd->full_cmd);
 		}
+		if (cmd->full_path)
+			free(cmd->full_path);
 		free(cmd);
 	}
 }
+
 //free a list of commands
 void	free_list_cmd(t_command **cmds)
 {
@@ -78,23 +81,36 @@ void	free_list(t_node **node)
 	}
 	*node = NULL;
 }
-//clean up all allocated memory in the data structure
-void	cleanup_shell(t_data *data)
-{
-	if (data->input)
-		free(data->input);
-	if (data->node)
-	{
-		free_list(data->node);
-		free(data->node);
-	}
-	if (data->commands)
-	{
-		free_list_cmd(data->commands);
-		free(data->commands);
-	}
-	if (data->heredoc)
-		free(data->heredoc);
-	free(data);
-}
 
+// Free environment variables (assuming it's a NULL-terminated array)
+// void free_envp(char ***envp)
+// {
+//     if (!envp || !*envp)
+//         return;
+//     free_2d(*envp);
+//     *envp = NULL;
+// }
+
+// Clean up all allocated memory in the data structure
+void cleanup_shell(t_data *data)
+{
+    if (!data)
+        return;
+    if (data->input)
+        free(data->input);
+    if (data->node)
+    {
+        free_list(data->node);
+        free(data->node);
+    }
+    if (data->commands)
+    {
+        free_list_cmd(data->commands);
+        free(data->commands);
+    }
+    if (data->heredoc)
+        free(data->heredoc);
+    // if (data->envp)
+    //     free_2d((data->envp));
+    free(data);
+}

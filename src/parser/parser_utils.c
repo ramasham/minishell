@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:46:52 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/09 00:32:40 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 21:46:48 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_command *create_new_command()
 
     new_cmd = malloc(sizeof(t_command));
     if (!new_cmd)
-        return NULL;
+        return (NULL);
     new_cmd->infile = STDIN_FILENO;
     new_cmd->outfile = STDOUT_FILENO;
     new_cmd->heredoc_fd = 1;
@@ -36,7 +36,7 @@ void add_command(t_data *data, t_command *new_cmd)
     {
         data->commands = malloc(sizeof(t_command *));
         if (!data->commands)
-        return;
+            return;
         *data->commands = NULL;
     }
     tmp = data->commands;
