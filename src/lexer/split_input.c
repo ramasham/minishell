@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 01:31:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:01:53 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	add_token_to_list_split(t_data *data, char *token, int *i)
 	if (!new_node)
 	{
 		free(token);
+		if (!*data->node)//
+		{
+			free(data->node);
+			data->node = NULL;
+		}
 		return ;
 	}
 	ft_nodeadd_back(data->node, new_node);
@@ -62,7 +67,7 @@ void	split_input(t_data *data)
 		ft_putstr_fd("Memory allocation failed for token\n", 2);
 		return ;
 	}
-	data->node = malloc(sizeof(t_node *));
+	data->node = malloc(sizeof(t_node));//
 	if (!data->node)
 	{
 		free(token);
@@ -74,6 +79,11 @@ void	split_input(t_data *data)
 		process_char(data, *ptr++, token, &i);
 	if (i > 0)
 		add_token_to_list_split(data, token, &i);
+	if (!*data->node)//
+	{
+		free_list(data->node);
+		data->node = NULL;
+	}
 	free(token);
 }
 

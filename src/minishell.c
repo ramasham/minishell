@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 23:51:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 01:06:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		minishell_loop(data);
 	}
+	free(data);
 	return (0);
 }

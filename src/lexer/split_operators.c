@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 21:21:20 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:04:10 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void add_token_to_list(t_node **new_lst, char *token)
     if (token[0] != '\0')
     {
         new_node = create_node(token);
-        ft_nodeadd_back(new_lst, new_node);
+        if (new_node)
+            ft_nodeadd_back(new_lst, new_node);
     }
 }
 

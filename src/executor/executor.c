@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 01:38:05 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 00:37:39 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ void executor(t_data *data)
     }
     pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!pids)
-        exit(1);
+    {
+        free_list_cmd(data->commands);
+        data->last_exit_status = 1;
+        return ;
+    }
     execution_process(data, &pipe_fd, pids);
     wait_for_children(data, pids, data->cmd_count, &(data->last_exit_status));
     free(pipe_fd);

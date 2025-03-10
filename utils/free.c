@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 23:32:06 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 01:11:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//free a 2D array of strings
 void    free_2d(char **str)
 {
     int     i;
@@ -25,6 +26,7 @@ void    free_2d(char **str)
     free(str);
 }
 
+//free a single command structure and its full_cmd array
 void	free_full_cmd(t_command *cmd)
 {
 	int	i;
@@ -44,7 +46,7 @@ void	free_full_cmd(t_command *cmd)
 		free(cmd);
 	}
 }
-
+//free a list of commands
 void	free_list_cmd(t_command **cmds)
 {
 	t_command	*tmp;
@@ -60,6 +62,7 @@ void	free_list_cmd(t_command **cmds)
 	*cmds = NULL;
 }
 
+//free a list of nodes
 void	free_list(t_node **node)
 {
 	t_node	*tmp;
@@ -75,7 +78,7 @@ void	free_list(t_node **node)
 	}
 	*node = NULL;
 }
-
+//clean up all allocated memory in the data structure
 void	cleanup_shell(t_data *data)
 {
 	if (data->input)

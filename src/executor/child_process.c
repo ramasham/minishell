@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 00:52:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 00:15:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ void child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
 void create_children(t_data *data, int *pipe_fd, pid_t *pids)
 {
     t_command *cmd;
-    int i = 0;
-
+    int i;
+    
+    i = 0;
     cmd = (*data->commands);
     while (cmd)
     {

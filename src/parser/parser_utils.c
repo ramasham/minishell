@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:46:52 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/06 02:47:52 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 00:32:40 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_command *create_new_command()
         return NULL;
     new_cmd->infile = STDIN_FILENO;
     new_cmd->outfile = STDOUT_FILENO;
+    new_cmd->heredoc_fd = 1;
     new_cmd->full_cmd = NULL;
     new_cmd->full_path = NULL;
     new_cmd->next = NULL;

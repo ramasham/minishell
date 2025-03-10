@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_paths.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 20:30:09 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/09 00:43:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,33 @@ int     check_access(t_command *cmd, char  *path)
     if (access(path, X_OK) == 0)
     {
         cmd->full_path = ft_strdup(path);
-        if (!cmd->full_path)
-        {
-            free(path);
-            return (1);
-        }
         free(path);
+        if (!cmd->full_path)
+            return (1);
         return (0);
     }
     free(path);
     return (1);
 }
+
+// int     check_access(t_command *cmd, char  *path)
+// {
+//     if (!path)
+//         return (1);
+//     if (access(path, X_OK) == 0)
+//     {
+//         cmd->full_path = ft_strdup(path);
+//         if (!cmd->full_path)
+//         {
+//             free(path);
+//             return (1);
+//         }
+//         free(path);
+//         return (0);
+//     }
+//     free(path);
+//     return (1);
+// }
 
 char    *join_path_cmd(char  *path, char *cmd)
 {

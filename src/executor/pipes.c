@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 23:43:56 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/09 00:18:51 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void piping(t_data *data, int **pipe_fd)
         if (pipe(*pipe_fd + (i * 2)) == -1)
         {
             perror("pipe failed");
-            free(*pipe_fd);
-            free_list_cmd(data->commands);
+            // free(*pipe_fd);
+            // free_list_cmd(data->commands);
             exit(1);
         }
         i++;
