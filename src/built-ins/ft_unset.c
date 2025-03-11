@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins_utils4.c                                  :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 02:06:43 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/08 01:49:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:22:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void remove_env_var(t_data *data, char *var)
         if (ft_strncmp(data->envp[j], var, ft_strlen(var)) == 0
             && data->envp[j][ft_strlen(var)] == '=')
         {
-            free(data->envp[j]);
             while (data->envp[j])
             {
                 data->envp[j] = data->envp[j + 1];

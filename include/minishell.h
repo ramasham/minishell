@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 01:14:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 02:46:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <sys/wait.h> 
 # include <signal.h>
+#include <sys/stat.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -164,6 +165,7 @@ int    create_children(t_data *data, int *pipe_fd, pid_t *pids);
 void    close_pipes(int *pipe_fd, int cmd_count);
 int    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
 void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
+int is_binary_executable(const char *path);
 
 //signals
 int     handle_eof(char *input);
