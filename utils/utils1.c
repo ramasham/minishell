@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:26:16 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 20:04:49 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 22:26:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 int     is_space(char c)
 {
     return (c == ' ' || c == '\t');
+}
+
+int	is_space_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i])
+	{
+		if (!ft_strchr(SPACES, str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 char *ft_strremove(char *str, const char *remove)

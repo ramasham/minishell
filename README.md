@@ -144,9 +144,9 @@ Output: [echo] ["hello world"] [>] [file]
 📌 Goal: Ensure stability and fix memory leaks.
 
 ----------------------------------------------------------------------------------------
-tests:
-1- handle absolute path
-2- spaces and tab then enter -> sigfault and leaks 
+🔴 tests:
+✅️ 1- handle absolute path
+✅️ 2- spaces and tab then enter -> sigfault and leaks 
 3- exit after executed some commands -> leaks
 4- command with quotes: (only if there's a pipe or operator)
 	minishell$ echo "ls out | cat -e > out"

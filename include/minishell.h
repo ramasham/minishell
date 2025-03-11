@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 22:00:12 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 22:26:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 //macros
 # define CMD_NOT_FOUND 127
 # define CMD_NOT_EXECUTABLE 126
+# define SPACES " \t\n\v\f\r"
 
 extern int g_exit_status;
 
@@ -189,6 +190,7 @@ void      print_list(t_node *head);
 void      init_data(t_data *data);
 void	  free_list(t_node **node);
 t_node    *create_node(const char *token);
+int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
 
 
