@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/11 21:45:45 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:55:49 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,7 @@ char *extract_env_name(char *s)
 }
 
 char	*get_env_value(t_data *data, char *var_name)
-char	*get_env_value(t_data *data, char *var_name)
 {
-	int		i;
-	char	*eq_pos;
-	size_t	name_len;
-
-	if (ft_strcmp(var_name, "?") == 0)
-		return (ft_itoa(data->last_exit_status));
-	if (ft_strcmp(var_name, "0") == 0)
-		return (ft_strdup("minishell"));
-	if (ft_strcmp(var_name, "!") == 0 || ft_isdigit(var_name[0]))
-		return (ft_strdup(""));
-	name_len = ft_strlen(var_name);
-	i = 0;
-	while (data->envp[i])
-	{
-		eq_pos = ft_strchr(data->envp[i], '=');
-		if (eq_pos && (size_t)(eq_pos - data->envp[i]) == name_len
-			&& !ft_strncmp(data->envp[i], var_name, name_len))
-			return (ft_strdup(eq_pos + 1));
-		i++;
-	}
-	return (ft_strdup(""));
 	int		i;
 	char	*eq_pos;
 	size_t	name_len;

@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/09 04:07:50 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 00:20:18 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,20 @@ void	write_heredoc_to_pipe(char *line, int pipe_fd[2])
 // Check if the delimiter is quoted
 int	is_quoted_delimiter(char *delimiter)
 {
+	//size_t len;
+	ft_printf("DEBUG: Delimiter: %s is \n", delimiter);
 	// if (!delimiter)
 	// 	return (0);
+	ft_printf("DEBUG: Delimiter[0]: %c is\n", delimiter[0]);
+	//len = ft_strlen(delimiter);
 	if (delimiter[0] == '\'' || delimiter[0] == '"')
-		return (0);
-	return (1);
+	{
+		ft_printf("DEBUG: Delimiter: \"%s\" is qouted\n", delimiter);
+		return (0);  // It's quoted
+	}
+	ft_printf("DEBUG: Delimiter: \"%s\" is unqouted\n", delimiter);
+
+	return (1);  // It's unquoted
 }
 
 // Check if the input line matches the delimiter
@@ -48,6 +57,7 @@ int	process_delimiter(char *line, char *delimiter)
 void	free_node(t_node *node)
 {
     if (node)
+	
     {
         if (node->content)
             free(node->content);
@@ -70,6 +80,8 @@ char	*expand_heredoc_line(char *line, t_data *data)
 		return (NULL);
 	}
 	expanded_line = ft_strdup(current_node->content);
+	ft_printf("DEBUG: expanded line: %s\n", expanded_line);
+
 	free_node(current_node);
 	return (expanded_line);
 }

@@ -6,11 +6,9 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 21:45:28 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:59:45 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -120,8 +118,6 @@ static void	print_export_error(char *arg)
 
 static int	add_new_var(t_data *data, char *var)
 {
-	int		size;
-	char	**new_envp;
 	int		size;
 	char	**new_envp;
     int i;
