@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:51:22 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 17:32:46 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 21:45:02 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void cd_error(t_data *data, char *oldpwd)
 static void cd_error(t_data *data, char *oldpwd)
 {
     perror("minishell: cd");
@@ -56,7 +57,7 @@ static int get_new_directory(char **newpwd)
     return (1);
 }
 
-void ft_cd(t_data *data, char *path)
+static int set_home_path(t_data *data, char **path)
 {
     char *oldpwd;
     char *newpwd;
@@ -72,5 +73,6 @@ void ft_cd(t_data *data, char *path)
     update_env_vars(data, oldpwd, newpwd);
     free(oldpwd);
     free(newpwd);
+    data->last_exit_status = 0;
     data->last_exit_status = 0;
 }

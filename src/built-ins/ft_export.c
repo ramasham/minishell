@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 12:23:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/10 21:58:23 by marvin           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/03/11 21:45:28 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -120,6 +122,8 @@ static int	add_new_var(t_data *data, char *var)
 {
 	int		size;
 	char	**new_envp;
+	int		size;
+	char	**new_envp;
     int i;
     
     i = 0;
@@ -182,11 +186,4 @@ void	ft_export(t_data *data, t_command *command)
 		}
 		i++;
 	}
-    // int j = 0;
-    // while (data->envp[j])
-    // {
-    //     printf("[%d] %s\n", j, data->envp[j]);
-    //     j++;
-    // }
-
 }
