@@ -5,58 +5,123 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/05 20:28:43 by rsham            ###   ########.fr       */
+/*   Created: 2025/03/08 23:02:50 by rsham             #+#    #+#             */
+/*   Updated: 2025/03/10 23:15:10 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void get_command(t_data *node_lst, t_node *current)
+// Creates and initializes a new command structure
+t_command *create_and_initialize_cmd(void)
 {
-    t_command   *new_cmd;
-    int         arg_count;
-    int         i;
-    t_node      *temp;
+    t_command *cmd;
 
-    new_cmd = create_new_command();
-    if (!new_cmd)
-        return;
-    while (current)
+    cmd = create_new_command();
+    if (!cmd)
+        return NULL;
+    cmd->full_cmd = NULL;
+    return cmd;
+}
+
+// Counts arguments before a pipe ('|')
+int count_args_before_pipe(t_node *current)
+{
+    int arg_count = 0;
+
+    while (current && ft_strcmp(current->content, "|") != 0)
     {
-        arg_count = 0;
-        temp = current;
-        while (temp && ft_strcmp(temp->content, "|") != 0)
+        arg_count++;
+        current = current->next;
+    }
+    return arg_count;
+}
+
+// Fills the command array with arguments before a pipe ('|')
+void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
+{
+    int i;
+    
+    i = 0;
+    new_cmd->full_cmd = malloc(sizeof(char *) * (arg_count + 1));
+    if (!new_cmd->full_cmd)
+    {
+        free_full_cmd(new_cmd);
+        return;
+    }
+    while (*current && ft_strcmp((*current)->content, "|") != 0)
+    {
+        new_cmd->full_cmd[i] = ft_strdup((*current)->content);
+        if (!new_cmd->full_cmd[i])
         {
-            arg_count++;
-            temp = temp->next;
-        }
-        new_cmd->full_cmd = malloc(sizeof(char *) * (arg_count + 1));
-        if (!new_cmd->full_cmd)
-        {
-            free(new_cmd);
+            free_list_cmd(&new_cmd);
             return;
         }
-        i = 0;
-        while (current && ft_strcmp(current->content, "|") != 0)
+        *current = (*current)->next;
+        i++;
+    }
+    new_cmd->full_cmd[i] = NULL;
+}
+
+// Processes the current command by counting args and filling the command array
+void process_current_cmd(t_node **current, t_command *new_cmd)
+{
+    int arg_count;
+
+    arg_count = count_args_before_pipe(*current);
+    fill_full_cmd(current, new_cmd, arg_count);
+}
+
+
+// Extracts commands from the node list and adds them to the command list
+void get_command(t_data *node_lst, t_node *current)
+{
+    t_command *new_cmd;
+
+    while (current)
+    {
+        new_cmd = create_and_initialize_cmd();
+        if (!new_cmd)
         {
-            new_cmd->full_cmd[i] = ft_strdup(current->content);
-            if (!new_cmd->full_cmd[i])
-            {
-                free_full_cmd(new_cmd);
-                return;
-            }
-            current = current->next;
-            i++;
+            free_list_cmd(node_lst->commands);
+            return;
         }
-        new_cmd->full_cmd[i] = NULL;
+        process_current_cmd(&current, new_cmd);
         add_command(node_lst, new_cmd);
         if (current && ft_strcmp(current->content, "|") == 0)
             current = current->next;
-        new_cmd = create_new_command();
-        if (!new_cmd)
-            return;
     }
     free_list(node_lst->node);
-    // print_command_info(*(node_lst->commands));
 }
+
+// void get_command(t_data *node_lst, t_node *current)
+// {
+//     t_command *new_cmd;
+//     t_node *temp;
+
+//     while (current)
+//     {
+//         new_cmd = create_and_initialize_cmd();
+//         if (!new_cmd)
+//         {
+//             free_list_cmd(node_lst->commands);
+//             free(node_lst->commands);
+//             node_lst->commands = NULL;
+//             free_list(node_lst->node);
+//             node_lst->node = NULL;
+//             return;
+//         }
+//         process_current_cmd(&current, new_cmd);
+//         add_command(node_lst, new_cmd);
+//         if (current && ft_strcmp(current->content, "|") == 0)
+//         {
+//             temp = current;
+//             current = current->next;
+//             free(temp);
+//         }
+//         else
+//             current = current->next;
+//     }
+//     free_list(node_lst->node);
+//     node_lst->node = NULL;
+// }

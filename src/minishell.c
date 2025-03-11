@@ -3,77 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/08 00:51:17 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/10 21:15:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-void    init_data(t_data *data)
+static int	process_empty_input(char *input)
 {
-    data->input = NULL;
-    data->node = NULL;
-    data->commands = NULL;
-    data->last_exit_status = 0;
-    data->envp = NULL;
+	if (!input)
+		return (1);
+	if (input[0] == '\0')
+	{
+		free(input);
+		return (1);
+	}
+	return (0);
 }
 
-// static void print_envp(char **envp)
-// {
-//     int i = 0;
-
-//     while (envp && envp[i])
-//     {
-//         printf("envp[%d]: %s\n", i, envp[i]);
-//         i++;
-//     }
-// }
-
-
-int main(int argc, char **argv, char **envp)
+static void	minishell_loop(t_data *data)
 {
-    (void)argc;
-    (void)argv;
-    t_data  *data;
-    
-    data = malloc(sizeof(t_data));
-    if (!data)
-    {
-        perror("");
-        return (1);
-    }
-    init_data(data);
-    data->envp = envp;
-    while (1)
-    {
-        setup_signal_handlers();
-        if (g_exit_status == 130 || g_exit_status == 131)
-        {
-            data->last_exit_status = g_exit_status;
-            g_exit_status = 0;
-        }
-        if (isatty(STDIN_FILENO))
-            data->input = readline("\033[1;35mminishell$\033[0m ");
-        if (handle_eof(data->input))
-            break;
-        if (data->input[0] == '\0')
-        {
-            free(data->input);
-            continue ;
-        }
-        if (!tokenizer(data))
-        {
-            expander(data);
-            set_commands(data);
-            executor(data);
-        }
-        if (*data->input)
-            add_history(data->input);
-        free(data->input);
-    }
-    return (0);
+	if (!tokenizer(data))
+	{
+		expander(data);
+		set_commands(data);
+		executor(data);
+	}
+	if (*data->input)
+		add_history(data->input);
+	free(data->input);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	*data;
+	(void)argc;
+	(void)argv;
+
+	if (init_shell(&data, envp))
+		return (1);
+	while (1)
+	{
+		setup_signal_handlers();
+		if (g_exit_status == 130 || g_exit_status == 131)
+		{
+			data->last_exit_status = g_exit_status;
+			g_exit_status = 0;
+		}
+		if (isatty(STDIN_FILENO))
+			data->input = readline("\033[1;35mminishell$\033[0m ");
+		if (handle_eof(data->input))
+			break ;
+        if (process_empty_input(data->input))
+			continue ;
+		minishell_loop(data);
+	}
+	cleanup_shell(data);
+	// free(data);
+	return (0);
 }

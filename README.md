@@ -144,3 +144,30 @@ Output: [echo] ["hello world"] [>] [file]
 📌 Goal: Ensure stability and fix memory leaks.
 
 ----------------------------------------------------------------------------------------
+tests:
+1- handle absolute path
+2- spaces and tab then enter -> sigfault and leaks 
+3- exit after executed some commands -> leaks
+4- command with quotes: (only if there's a pipe or operator)
+	minishell$ echo "ls out | cat -e > out"
+	minishell$ echo "ls out | cat -e >"
+	minishell$ echo "ls out | cat -e"
+	cat: invalid option -- '"'
+	Try 'cat --help' for more information.
+	minishell$ echo "ls out | cat -e > in"
+	minishell$ ls
+	'"'         README.md   include      libft       out     src
+ 	Makefile  'in"'        include.mk   minishell  'out"'   utils
+	minishell$ cat 'out"'
+	"ls out$
+5- unset PATH
+	minishell$ unset PATH
+	==1102110== Invalid free() / delete / delete[] / realloc()
+	==1102110==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+	==1102110==    by 0x10CF4D: remove_env_var (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10D02A: ft_unset (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10BF64: built_ins (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10D150: executor (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10954F: minishell_loop (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x109657: main (in /home/rsham/core/minishell/minishell)
+	==1102110==  Address 0x1fff0002fd is on thread 1's stack

@@ -6,7 +6,7 @@
 /*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:03:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/07 23:53:55 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/08 23:43:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ void setup_signal_handlers()
 {
     struct sigaction sa;
 
-    // Handle SIGINT (CTRL+C)
     sa.sa_handler = &handle_sigint;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
-
-    // Handle SIGQUIT (CTRL+\) 
     sa.sa_handler = SIG_IGN;
     sigaction(SIGQUIT, &sa, NULL);
 }

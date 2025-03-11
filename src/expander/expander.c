@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/10 03:59:32 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:46:24 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,16 @@ static int handle_exit_status(t_node *current, t_data *data)
 static int handle_quotes_and_trim(t_node *current, int in_double)
 {
     char *trimmed;
+    char *tmp;
 
     if (!in_double && current->content[0] == '"' &&
         current->content[ft_strlen(current->content) - 1] == '"')
     {
-        trimmed = ft_strremove(ft_strtrim(current->content, "\""), "\"");
+        tmp = ft_strtrim(current->content, "\"");
+        if (!tmp)
+            return (1);
+        trimmed = ft_strremove(tmp, "\"");
+        free(tmp);
         if (!trimmed)
             return (1);
         free(current->content);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins_utils3.c                                  :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:16:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/08 01:50:33 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 20:01:06 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,20 @@ static int ft_atoi_exit(const char *str, char **endptr)
     }
     if (endptr)
         *endptr = (char *)str;
-
     return result * sign;
 }
 
 void ft_exit(t_command *command, t_data *data)
 {
-    int status;
-    char *endptr;
+    int     status;
+    char    *endptr;
 
     if (data->cmd_count == 1)
         ft_putstr_fd("exit\n", 1);
     if (!command->full_cmd[1])
     {
         g_exit_status = 0;
-        free(data->input);
-        free(data);
+        cleanup_shell(data);
         exit(0);
     }
     status = ft_atoi_exit(command->full_cmd[1], &endptr);
@@ -57,13 +55,11 @@ void ft_exit(t_command *command, t_data *data)
     {
         ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
         g_exit_status = 255;
-        free(data->input);
-        free(data);
+        cleanup_shell(data);
         exit(255);
     }
     g_exit_status = status;
-    free(data->input);
-    free(data);
+    cleanup_shell(data);
     exit(status);
 }
 

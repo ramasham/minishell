@@ -6,12 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/05 20:30:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 22:33:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//free a 2D array of strings
 void    free_2d(char **str)
 {
     int     i;
@@ -25,6 +26,7 @@ void    free_2d(char **str)
     free(str);
 }
 
+//free a single command structure and its full_cmd array
 void	free_full_cmd(t_command *cmd)
 {
 	int	i;
@@ -41,10 +43,13 @@ void	free_full_cmd(t_command *cmd)
 			}
 			free(cmd->full_cmd);
 		}
+		if (cmd->full_path)
+			free(cmd->full_path);
 		free(cmd);
 	}
 }
 
+//free a list of commands
 void	free_list_cmd(t_command **cmds)
 {
 	t_command	*tmp;
@@ -60,6 +65,7 @@ void	free_list_cmd(t_command **cmds)
 	*cmds = NULL;
 }
 
+//free a list of nodes
 void	free_list(t_node **node)
 {
 	t_node	*tmp;
@@ -74,4 +80,26 @@ void	free_list(t_node **node)
 		free(tmp);
 	}
 	*node = NULL;
+}
+
+// Clean up all allocated memory in the data structure
+void cleanup_shell(t_data *data)
+{
+    if (!data)
+        return;
+    if (data->input)
+        free(data->input);
+    if (data->node)
+    {
+        free_list(data->node);
+        free(data->node);
+    }
+    if (data->commands)
+    {
+        free_list_cmd(data->commands);
+        free(data->commands);
+    }
+    if (data->heredoc)
+        free(data->heredoc);
+    free(data);
 }

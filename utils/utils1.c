@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:26:16 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 02:00:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 20:04:49 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,10 @@ char *ft_strremove(char *str, const char *remove)
     result[j] = '\0';
     return (result);
 }
+
+void    cmd_not_found_msg(t_command *cmds)
+{
+    ft_putstr_fd(cmds->full_cmd[0], 2);
+    ft_putstr_fd(": command not found\n", 2);
+}
+
