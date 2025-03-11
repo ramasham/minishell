@@ -3,134 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:51:22 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 03:20:25 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 03:55:22 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// cd [no args] -> home dir
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-
-static int my_setenv(t_data *data, const char *name, const char *value,
-    int overwrite)
-{
-    int i;
-    char *env_var;
-    char *eq_pos;
-    size_t name_len;
-    size_t value_len;
-    char *new_var;
-
-    if (!name || !value || name[0] == '\0')
-        return (-1);
-    if (strchr(name, '=') != NULL)
-        return (-1);
-
-    i = 0;
-    while (data->envp[i] != NULL)
-    {
-        env_var = data->envp[i];
-        eq_pos = strchr(env_var, '=');
-        if (eq_pos != NULL && (size_t)(eq_pos - env_var) == strlen(name) &&
-            strncmp(env_var, name, eq_pos - env_var) == 0)
-        {
-            if (!overwrite)
-                return (0);
-            name_len = strlen(name);
-            value_len = strlen(value);
-            new_var = malloc(name_len + value_len + 2);
-            if (!new_var)
-                return (-1);
-            memcpy(new_var, name, name_len);
-            new_var[name_len] = '=';
-            memcpy(new_var + name_len + 1, value, value_len + 1);
-            data->envp[i] = new_var;
-            return (0);
-        }
-        i++;
-    }
-    name_len = strlen(name);
-    value_len = strlen(value);
-    new_var = malloc(name_len + value_len + 2);
-    if (!new_var)
-        return (-1);
-    memcpy(new_var, name, name_len);
-    new_var[name_len] = '=';
-    memcpy(new_var + name_len + 1, value, value_len + 1);
-    data->envp[i] = new_var;
-    data->envp[i + 1] = NULL;
-    return (0);
-}
-
-static void cd_error(t_data *data)
+static void cd_error(t_data *data, char *oldpwd)
 {
     perror("minishell: cd");
     data->last_exit_status = 2;
-    return ;
+    free(oldpwd);
+}
+
+static int set_home_path(t_data *data, char **path)
+{
+    if (!*path)
+    {
+        *path = getenv("HOME");
+        if (!*path)
+        {
+            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+            data->last_exit_status = 1;
+            return (1);
+        }
+    }
+    return (0);
+}
+
+static int get_current_directory(char **dir)
+{
+    char cwd[1024];
+
+    if (!getcwd(cwd, sizeof(cwd)))
+        return (0);
+    *dir = ft_strdup(cwd);
+	return (*dir != NULL);
+}
+
+static int get_new_directory(char **newpwd)
+{
+    char cwd[1024];
+
+    if (!getcwd(cwd, sizeof(cwd)))
+        return (0);
+    *newpwd = ft_strdup(cwd);
+    if (!*newpwd)
+        return (0);
+    return (1);
 }
 
 void ft_cd(t_data *data, char *path)
 {
-    char cwd[1024];
     char *oldpwd;
     char *newpwd;
 
-    if (!path)
-    {
-        path = getenv("HOME");
-        if (!path)
-        {
-            ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-            return ;
-        }
-    }
-    if (!getcwd(cwd, sizeof(cwd)))
-    {
-        cd_error(data);
+    if (set_home_path(data, &path))
         return ;
-    }
-    oldpwd = ft_strdup(cwd);
-    if (!oldpwd)
-    {
-        cd_error(data);
-        return ;
-    }
+    if (!get_current_directory(&oldpwd))
+        cd_error(data, NULL);
     if (chdir(path) != 0)
-    {
-        perror("minishell: cd");
-        data->last_exit_status = 2;
-        free(oldpwd);
-        return ;
-    }
-    if (!getcwd(cwd, sizeof(cwd)))
-    {
-        perror("minishell: cd");
-        data->last_exit_status = 2;
-        free(oldpwd);
-        return ;
-    }
-    newpwd = ft_strdup(cwd);
-    if (!newpwd)
-    {
-        perror("minishell: cd");
-        data->last_exit_status = 2;
-        free(oldpwd);
-        return ;
-    }
-    my_setenv(data, "OLDPWD", oldpwd, 1);
-    my_setenv(data, "PWD", newpwd, 1);
+        return (cd_error(data, oldpwd));
+    if (!get_new_directory(&newpwd))
+        return (cd_error(data, oldpwd));
+    update_env_vars(data, oldpwd, newpwd);
     free(oldpwd);
     free(newpwd);
+    data->last_exit_status = 0;
 }
