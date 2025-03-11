@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 20:04:28 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 22:00:12 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,10 @@ char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
 void        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
+int         is_abs_path(char *cmd);
+int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
+
 //heredoc and it's utils
 int         handle_heredoc(char *delimiter , t_data *data);
 void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
