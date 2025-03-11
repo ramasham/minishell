@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/09 04:07:50 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 02:34:58 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	is_quoted_delimiter(char *delimiter)
 {
 	// if (!delimiter)
 	// 	return (0);
+	ft_printf("delimeter[0] is %c \n", delimiter[0]);
 	if (delimiter[0] == '\'' || delimiter[0] == '"')
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 // Check if the input line matches the delimiter

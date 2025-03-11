@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/09 04:07:39 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 02:30:40 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimit
 {
 	if (!line)
 		return (-1);
-	if (is_quoted_delimiter(delimiter))
+	if (!is_quoted_delimiter(delimiter))
 	{
 		line = expand_heredoc_line(line, data);
 		if (!line)
