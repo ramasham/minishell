@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:06:05 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 00:23:40 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	add_token_to_list_split(t_data *data, char *token, int *i)
 		ft_nodeadd_back(data->node, new_node);
 	*i = 0;
 }
+
 
 void	process_char(t_data *data, char c, char *token, int *i)
 {
@@ -85,6 +86,6 @@ void	split_input(t_data *data)
 		free_list(data->node);
 		data->node = NULL;
 	}
+	print_list((*data->node));
 	free(token);
 }
-
