@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/10 20:46:30 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/11 20:04:28 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ void      print_list(t_node *head);
 void      init_data(t_data *data);
 void	  free_list(t_node **node);
 t_node    *create_node(const char *token);
+void    cmd_not_found_msg(t_command *cmds);
+
 
 
 #endif

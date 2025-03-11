@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:22:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 22:00:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ void executor(t_data *data)
     }
     if (execution_process(data, &pipe_fd, pids))
     {
-        // free(pipe_fd);
-        // free(pids);
-        // free_list_cmd(data->commands);
         free(pids);
         exit(data->last_exit_status);
     }
     wait_for_children(data, pids, data->cmd_count, &(data->last_exit_status));
-    free(pipe_fd);
+    if (pipe_fd)
+        free(pipe_fd);
     free(pids);
     free_list_cmd(data->commands);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:18:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 22:33:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,6 @@ void	free_list(t_node **node)
 	*node = NULL;
 }
 
-// Free environment variables (assuming it's a NULL-terminated array)
-// void free_envp(char ***envp)
-// {
-//     if (!envp || !*envp)
-//         return;
-//     free_2d(*envp);
-//     *envp = NULL;
-// }
-
 // Clean up all allocated memory in the data structure
 void cleanup_shell(t_data *data)
 {
@@ -110,7 +101,5 @@ void cleanup_shell(t_data *data)
     }
     if (data->heredoc)
         free(data->heredoc);
-    // if (data->envp)
-    //     free_2d((data->envp));
     free(data);
 }

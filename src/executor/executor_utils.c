@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 02:01:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 20:04:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ int     validate_cmd(t_data *data, t_command *cmds)
 {
     if (get_cmd_path(cmds, data))
     {
-        ft_putstr_fd(cmds->full_cmd[0], 2);
-        ft_putstr_fd(": command not found\n", 2);
+        cmd_not_found_msg(cmds);
         data->last_exit_status = CMD_NOT_FOUND;
         return (data->last_exit_status);
     }
@@ -69,13 +68,15 @@ int     validate_cmd(t_data *data, t_command *cmds)
     {
         perror(cmds->full_path);
         data->last_exit_status = CMD_NOT_FOUND;
-        exit(data->last_exit_status);
+        // exit(data->last_exit_status);
+        return (data->last_exit_status);
     }
     if (access(cmds->full_path, X_OK) == -1)
     {
         ft_putstr_fd(": Permission denied\n", 2);
         data->last_exit_status = CMD_NOT_EXECUTABLE;
-        exit(data->last_exit_status);
+        // exit(data->last_exit_status);
+        return (data->last_exit_status);
     }
     return (0);
 }

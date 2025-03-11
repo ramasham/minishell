@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:46:52 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:46:48 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/10 23:11:05 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_command *create_new_command()
     new_cmd->next = NULL;
     return (new_cmd);
 }
+
 
 void add_command(t_data *data, t_command *new_cmd)
 {
