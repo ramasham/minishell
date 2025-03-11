@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 00:12:17 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:08:12 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,12 @@ void add_token_to_list(t_node **new_lst, char *token)
     }
 }
 
-int extract_word(const char *content, int i, char *token)
+int extract_word(const char *content, int i, char *token, int inside_quotes)
 {
     int j;
 
     j = 0;
-    while (content[i] && content[i] != '|' && content[i] != '>' 
-        && content[i] != '<')
+    while (content[i] && (inside_quotes || (content[i] != '|' && content[i] != '>' && content[i] != '<')))
     {
         token[j++] = content[i++];
     }
@@ -38,14 +37,12 @@ int extract_word(const char *content, int i, char *token)
     return (i);
 }
 
-int extract_operator(const char *content, int i, char *op)
+int extract_operator(const char *content, int i, char *op, int inside_quotes)
 {
     op[0] = content[i];
     op[1] = '\0';
-    op[2] = '\0';
 
-    if ((content[i] == '>' || content[i] == '<') && 
-        content[i + 1] == content[i])
+    if (!inside_quotes && (content[i] == '>' || content[i] == '<') && content[i + 1] == content[i])
     {
         op[1] = content[i + 1];
         return (i + 2);
@@ -58,15 +55,21 @@ void process_content(t_node **new_lst, char *content)
     int i;
     char token[256];
     char op[3];
+    int inside_quotes;
 
     i = 0;
+    inside_quotes = 0;
     while (content[i])
     {
-        i = extract_word(content, i, token);
+        if (content[i] == '"' || content[i] == '\'')
+            inside_quotes = !inside_quotes;
+        
+        i = extract_word(content, i, token, inside_quotes);
         add_token_to_list(new_lst, token);
-        if (content[i] == '|' || content[i] == '>' || content[i] == '<')
+
+        if (!inside_quotes && (content[i] == '|' || content[i] == '>' || content[i] == '<'))
         {
-            i = extract_operator(content, i, op);
+            i = extract_operator(content, i, op, inside_quotes);
             add_token_to_list(new_lst, op);
         }
     }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 22:26:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:13:13 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ typedef struct s_data
 int	init_shell(t_data **data, char **envp);
 
 //lexer
-int     extract_word(const char *content, int i, char *token);
-int     extract_operator(const char *content, int i, char *op);
+int     extract_word(const char *content, int i, char *token, int inside_quotes);
+int     extract_operator(const char *content, int i, char *op, int inside_quotes);
 int     check_unclosed_quotes(t_data *data);
 int     has_invalid_redirection(char *ptr);
 int     check_redirection(t_data *data);
@@ -98,6 +98,9 @@ void    process_content(t_node **new_lst, char *content);
 void	add_token_to_list_split(t_data *data, char *token, int *i);
 void    trim_operators(t_data *data);
 void    split_input(t_data *data);
+void	init_token_and_node(t_data *data, char **token);
+void	process_input(t_data *data, char *ptr, char *token, int *i);
+
 
 //expander
 int     is_q(char c);
