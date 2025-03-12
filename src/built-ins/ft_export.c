@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 21:45:28 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 11:18:28 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -122,8 +120,6 @@ static int	add_new_var(t_data *data, char *var)
 {
 	int		size;
 	char	**new_envp;
-	int		size;
-	char	**new_envp;
     int i;
     
     i = 0;
@@ -138,7 +134,7 @@ static int	add_new_var(t_data *data, char *var)
 		new_envp[i] = data->envp[i];
 	new_envp[size] = var;
 	new_envp[size + 1] = NULL;
-	// free(data->envp);
+	//free(data->envp);
 	data->envp = new_envp;
 	return (1);
 }

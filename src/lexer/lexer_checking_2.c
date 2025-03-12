@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_checking_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:25 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 02:36:29 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:07:23 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,27 @@ int    operator_at_end(t_data *data)
     return (0);
 }
 
+// int    operator_at_start(t_data *data)
+// {
+//     char    *ptr;
+//     char    *operators;
+//     int     i;
+    
+//     i = 0;
+//     operators = "|<>";
+//     ptr = data->input;
+//     while (operators[i])
+//     {
+//         if (ptr[0] == operators[i])
+//         {
+//             ft_putstr_fd("invalid syntax in start\n", 2);
+//             return (1);
+//         }
+//         i++;
+//     }
+//     return (0);
+// }
+
 int    operator_at_start(t_data *data)
 {
     char    *ptr;
@@ -47,14 +68,15 @@ int    operator_at_start(t_data *data)
     i = 0;
     operators = "|<>";
     ptr = data->input;
-    while (operators[i])
+    if (ptr[0] == '<' && ptr [1] == '<')
     {
-        if (ptr[0] == operators[i])
-        {
-            ft_putstr_fd("invalid syntax in start\n", 2);
-            return (1);
-        }
-        i++;
+        ft_printf("ptr is %s\n", ptr + 3 );
+        handle_heredoc(ptr + 2,data);
+    }
+    if (ptr[0] == '|' || ptr[0] == '>' || ptr[0] == '<' )
+    {
+        ft_putstr_fd("invalid syntax in start\n", 2);
+        return (1);
     }
     return (0);
 }

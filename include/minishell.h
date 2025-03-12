@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/12 02:42:48 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:24:48 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ void	  free_list(t_node **node);
 t_node    *create_node(const char *token);
 int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
+void print_command(t_data *newcmd);
 
 
 

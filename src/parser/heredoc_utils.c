@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/12 02:34:58 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:03:39 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	write_heredoc_to_pipe(char *line, int pipe_fd[2])
 }
 
 // Check if the delimiter is quoted
-int	is_quoted_delimiter(char *delimiter)
+int is_quoted_delimiter(char *delimiter)
 {
-	// if (!delimiter)
-	// 	return (0);
-	ft_printf("delimeter[0] is %c \n", delimiter[0]);
-	if (delimiter[0] == '\'' || delimiter[0] == '"')
-		return (1);
-	return (0);
+    if (!delimiter)
+        return (0);
+    // Check if the delimiter starts and ends with a quote
+    if ((delimiter[0] == '\'' && delimiter[ft_strlen(delimiter) - 1] == '\'') ||
+        (delimiter[0] == '"' && delimiter[ft_strlen(delimiter) - 1] == '"'))
+        return (1);
+    
+    return (0);
 }
 
 // Check if the input line matches the delimiter
@@ -37,6 +39,7 @@ int	process_delimiter(char *line, char *delimiter)
 {
 	size_t	delim_len;
 	size_t	line_len;
+	ft_printf("delimiter in proccess deli is %s\n", delimiter);
 
 	if (!line || !delimiter)
 		return (0);
@@ -60,6 +63,8 @@ char	*expand_heredoc_line(char *line, t_data *data)
 {
 	t_node	*current_node;
 	char	*expanded_line;
+
+	ft_printf("line in expand is %s\n", line);
 
 	if (!line || !data)
 		return (NULL);

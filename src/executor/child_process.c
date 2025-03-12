@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:31:18 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 13:51:50 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void handle_dup2(t_command *cmd, t_data *data, int *pipe_fd, int index)
     if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
         dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
 }
+
 int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
     handle_dup2(cmd, data, pipe_fd, index);
