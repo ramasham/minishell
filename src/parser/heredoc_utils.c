@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/09 04:07:50 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:48:28 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,12 @@ int	process_delimiter(char *line, char *delimiter)
 	size_t	delim_len;
 	size_t	line_len;
 
+	printf("del %s:\n", delimiter);
 	if (!line || !delimiter)
 		return (0);
 	delim_len = ft_strlen(delimiter);
 	line_len = ft_strlen(line);
+	// printf("del %s:\n", delimiter);
 	if (line_len == 0 || line_len - 1 != delim_len)
 		return (0);
 	return (ft_strncmp(line, delimiter, delim_len) == 0);

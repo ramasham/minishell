@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:23:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/10 21:58:23 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/12 14:09:47 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ static int	update_existing_var(t_data *data, char *var, char *eq_pos)
 			&& (data->envp[i][name_len] == '=' || data->envp[i][name_len] == '\0'))
 		{
 			// free(data->envp[i]);
+			
 			data->envp[i] = var;
 			return (1);
 		}
@@ -121,7 +122,8 @@ static int	add_new_var(t_data *data, char *var)
 	int		size;
 	char	**new_envp;
     int i;
-    
+    int len;
+	
     i = 0;
 	size = 0;
 	while (data->envp[size])
@@ -130,10 +132,23 @@ static int	add_new_var(t_data *data, char *var)
 	if (!new_envp)
 		return (0);
 	i = -1;
+	
 	while (++i < size)
-		new_envp[i] = data->envp[i];
+	{
+		len = ft_strlen(data->envp[i]);
+		new_envp[i] = malloc(sizeof(char)*len + 1);
+		ft_strcpy(new_envp[i],data->envp[i]);
+	}
 	new_envp[size] = var;
 	new_envp[size + 1] = NULL;
+	
+	i = 0;
+	while (data->envp[i])
+	{
+			free(data->envp[i]);
+			i++;
+	}
+		free(data->envp);
 	// free(data->envp);
 	data->envp = new_envp;
 	return (1);

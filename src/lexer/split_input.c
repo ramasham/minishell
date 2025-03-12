@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 01:11:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 12:02:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,13 @@ void	init_token_and_node(t_data *data, char **token)
 		ft_putstr_fd("Memory allocation failed\n", 2);
 		return ;
 	}
-	data->node = malloc(sizeof(t_node));
+	data->node = ft_calloc(1,sizeof(t_node));
 	if (!data->node)
 	{
 		free(*token);
 		ft_putstr_fd("Memory allocation failed\n", 2);
 		return ;
 	}
-	*data->node = NULL;
 }
 
 void	process_input(t_data *data, char *ptr, char *token, int *i)

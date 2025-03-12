@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 22:33:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 13:53:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,17 @@ void	free_list(t_node **node)
 		free(tmp->content);
 		free(tmp);
 	}
-	*node = NULL;
 }
 
 // Clean up all allocated memory in the data structure
 void cleanup_shell(t_data *data)
 {
+	int i = 0;
     if (!data)
         return;
     if (data->input)
         free(data->input);
-    if (data->node)
+    if (data->node && *data->node)
     {
         free_list(data->node);
         free(data->node);
@@ -100,6 +100,15 @@ void cleanup_shell(t_data *data)
         free(data->commands);
     }
     if (data->heredoc)
-        free(data->heredoc);
+		free(data->heredoc);
+	if(data->envp)
+	{
+		while (data->envp[i])
+		{
+			free(data->envp[i]);
+			i++;
+		}
+		free(data->envp);
+	}
     free(data);
 }

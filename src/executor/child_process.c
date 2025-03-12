@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 02:53:13 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 14:17:23 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void handle_dup2(t_command *cmd, t_data *data, int *pipe_fd, int index)
 int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
     handle_dup2(cmd, data, pipe_fd, index);
-    close_pipes(pipe_fd, data->cmd_count);
+    // close_pipes(pipe_fd, data->cmd_count);
     if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
     {
         ft_exit(cmd, data);
@@ -83,7 +83,8 @@ int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
     execve(cmd->full_path, cmd->full_cmd, data->envp);
     perror("execve child process");
     free_list_cmd(data->commands);
-    exit(CMD_NOT_FOUND);
+    data->last_exit_status = CMD_NOT_FOUND;
+    exit(data->last_exit_status);
 }
 
 
@@ -107,7 +108,12 @@ int create_children(t_data *data, int *pipe_fd, pid_t *pids)
         if (pids[i] == 0)
         {
             if (child_process(data, cmd, pipe_fd, i))
+            {
+                free_list_cmd(data->commands);
+                free(pids);
+                // cleanup_shell(data);
                 return (1);
+            }
         }
         cmd = cmd->next;
         i++;

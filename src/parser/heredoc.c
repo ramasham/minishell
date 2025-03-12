@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/09 04:07:39 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/12 10:53:38 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 {
 	char	*line;
 
+	printf("del 2 %s:\n", delimiter);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
@@ -64,6 +65,7 @@ int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 		}
 		if (process_heredoc_line(line, pipe_fd, data, delimiter) == -1)
 			return (-1);
+		
 	}
 	return (0);
 }

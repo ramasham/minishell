@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 02:06:43 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/12 01:22:07 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 12:32:10 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static void remove_env_var(t_data *data, char *var)
 {
     int j;
-
+    // char *tmp;
+    
     j = 0;
     while (data->envp[j])
     {
@@ -24,6 +25,7 @@ static void remove_env_var(t_data *data, char *var)
         {
             while (data->envp[j])
             {
+                free(data->envp[j]);
                 data->envp[j] = data->envp[j + 1];
                 j++;
             }
