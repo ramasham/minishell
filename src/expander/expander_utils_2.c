@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/11 21:58:18 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 15:46:01 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char *replace_env_var(t_data *data, char *content, int i)
         free(result);
         return(new_str);
     }
+    free(result);
     return(result);
 }
 
@@ -109,6 +110,7 @@ int process_env_var(t_node *current, int *i, int in_single, t_data *data)
         return(1);
     free(current->content);
     current->content = new_content;
+    free(new_content);
     return (0); 
 }
 

@@ -29,12 +29,10 @@ char **get_env(char **envp)
 	char	**new_envp;
     int i;
     
-    i = 0;
 	size = 0;
 	while (envp[size])
 		size++;
 	new_envp = malloc(sizeof(char *) * ++size);
-	
 	i = 0;
 	while (envp[i])
 	{
@@ -44,7 +42,7 @@ char **get_env(char **envp)
 		i++;
  	}
 	new_envp[i] = NULL;
-	return new_envp;
+	return (new_envp);
 }
 
 int	init_shell(t_data **data, char **envp)
@@ -56,7 +54,6 @@ int	init_shell(t_data **data, char **envp)
 		return (1);
 	}
 	init_data(*data);
-
 	(*data)->envp = get_env(envp);
 	return (0);
 }

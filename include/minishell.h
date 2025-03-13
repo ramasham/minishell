@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 13:38:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 17:09:24 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void	  free_list(t_node **node);
 t_node    *create_node(const char *token);
 int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
+// void	init_token_and_node(t_data *data, char *token);
 
 
 

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 12:02:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 17:26:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	split_input(t_data *data)
 	int		i;
 
 	i = 0;
+	token = NULL;
 	ptr = data->input;
 	init_token_and_node(data, &token);
 	if (!token || !data->node)
@@ -73,6 +74,9 @@ void	split_input(t_data *data)
 	if (i > 0)
 		add_token_to_list_split(data, token, &i);
 	if (!*data->node)
+	{
 		free_list(data->node);
+		free(data->node);
+	}
 	free(token);
 }

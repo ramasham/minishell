@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:23:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/12 14:09:47 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 16:24:23 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ static void	print_env_sorted(char **envp)
 			printf("declare -x %.*s=\"%s\"\n", (int)(eq_pos - sorted[i]), sorted[i], eq_pos + 1);
 		else
 			printf("declare -x %s\n", sorted[i]);
-		// free(sorted[i]);
+		free(sorted[i]);
 		i++;
 	}
-	// free(sorted);
+	free(sorted);
 }
 
 static int	update_existing_var(t_data *data, char *var, char *eq_pos)
@@ -100,8 +100,6 @@ static int	update_existing_var(t_data *data, char *var, char *eq_pos)
 		if (ft_strncmp(data->envp[i], var, name_len) == 0
 			&& (data->envp[i][name_len] == '=' || data->envp[i][name_len] == '\0'))
 		{
-			// free(data->envp[i]);
-			
 			data->envp[i] = var;
 			return (1);
 		}
@@ -149,7 +147,7 @@ static int	add_new_var(t_data *data, char *var)
 			i++;
 	}
 		free(data->envp);
-	// free(data->envp);
+	free(data->envp);
 	data->envp = new_envp;
 	return (1);
 }
@@ -193,15 +191,11 @@ void	ft_export(t_data *data, t_command *command)
 			if (!var)
 				perror("bash: export");
 			else
+			{
 				add_or_update_env(data, var);
+				free(var);
+			}
 		}
 		i++;
 	}
-    // int j = 0;
-    // while (data->envp[j])
-    // {
-    //     printf("[%d] %s\n", j, data->envp[j]);
-    //     j++;
-    // }
-
 }

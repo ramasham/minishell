@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 13:39:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 12:19:06 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int    execution_process(t_data *data, int **pipe_fd, pid_t *pids)
     if (piping(data, pipe_fd))
         return(1);
     if (create_children(data, *pipe_fd, pids))
+    {
+        free(*pipe_fd);
         return(1);
+    }
     close_pipes(*pipe_fd, data->cmd_count);
     return (0);
 }
@@ -43,17 +46,12 @@ int executor(t_data *data)
     pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!pids)
     {
-        data->last_exit_status = 1;
         free_list_cmd(data->commands);
-        return(data->last_exit_status);
+        return(1);
     }
     if (execution_process(data, &pipe_fd, pids))
     {
         free(pids);
-        if(pipe_fd)
-            free(pipe_fd);
-        // cleanup_shell(data);
-        // exit(data->last_exit_status);
         return (data->last_exit_status);
     }
     wait_for_children(data, pids, data->cmd_count, &(data->last_exit_status));

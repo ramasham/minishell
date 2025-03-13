@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 14:17:23 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/13 16:16:51 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,16 @@ static void handle_dup2(t_command *cmd, t_data *data, int *pipe_fd, int index)
 int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
 {
     handle_dup2(cmd, data, pipe_fd, index);
-    // close_pipes(pipe_fd, data->cmd_count);
     if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
-    {
         ft_exit(cmd, data);
-        return(data->last_exit_status);
-    }
     if (built_ins(cmd, data))
-    {
-        free_list_cmd(&cmd);
-        return(data->last_exit_status);
-    }
+        exit(data->last_exit_status);
     if (validation(cmd, data))
-    {
-        free_list_cmd(&cmd);
-        free(pipe_fd);
-        return(data->last_exit_status);
-    }
-    else
-        data->last_exit_status = 0;
+        exit(data->last_exit_status);
+    
     execve(cmd->full_path, cmd->full_cmd, data->envp);
-    perror("execve child process");
-    free_list_cmd(data->commands);
-    data->last_exit_status = CMD_NOT_FOUND;
+    perror("execve failed");
+    cleanup_shell(data);
     exit(data->last_exit_status);
 }
 
@@ -102,7 +89,6 @@ int create_children(t_data *data, int *pipe_fd, pid_t *pids)
         {
             perror("fork failed");
             free_list_cmd(data->commands);
-            free(pids);
             return(1);
         }
         if (pids[i] == 0)
@@ -110,9 +96,7 @@ int create_children(t_data *data, int *pipe_fd, pid_t *pids)
             if (child_process(data, cmd, pipe_fd, i))
             {
                 free_list_cmd(data->commands);
-                free(pids);
-                // cleanup_shell(data);
-                return (1);
+                exit(1);
             }
         }
         cmd = cmd->next;
