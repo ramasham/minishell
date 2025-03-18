@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 22:00:47 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/16 23:23:10 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void executor(t_data *data)
         free_list_cmd(data->commands);
         return;
     }
-    if (data->cmd_count == 1 && built_ins(*data->commands, data))
-    {
-        data->last_exit_status = 0;
-        free_list_cmd(data->commands);
-        return;
-    }
+    // if (data->cmd_count == 1 && built_ins(*data->commands, data))
+    // {
+    //     data->last_exit_status = 0;
+    //     free_list_cmd(data->commands);
+    //     return;
+    // }
     pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!pids)
     {

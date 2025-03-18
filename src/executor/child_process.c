@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 00:20:34 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/16 23:24:01 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,11 @@ int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index)
         ft_exit(cmd, data);
         return(data->last_exit_status);
     }
-    if (built_ins(cmd, data))
-    {
-        free_list_cmd(&cmd);
-        return(data->last_exit_status);
-    }
+    // if (built_ins(cmd, data))
+    // {
+    //     free_list_cmd(&cmd);
+    //     return(data->last_exit_status);
+    // }
     if (validation(cmd, data))
     {
         free_list_cmd(&cmd);
