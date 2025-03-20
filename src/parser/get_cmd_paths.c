@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/19 19:48:06 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 00:38:57 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ char    **find_path(t_data *data)
     char    **paths;
 
     i = 0;
+    if (!data || !data->envp)
+    {
+        ft_putstr_fd("Error: envp is NULL\n", 2);
+        return (NULL);
+    }
     while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
         i++;
     if (!data->envp[i])
@@ -26,6 +31,11 @@ char    **find_path(t_data *data)
         return (NULL);
     }
     paths = ft_split(data->envp[i] + 5, ':');
+    if (!paths || !paths[0])
+    {
+        free_2d(paths);
+        return (NULL);
+    }
     if (!paths)
         return (NULL);
     return (paths);
@@ -76,6 +86,8 @@ char    *join_path_cmd(char  *path, char *cmd)
         return (NULL);
     }
     free(temp);
+    if (!path_with_cmd)
+        return (NULL);
     return (path_with_cmd);
 }
 

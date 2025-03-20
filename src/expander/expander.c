@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/13 15:32:05 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 01:08:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int handle_quotes_and_trim(t_node *current, int in_double)
             return (1);
         free(current->content);
         current->content = trimmed;
-        free(trimmed);
+        // free(trimmed);
     }
     return (0);
 }

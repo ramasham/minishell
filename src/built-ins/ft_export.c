@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:23:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/13 16:24:23 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 00:45:54 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int	update_existing_var(t_data *data, char *var, char *eq_pos)
 {
 	int		i;
 	size_t	name_len;
+	char	*new_var;
 
 	name_len = eq_pos - var;
 	i = 0;
@@ -100,7 +101,11 @@ static int	update_existing_var(t_data *data, char *var, char *eq_pos)
 		if (ft_strncmp(data->envp[i], var, name_len) == 0
 			&& (data->envp[i][name_len] == '=' || data->envp[i][name_len] == '\0'))
 		{
-			data->envp[i] = var;
+			new_var = ft_strdup(var);
+			if (!new_var)
+				return (0);
+			free(data->envp[i]);
+			data->envp[i] = new_var;
 			return (1);
 		}
 		i++;
@@ -119,38 +124,35 @@ static int	add_new_var(t_data *data, char *var)
 {
 	int		size;
 	char	**new_envp;
-    int i;
-    int len;
-	
-    i = 0;
+	int		i;
+
 	size = 0;
 	while (data->envp[size])
 		size++;
 	new_envp = malloc(sizeof(char *) * (size + 2));
 	if (!new_envp)
 		return (0);
-	i = -1;
-	
-	while (++i < size)
-	{
-		len = ft_strlen(data->envp[i]);
-		new_envp[i] = malloc(sizeof(char)*len + 1);
-		ft_strcpy(new_envp[i],data->envp[i]);
-	}
-	new_envp[size] = var;
-	new_envp[size + 1] = NULL;
-	
 	i = 0;
-	while (data->envp[i])
+	while (i < size)
 	{
-			free(data->envp[i]);
-			i++;
+		new_envp[i] = ft_strdup(data->envp[i]);
+		free(data->envp[i]);
+		if (!new_envp[i])
+		{
+			while (--i >= 0)
+				free(new_envp[i]);
+			free(new_envp);
+			return (0);
+		}
+		i++;
 	}
-		free(data->envp);
+	new_envp[size] = ft_strdup(var);
+	new_envp[size + 1] = NULL;
 	free(data->envp);
 	data->envp = new_envp;
 	return (1);
 }
+
 
 static void	add_or_update_env(t_data *data, char *var)
 {

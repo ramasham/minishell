@@ -1,6 +1,15 @@
-NAME = minishell
-
 include include.mk
+NAME = minishell
+LIBFT_DIR = ./libft
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g -I./include
+
+OBJS = $(SRCS:.c=.o)
+
+INCLUDES = -I$(LIBFT_DIR)/include
+LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline -lhistory
+CFLAGS += $(INCLUDES)
 
 all: libft $(NAME)
 

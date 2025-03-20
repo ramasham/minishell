@@ -6,33 +6,30 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:49:36 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 01:49:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 01:33:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_echo(t_command *command)
+void ft_echo(t_command *cmd)
 {
-    int i;
-    int newline;
-    int fd;
+    int i = 1;
+    int newline = 1;
 
-    i = 1;
-    newline = 1;
-    fd = command->outfile;
-    if (command->full_cmd[1] && ft_strcmp(command->full_cmd[1], "-n") == 0)
+    if (cmd->full_cmd[1] && ft_strcmp(cmd->full_cmd[1], "-n") == 0)
     {
         newline = 0;
         i++;
     }
-    while (command->full_cmd[i])
+    while (cmd->full_cmd[i])
     {
-        write(fd, command->full_cmd[i], ft_strlen(command->full_cmd[i]));
-        if (command->full_cmd[i + 1])
-            write(fd, " ", 1);
+        write(STDOUT_FILENO, cmd->full_cmd[i], ft_strlen(cmd->full_cmd[i]));
+        if (cmd->full_cmd[i + 1])
+            write(STDOUT_FILENO, " ", 1);
         i++;
     }
     if (newline)
-        write(fd, "\n", 1);
+        write(STDOUT_FILENO, "\n", 1);
 }
+

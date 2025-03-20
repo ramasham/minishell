@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/14 21:21:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 00:34:18 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int process_env_var(t_node *current, int *i, int in_single, t_data *data)
         return(1);
     free(current->content);
     current->content = new_content;
-    free(new_content);
+    // free(new_content); //can't free it
     return (0); 
 }
 

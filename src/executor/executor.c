@@ -6,12 +6,11 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/20 21:26:56 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 02:09:43 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int    execution_process(t_data *data, int **pipe_fd, pid_t *pids)
 {
@@ -20,6 +19,7 @@ int    execution_process(t_data *data, int **pipe_fd, pid_t *pids)
     if (create_children(data, *pipe_fd, pids))
     {
         free(*pipe_fd);
+        free(pids);
         return(1);
     }
     close_pipes(*pipe_fd, data->cmd_count);
@@ -86,6 +86,9 @@ int executor(t_data *data)
     else
     {
         execute_pipeline(data);
+        // free_list_cmd(data->commands);
+        // free(data->commands);
+        // data->commands = NULL;
     }
     return (data->last_exit_status);
 }

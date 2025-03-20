@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:09:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/13 15:33:20 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 01:07:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int     trim_quotes(t_node *node)
         trimmed = ft_strtrim(node->content, "'");
         free(node->content);
         node->content = trimmed;
-        free(trimmed);
+        // free(trimmed);
         return (0);
     }
     return (1);
