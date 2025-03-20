@@ -6,12 +6,11 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 21:59:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/19 19:48:06 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char    **find_path(t_data *data)
 {
@@ -32,20 +31,29 @@ char    **find_path(t_data *data)
     return (paths);
 }
 
-int     check_access(t_command *cmd, char  *path)
+int check_access(t_data *data, t_command *cmd, char *path)
 {
     if (!path)
         return (1);
-    if (access(path, X_OK) == 0)
+    if (access(path, F_OK) == -1)
     {
-        cmd->full_path = ft_strdup(path);
         free(path);
-        if (!cmd->full_path)
-            return (1);
-        return (0);
+        return (1);
     }
+    if (access(path, X_OK) == -1)
+    {
+        ft_putstr_fd("bash: ", 2);
+        ft_putstr_fd(path, 2);
+        ft_putstr_fd(": Permission denied\n", 2);
+        free(path);
+        data->last_exit_status = CMD_NOT_EXECUTABLE;
+        return (CMD_NOT_EXECUTABLE);
+    }
+    cmd->full_path = ft_strdup(path);
     free(path);
-    return (1);
+    if (!cmd->full_path)
+        return (1);
+    return (0);
 }
 
 char    *join_path_cmd(char  *path, char *cmd)
@@ -88,7 +96,7 @@ int    get_cmd_path(t_command *cmd, t_data *data)
         while (paths[++i])
         {
             path = join_path_cmd(paths[i], cmd->full_cmd[0]);
-            if (check_access(cmd, path) == 0)
+            if (check_access(data, cmd, path) == 0)
             {
                 free_2d(paths);
                 return (0);

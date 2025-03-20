@@ -23,6 +23,18 @@ void    init_data(t_data *data)
     data->heredoc = NULL;
 }
 
+void	free_env(char **envp)
+{
+	int i;
+
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
+}
 char **get_env(char **envp)
 {
 	int		size;
@@ -55,5 +67,10 @@ int	init_shell(t_data **data, char **envp)
 	}
 	init_data(*data);
 	(*data)->envp = get_env(envp);
+	if (!(*data)->envp)
+	{
+		free(*data);
+		return (1);
+	}
 	return (0);
 }

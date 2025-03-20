@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/13 13:08:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/15 23:21:15 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,53 @@ void	free_list(t_node **node)
 	{
 		tmp = *node;
 		*node = (*node)->next;
+		if (tmp->content)
 		free(tmp->content);
 		free(tmp);
 	}
+	*node = NULL;
 }
 
 // Clean up all allocated memory in the data structure
+// void cleanup_shell(t_data *data)
+// {
+// 	if (!data)
+// 		return;
+// 	if (data->input)
+// 	{
+// 		free(data->input);
+// 		data->input = NULL;
+// 	}
+// 	if (data->node)
+// 	{
+// 		if (*data->node)
+// 			free_list(data->node);
+// 		free(data->node);
+// 		data->node = NULL;
+// 	}
+// 	if (data->commands)
+// 	{
+// 		if (*data->commands)
+// 			free_list_cmd(data->commands);
+// 		free(data->commands);
+// 		data->commands = NULL;
+// 	}
+// 	if (data->heredoc)
+// 	{
+// 		free(data->heredoc);
+// 		data->heredoc = NULL;
+// 	}
+// 	if (data->envp)
+// 	{
+// 		free_2d(data->envp);
+// 		data->envp = NULL;
+// 	}
+// 	free(data);
+// }
+
 void cleanup_shell(t_data *data)
 {
-	int i = 0;
+	// int i = 0;
     if (!data)
         return;
     if (data->input)
@@ -103,12 +141,8 @@ void cleanup_shell(t_data *data)
 		free(data->heredoc);
 	if(data->envp)
 	{
-		while (data->envp[i])
-		{
-			free(data->envp[i]);
-			i++;
-		}
-		free(data->envp);
+		free_2d(data->envp);
+		data->envp = NULL;
 	}
     free(data);
 }

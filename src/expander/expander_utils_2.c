@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/13 15:46:01 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/14 21:21:51 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ char *replace_env_var(t_data *data, char *content, int i)
         free(result);
         return(new_str);
     }
-    free(result);
     return(result);
 }
 

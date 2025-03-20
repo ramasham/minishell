@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/13 17:09:24 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/19 19:39:23 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void    set_redi(t_command *cmd, t_data *data);
 
 //parser
 int         get_cmd_path(t_command *cmd, t_data *data);
-int         check_access(t_command *cmd, char  *path);
+int         check_access(t_data *data, t_command *cmd, char *path);
 char        *join_path_cmd(char  *path, char *cmd);
 char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
@@ -157,7 +157,7 @@ void    ft_unset(t_data *data, t_command *command);
 //exectuter
 int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
-int     validate_cmd(t_data *data, t_command *cmds);
+int     check_path(t_data *data);
 int    executor(t_data *data);
 int    piping(t_data *data, int **pipe_fd);
 int    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
@@ -197,6 +197,20 @@ t_node    *create_node(const char *token);
 int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
 // void	init_token_and_node(t_data *data, char *token);
+void print_command(t_data *newcmd);
+int execute_builtin_command(t_command *command, t_data *data);
+int backup_and_redirect(t_command *command, t_data *data);
+int restore_redirection(int backup);
+int is_builtin(t_command *command);
+int validation(t_command *cmd, t_data *data);
+int handle_dot_command(t_data *data);
+int handle_dot_slash_command(t_data *data);
+int handle_dot_slash_exec(t_data *data);
+
+
+
+
+
 
 
 

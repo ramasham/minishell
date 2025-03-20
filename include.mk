@@ -10,7 +10,7 @@ SRCS = src/minishell.c src/init_shell.c \
 	src/parser/get_cmd_paths.c src/parser/parser_utils.c src/parser/get_abs_path.c \
 	src/built-ins/built-ins.c src/built-ins/ft_cd.c src/built-ins/ft_echo.c src/built-ins/ft_env.c src/built-ins/ft_exit.c \
 	src/built-ins/ft_export.c src/built-ins/ft_pwd.c src/built-ins/ft_unset.c \
-	src/executor/executor.c  src/executor/executor_utils.c src/executor/pipes.c src/executor/child_process.c \
+	src/executor/executor.c  src/executor/executor_utils.c src/executor/pipes.c src/executor/child_process.c src/executor/dot_slash_cmd.c \
 	src/env.c src/signals.c \
 	utils/free.c utils/linked_list.c utils/utils1.c utils/print.c \
 

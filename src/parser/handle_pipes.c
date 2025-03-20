@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:02:50 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/13 16:59:47 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/15 23:32:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int count_args_before_pipe(t_node *current)
 // Fills the command array with arguments before a pipe ('|')
 void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
 {
-    // malloc newcmd  full_cmd
     int i;
 
     i = 0;
@@ -48,7 +47,6 @@ void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
     if (!new_cmd->full_cmd)
     {
         // free_list_cmd(&new_cmd);
-        // free_full_cmd(new_cmd);
         return;
     }
     while (*current && ft_strcmp((*current)->content, "|") != 0)
@@ -88,7 +86,8 @@ void get_command(t_data *node_lst, t_node *current)
         new_cmd = create_and_initialize_cmd();
         if (!new_cmd)
         {
-            free_list_cmd(node_lst->commands);
+            if (node_lst->commands)
+                free_list_cmd(node_lst->commands);
             return;
         }
         if (process_current_cmd(&current, new_cmd) == -1)

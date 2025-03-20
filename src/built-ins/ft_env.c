@@ -29,5 +29,3 @@ void ft_env(char **env)
         i++;
     }
 }
-
-

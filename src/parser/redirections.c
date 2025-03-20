@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 22:47:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/17 17:02:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,69 @@ void handle_redirections(t_command *cmd, t_data *data)
         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
         {
             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
+            if (cmd->outfile == -1)
+                return;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
         {
             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
+            if (cmd->infile == -1)
+                return;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
-            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1],data);
+            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
             cmd->infile = cmd->heredoc_fd;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
-        i++;
+        else
+        {
+            i++;
+        }
     }
 }
+
+
+
+// void handle_redirections(t_command *cmd, t_data *data)
+// {
+//     int i;
+
+//     i = 0;
+//     cmd->infile = STDIN_FILENO;
+//     cmd->outfile = STDOUT_FILENO;
+//     while (cmd->full_cmd[i])
+//     {
+//         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
+//         {
+//             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//         }
+//         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
+//         {
+//             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//         }
+//         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
+//         {
+//             cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1],data);
+//             cmd->infile = cmd->heredoc_fd;
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//         }
+//         i++;
+//     }
+// }
 
 void set_redi(t_command *cmd, t_data *data)
 {
@@ -84,7 +128,8 @@ int handle_output_redirection(char *operator, char *filename)
     if (fd == -1)
     {
         ft_putstr_fd("Permission denied\n", 2);
-        exit(1);
+        // exit(1);
+        return (-1);
     }
     return (fd);
 }
@@ -102,7 +147,8 @@ int handle_input_redirection(char  *filename)
     if (fd == -1)
     {
         ft_putstr_fd("No such file or directory\n", 2);
-        exit(1);
+        // exit(1);
+        return (-1);
     }
     return (fd);
 }
