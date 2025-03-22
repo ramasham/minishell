@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/11 21:59:45 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:30:19 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ static int	add_new_var(t_data *data, char *var)
 		new_envp[i] = data->envp[i];
 	new_envp[size] = var;
 	new_envp[size + 1] = NULL;
-	// free(data->envp);
+	//free(data->envp);
 	data->envp = new_envp;
 	return (1);
 }

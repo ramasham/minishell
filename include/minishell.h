@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/12 00:21:05 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:29:50 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 //macros
 # define CMD_NOT_FOUND 127
 # define CMD_NOT_EXECUTABLE 126
+# define SPACES " \t\n\v\f\r"
 
 extern int g_exit_status;
 
@@ -79,8 +80,8 @@ typedef struct s_data
 int	init_shell(t_data **data, char **envp);
 
 //lexer
-int     extract_word(const char *content, int i, char *token);
-int     extract_operator(const char *content, int i, char *op);
+int     extract_word(const char *content, int i, char *token, int inside_quotes);
+int     extract_operator(const char *content, int i, char *op, int inside_quotes);
 int     check_unclosed_quotes(t_data *data);
 int     has_invalid_redirection(char *ptr);
 int     check_redirection(t_data *data);
@@ -97,6 +98,9 @@ void    process_content(t_node **new_lst, char *content);
 void	add_token_to_list_split(t_data *data, char *token, int *i);
 void    trim_operators(t_data *data);
 void    split_input(t_data *data);
+void	init_token_and_node(t_data *data, char **token);
+void	process_input(t_data *data, char *ptr, char *token, int *i);
+
 
 //expander
 int     is_q(char c);
@@ -123,7 +127,10 @@ char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
 void        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
+int         is_abs_path(char *cmd);
+int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
+
 //heredoc and it's utils
 int         handle_heredoc(char *delimiter , t_data *data);
 void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
@@ -186,7 +193,9 @@ void      print_list(t_node *head);
 void      init_data(t_data *data);
 void	  free_list(t_node **node);
 t_node    *create_node(const char *token);
+int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
+void print_command(t_data *newcmd);
 
 
 

@@ -6,11 +6,12 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/10 21:11:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/11 21:59:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 char    **find_path(t_data *data)
 {
@@ -47,25 +48,6 @@ int     check_access(t_command *cmd, char  *path)
     return (1);
 }
 
-// int     check_access(t_command *cmd, char  *path)
-// {
-//     if (!path)
-//         return (1);
-//     if (access(path, X_OK) == 0)
-//     {
-//         cmd->full_path = ft_strdup(path);
-//         if (!cmd->full_path)
-//         {
-//             free(path);
-//             return (1);
-//         }
-//         free(path);
-//         return (0);
-//     }
-//     free(path);
-//     return (1);
-// }
-
 char    *join_path_cmd(char  *path, char *cmd)
 {
     char    *temp;
@@ -95,6 +77,8 @@ int    get_cmd_path(t_command *cmd, t_data *data)
     char    **paths;
     int     i;
     
+    if (is_abs_path(cmd->full_cmd[0]))
+        return(handle_abs_path(cmd));
     paths = find_path(data);
     if (!paths)
         return (1);

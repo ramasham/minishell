@@ -1,39 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   get_abs_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 00:48:07 by rsham            ###   ########.fr       */
+/*   Created: 2025/03/11 21:59:18 by rsham             #+#    #+#             */
+/*   Updated: 2025/03/11 22:02:49 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    validate_input(t_data *data)
+int is_abs_path(char *cmd)
 {
-    if (operator_at_start(data))
-        return (1);   
-    if (check_unclosed_quotes(data))
-        return (1);
-    if (check_multiple_pipes(data))
-        return (1);
-    if (check_redirection(data))
-        return (1);
-    if (operator_at_end(data))
-        return (1);
-    if (check_append_heredoc(data))
+    if (!cmd)
+        return (0);
+    if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
         return (1);
     return (0);
 }
 
-int  tokenizer(t_data *data)
+int handle_abs_path(t_command *cmd)
 {
-    if (validate_input(data))
+    if (!cmd || !cmd->full_cmd[0])
         return (1);
-    split_input(data);
-    trim_operators(data);
-    return (0);
+    if (access(cmd->full_cmd[0], X_OK) == 0)
+    {
+        cmd->full_path = ft_strdup(cmd->full_cmd[0]);
+        if(!cmd->full_path)
+            return (1);
+        return (0);
+    }
+    return (1);
 }

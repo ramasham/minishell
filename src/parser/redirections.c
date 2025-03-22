@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 00:20:23 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:31:18 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void handle_redirections(t_command *cmd, t_data *data)
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
-            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1],data);
+            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i],data);
             cmd->infile = cmd->heredoc_fd;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
@@ -45,7 +45,7 @@ void handle_redirections(t_command *cmd, t_data *data)
 }
 
 void set_redi(t_command *cmd, t_data *data)
-{
+{  
     handle_redirections(cmd, data);
     
     if (cmd->infile != STDIN_FILENO)

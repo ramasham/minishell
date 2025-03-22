@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/10 21:15:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/12 00:46:58 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	process_empty_input(char *input)
 {
 	if (!input)
 		return (1);
-	if (input[0] == '\0')
+	if (input[0] == '\0' || is_space_str(input))
 	{
 		free(input);
 		return (1);
@@ -62,6 +62,5 @@ int	main(int argc, char **argv, char **envp)
 		minishell_loop(data);
 	}
 	cleanup_shell(data);
-	// free(data);
 	return (0);
 }

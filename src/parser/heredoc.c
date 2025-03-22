@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/12 00:09:14 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/18 21:31:12 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,26 @@ int	setup_heredoc_pipe(int pipe_fd[2])
 }
 
 // Process each line of heredoc input
-int	process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter)
+int process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter)
 {
-	if (!line)
-		return (-1);
-	if (is_quoted_delimiter(delimiter))
-	{
-		line = expand_heredoc_line(line, data);
-		if (!line)
-			return (-1);
-	}
-	write_heredoc_to_pipe(line, pipe_fd);
-	return (0);
+    if (!line)
+        return (-1);
+    // Only expand the line if the delimiter is not quoted
+    if (!is_quoted_delimiter(delimiter))
+    {
+        line = expand_heredoc_line(line, data);
+        if (!line)
+            return (-1);
+    }
+    write_heredoc_to_pipe(line, pipe_fd);
+    return (0);
 }
 
 // Read input from the user until the delimiter is found
 int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 {
 	char	*line;
-
+	
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
@@ -71,7 +72,7 @@ int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 int	handle_heredoc(char *delimiter, t_data *data)
 {
 	int	pipe_fd[2];
-
+	
 	if (!delimiter)
 		return (-1);
 	if (setup_heredoc_pipe(pipe_fd) == -1)
