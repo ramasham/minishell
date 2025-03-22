@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/18 21:29:50 by laburomm         ###   ########.fr       */
+/*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
+/*   Updated: 2025/03/22 23:39:54 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <sys/wait.h> 
 # include <signal.h>
+#include <sys/stat.h>
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -99,7 +100,6 @@ void	add_token_to_list_split(t_data *data, char *token, int *i);
 void    trim_operators(t_data *data);
 void    split_input(t_data *data);
 void	init_token_and_node(t_data *data, char **token);
-void	process_input(t_data *data, char *ptr, char *token, int *i);
 
 
 //expander
@@ -121,7 +121,7 @@ void    set_redi(t_command *cmd, t_data *data);
 
 //parser
 int         get_cmd_path(t_command *cmd, t_data *data);
-int         check_access(t_command *cmd, char  *path);
+int         check_access(t_data *data, t_command *cmd, char *path);
 char        *join_path_cmd(char  *path, char *cmd);
 char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
@@ -156,14 +156,19 @@ void    ft_unset(t_data *data, t_command *command);
 //exectuter
 int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
-int     validate_cmd(t_data *data, t_command *cmds);
-void    executor(t_data *data);
+int     check_path(t_data *data);
+int    executor(t_data *data);
 int    piping(t_data *data, int **pipe_fd);
+// int child_process(t_data *data, pid_t *pids, int *pipe_fd, int index) ;
 int    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
 int    create_children(t_data *data, int *pipe_fd, pid_t *pids);
 void    close_pipes(int *pipe_fd, int cmd_count);
 int    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
 void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
+int handle_dot_command(t_data *data);
+int handle_dot_slash_command(t_data *data);
+int handle_dot_slash_exec(t_data *data);
+
 
 //signals
 int     handle_eof(char *input);
@@ -196,6 +201,11 @@ t_node    *create_node(const char *token);
 int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
 void print_command(t_data *newcmd);
+
+
+
+
+
 
 
 

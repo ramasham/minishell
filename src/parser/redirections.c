@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/18 21:31:18 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/22 23:46:10 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,36 @@ void handle_redirections(t_command *cmd, t_data *data)
         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
         {
             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
+            if (cmd->outfile == -1)
+                return;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
         {
             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
+            if (cmd->infile == -1)
+                return;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
-            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i],data);
+            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
             cmd->infile = cmd->heredoc_fd;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
+            i += 2;
         }
-        i++;
+        else
+        {
+            i++;
+        }
     }
 }
+
 
 void set_redi(t_command *cmd, t_data *data)
 {  
@@ -84,7 +95,7 @@ int handle_output_redirection(char *operator, char *filename)
     if (fd == -1)
     {
         ft_putstr_fd("Permission denied\n", 2);
-        exit(1);
+        return (-1);
     }
     return (fd);
 }
@@ -102,7 +113,7 @@ int handle_input_redirection(char  *filename)
     if (fd == -1)
     {
         ft_putstr_fd("No such file or directory\n", 2);
-        exit(1);
+        return (-1);
     }
     return (fd);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 01:08:12 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/15 23:25:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void add_token_to_list(t_node **new_lst, char *token)
 {
-    t_node  *new_node;
+    t_node *new_node;
 
     if (token[0] != '\0')
     {
         new_node = create_node(token);
-        if (new_node)
-            ft_nodeadd_back(new_lst, new_node);
+        if (!new_node)
+            return;
+        ft_nodeadd_back(new_lst, new_node);
     }
 }
 
@@ -63,10 +64,8 @@ void process_content(t_node **new_lst, char *content)
     {
         if (content[i] == '"' || content[i] == '\'')
             inside_quotes = !inside_quotes;
-        
         i = extract_word(content, i, token, inside_quotes);
         add_token_to_list(new_lst, token);
-
         if (!inside_quotes && (content[i] == '|' || content[i] == '>' || content[i] == '<'))
         {
             i = extract_operator(content, i, op, inside_quotes);
@@ -88,5 +87,6 @@ void trim_operators(t_data *data)
         current = current->next;
     }
     free_list(data->node);
+    // *(data->node) = NULL;
     *(data->node) = new_lst;
 }

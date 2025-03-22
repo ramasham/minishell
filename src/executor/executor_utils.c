@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 20:04:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/21 02:00:58 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,26 @@ int is_redirection(t_command *cmd)
     return (0);
 }
 
-int     validate_cmd(t_data *data, t_command *cmds)
+int check_path(t_data *data)
 {
-    if (get_cmd_path(cmds, data))
+    int result;
+
+    result = get_cmd_path(*data->commands, data);
+    if (result == CMD_NOT_EXECUTABLE) 
     {
-        cmd_not_found_msg(cmds);
-        data->last_exit_status = CMD_NOT_FOUND;
-        return (data->last_exit_status);
-    }
-    if (!cmds->full_path)
-    {
-        data->last_exit_status = 1;
-        return (data->last_exit_status);
-    }
-    if (access(cmds->full_path, F_OK) == -1)
-    {
-        perror(cmds->full_path);
-        data->last_exit_status = CMD_NOT_FOUND;
-        // exit(data->last_exit_status);
-        return (data->last_exit_status);
-    }
-    if (access(cmds->full_path, X_OK) == -1)
-    {
-        ft_putstr_fd(": Permission denied\n", 2);
+        // free_list_cmd(data->commands);
+        // free(data->commands);
+        // data->commands = NULL;  
         data->last_exit_status = CMD_NOT_EXECUTABLE;
-        // exit(data->last_exit_status);
+        return (data->last_exit_status);
+    }
+    if (result != 0)
+    {
+        cmd_not_found_msg(*data->commands);
+        // free_list_cmd(data->commands);
+        // free(data->commands);
+        // data->commands = NULL;  
+        data->last_exit_status = CMD_NOT_FOUND;
         return (data->last_exit_status);
     }
     return (0);

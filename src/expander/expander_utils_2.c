@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/18 21:30:44 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/22 23:41:34 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int process_env_var(t_node *current, int *i, int in_single, t_data *data)
         return(1);
     free(current->content);
     current->content = new_content;
+    // free(new_content); //can't free it
     return (0); 
 }
 

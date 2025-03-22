@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:09:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/05 00:34:05 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/21 01:07:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int     trim_quotes(t_node *node)
 
     if (!node->content)
         return(1);
-    
     if (node->content[0] == '\'' && node->content[ft_strlen(node->content) - 1] == '\'')
     {
         trimmed = ft_strtrim(node->content, "'");
         free(node->content);
         node->content = trimmed;
+        // free(trimmed);
         return (0);
     }
     return (1);

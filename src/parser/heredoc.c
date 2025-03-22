@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/18 21:31:12 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/22 23:45:24 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimit
 int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 {
 	char	*line;
-	
+
+	printf("del 2 %s:\n", delimiter);
 	while (1)
 	{
 		ft_putstr_fd("> ", 1);
@@ -65,6 +66,7 @@ int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter)
 		}
 		if (process_heredoc_line(line, pipe_fd, data, delimiter) == -1)
 			return (-1);
+		
 	}
 	return (0);
 }

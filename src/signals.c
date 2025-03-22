@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <rsham@student.42amman.com>         +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:03:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/08 23:43:21 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/20 21:47:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void handle_sigint(int sig)
 void handle_sigquit(int sig)
 {
     (void)sig;
+    ft_putstr_fd("Quit (core dumped)\n", 2);
     g_exit_status = 131;
 }
 

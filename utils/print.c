@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 19:04:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 23:02:18 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/17 15:58:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,45 @@ void    print_list(t_node *head)
     }
 }
 
+// void print_command(t_data *newcmd)
+// {
+//     int i = 0;
+//     if (!newcmd || !newcmd->commands)
+//         return;
+
+//     t_command *current = *newcmd->commands;
+//     while (current)
+//     {
+//         ft_printf("%d: command is %s \n", i, current->full_cmd);
+//         current = current->next;
+//         i++;
+//     }
+// }
+
 void print_command(t_data *newcmd)
 {
     int i = 0;
+
     if (!newcmd || !newcmd->commands)
         return;
 
     t_command *current = *newcmd->commands;
     while (current)
     {
-        ft_printf("%d: command is %s ", i, current->full_cmd);
+        ft_printf("%d: command is ", i);
+        if (current->full_cmd) // Ensure full_cmd is not NULL
+        {
+            int j = 0;
+            while (current->full_cmd[j]) // Iterate over the array of strings
+            {
+                ft_printf("%s ", current->full_cmd[j]);
+                j++;
+            }
+        }
+        ft_printf("\n");
         current = current->next;
         i++;
     }
 }
+
 

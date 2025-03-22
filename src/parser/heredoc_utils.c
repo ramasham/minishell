@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/18 21:31:02 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/22 23:38:44 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ int	process_delimiter(char *line, char *delimiter)
 	size_t	line_len;
 	ft_printf("delimiter in proccess deli is %s\n", delimiter);
 
+	printf("del %s:\n", delimiter);
 	if (!line || !delimiter)
 		return (0);
 	delim_len = ft_strlen(delimiter);
 	line_len = ft_strlen(line);
+	// printf("del %s:\n", delimiter);
 	if (line_len == 0 || line_len - 1 != delim_len)
 		return (0);
 	return (ft_strncmp(line, delimiter, delim_len) == 0);

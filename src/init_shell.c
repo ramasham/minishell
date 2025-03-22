@@ -23,6 +23,40 @@ void    init_data(t_data *data)
     data->heredoc = NULL;
 }
 
+void	free_env(char **envp)
+{
+	int i;
+
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
+}
+char **get_env(char **envp)
+{
+	int		size;
+	char	**new_envp;
+    int i;
+    
+	size = 0;
+	while (envp[size])
+		size++;
+	new_envp = malloc(sizeof(char *) * ++size);
+	i = 0;
+	while (envp[i])
+	{
+		size = ft_strlen(envp[i]);
+		new_envp[i] = malloc(sizeof(char)*size + 1);
+		ft_strcpy(new_envp[i],envp[i]);
+		i++;
+ 	}
+	new_envp[i] = NULL;
+	return (new_envp);
+}
+
 int	init_shell(t_data **data, char **envp)
 {
 	*data = malloc(sizeof(t_data));
@@ -32,6 +66,11 @@ int	init_shell(t_data **data, char **envp)
 		return (1);
 	}
 	init_data(*data);
-	(*data)->envp = envp;
+	(*data)->envp = get_env(envp);
+	if (!(*data)->envp)
+	{
+		free(*data);
+		return (1);
+	}
 	return (0);
 }
