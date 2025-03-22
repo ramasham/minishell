@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:02:50 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/20 23:58:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/22 22:17:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
     if (!new_cmd->full_cmd)
     {
         // free_list_cmd(&new_cmd);
+        free(new_cmd);
         return;
     }
     while (*current && ft_strcmp((*current)->content, "|") != 0)
@@ -87,12 +88,16 @@ void get_command(t_data *node_lst, t_node *current)
         if (!new_cmd)
         {
             if (node_lst->commands)
+            {
                 free_list_cmd(node_lst->commands);
+                free(node_lst->commands);
+            }
             return;
         }
         if (process_current_cmd(&current, new_cmd) == -1)
         {
             free_list_cmd(node_lst->commands);
+            free(node_lst->commands);
             free(new_cmd);
             return ;
         }
@@ -101,5 +106,6 @@ void get_command(t_data *node_lst, t_node *current)
             current = current->next;
     }
     free_list(node_lst->node);
+    free(node_lst->node);
     node_lst->node = NULL;
 }

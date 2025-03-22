@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/21 02:02:45 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/22 22:29:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_data
     int         cmd_count;
     char        **envp;
     char        *heredoc;
+    int         *pipe_fd;
+    pid_t       *pids;
 } t_data;
 
 //shell
@@ -158,16 +160,29 @@ int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
 int     check_path(t_data *data);
 int    executor(t_data *data);
-int    piping(t_data *data, int **pipe_fd);
+// int    piping(t_data *data, int **pipe_fd);
 // int child_process(t_data *data, pid_t *pids, int *pipe_fd, int index) ;
-int    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
-int    create_children(t_data *data, int *pipe_fd, pid_t *pids);
-void    close_pipes(int *pipe_fd, int cmd_count);
-int    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
-void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
+// int    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
+// int    create_children(t_data *data, int *pipe_fd, pid_t *pids);
+// void    close_pipes(int *pipe_fd, int cmd_count);
+// int    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
+// void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
 int handle_dot_command(t_data *data);
 int handle_dot_slash_command(t_data *data);
 int handle_dot_slash_exec(t_data *data);
+int    execution_process(t_data *data);
+int piping(t_data *data);
+void close_pipes(t_data *data, int cmd_count);
+void    wait_for_children(t_data  *data, int cmd_count, int *exit_status);
+void handle_dup2(t_command *cmd, t_data *data, int index);
+int child_process(t_data *data, t_command *cmd, int index);
+int  create_children(t_data *data);
+
+
+
+
+
+
 
 
 //signals
@@ -188,6 +203,8 @@ void	free_full_cmd(t_command *cmd);
 void	free_list_cmd(t_command **cmds);
 void    free_2d(char **str);
 void	cleanup_shell(t_data *data);
+void	free_env(char **envp);
+
 
 
 //utils

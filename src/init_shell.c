@@ -28,6 +28,8 @@ void	free_env(char **envp)
 	int i;
 
 	i = 0;
+	if (!envp)
+		return;
 	while (envp[i])
 	{
 		free(envp[i]);

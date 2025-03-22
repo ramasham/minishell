@@ -37,7 +37,10 @@ void add_command(t_data *data, t_command *new_cmd)
     {
         data->commands = malloc(sizeof(t_command *));
         if (!data->commands)
+        {
+            free(new_cmd);//
             return;
+        }
         *data->commands = NULL;
     }
     tmp = data->commands;
