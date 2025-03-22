@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:25 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/18 22:19:42 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:15:06 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int    operator_at_end(t_data *data)
 int    operator_at_start(t_data *data)
 {
     char    *ptr;
-    char    *operators;
-    int     i;
+    // char    *operators;
+    // int     i;
     
-    i = 0;
-    operators = "|<>";
+    // i = 0;
+    // operators = "|<>";
     ptr = data->input;
     if (ptr[0] == '<' && ptr [1] == '<')
     {
