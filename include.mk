@@ -37,5 +37,3 @@ SRCS= \
 	utils/linked_list.c \
 	utils/utils1.c \
 	utils/print.c \
-
-

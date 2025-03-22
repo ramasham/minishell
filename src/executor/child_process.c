@@ -6,13 +6,13 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 23:40:49 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/23 00:13:30 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    wait_for_children(t_data  *data, pid_t *pids, int cmd_count, int *exit_status)
+void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
 {
     int i;
     int status;
@@ -20,7 +20,7 @@ void    wait_for_children(t_data  *data, pid_t *pids, int cmd_count, int *exit_s
     i = 0;
     while (i < cmd_count)
     {
-        waitpid(pids[i], &status, 0);
+        waitpid(data->pids[i], &status, 0);
         if (WIFEXITED(status))
         {
             *exit_status = WEXITSTATUS(status);
@@ -35,59 +35,42 @@ void    wait_for_children(t_data  *data, pid_t *pids, int cmd_count, int *exit_s
     }
 }
 
-static void handle_dup2(t_command *cmd, t_data *data, int *pipe_fd, int index)
+void handle_dup2(t_command *cmd, t_data *data, int index)
 {
     set_redi(cmd, data);
     if (cmd->heredoc_fd != -1 && cmd->infile == STDIN_FILENO && index > 0)
-        dup2(pipe_fd[(index - 1) * 2], STDIN_FILENO);
+        dup2(data->pipe_fd[(index - 1) * 2], STDIN_FILENO);
     if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
-        dup2(pipe_fd[(index * 2) + 1], STDOUT_FILENO);
+        dup2(data->pipe_fd[(index * 2) + 1], STDOUT_FILENO);
 }
 
-int child_process(t_data *data, t_command *cmd, int *pipe_fd, int index) 
+int child_process(t_data *data, t_command *cmd, int index) 
 {
-    handle_dup2(cmd, data, pipe_fd, index);
-    if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
-        ft_exit(cmd, data);
-    get_cmd_path(cmd, data);
+    (void)cmd;
+    handle_dup2((*data->commands), data, index);
+    if (ft_strcmp((*data->commands)->full_cmd[0], "exit") == 0)
+        ft_exit((*data->commands), data);
+    get_cmd_path((*data->commands), data);
     if (check_path(data) != 0)
     {
-        free_list_cmd(&cmd);
+        free(data->pipe_fd);
+        free(data->pids);
+        // free_list_cmd(&cmd);
+        free_list_cmd(data->commands);
+        free(data->commands);
+        data->commands = NULL;
         exit(data->last_exit_status);
     }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
-    execve(cmd->full_path, cmd->full_cmd, data->envp);
-    perror("execve failed");
-    cleanup_shell(data);
+    execve((*data->commands)->full_path, (*data->commands)->full_cmd, data->envp);
+    free(data->pipe_fd);;
+    free(data->pids);
     exit(data->last_exit_status);
 }
 
-// int child_process(t_data *data, pid_t *pids, int *pipe_fd, int index) 
-// {
-//     (void)pids;
-//     handle_dup2(*data->commands, data, pipe_fd, index);
-//     if (ft_strcmp((*data->commands)->full_cmd[0], "exit") == 0)
-//         ft_exit(*data->commands, data);
-//     get_cmd_path(*data->commands, data);
-//     if (check_path(data) != 0)
-//     {
-//         free(pipe_fd);
-//         // free(pids);
-//         // free_list_cmd(data->commands);
-//         // free(data->commands);
-//         // data->commands = NULL;
-//         exit(data->last_exit_status);
-//     }
-//     signal(SIGINT, SIG_DFL);
-//     signal(SIGQUIT, SIG_DFL);
-//     execve((*data->commands)->full_path, (*data->commands)->full_cmd, data->envp);
-//     perror("execve failed");
-//     cleanup_shell(data);
-//     exit(data->last_exit_status);
-// }
 
-int  create_children(t_data *data, int *pipe_fd, pid_t *pids)
+int  create_children(t_data *data)
 {
     t_command *cmd;
     int i;
@@ -96,25 +79,33 @@ int  create_children(t_data *data, int *pipe_fd, pid_t *pids)
     cmd = (*data->commands);
     while (cmd)
     {
-        pids[i] = fork();
-        if (pids[i] == -1)
+        data->pids[i] = fork();
+        if (data->pids[i] == -1)
         {
             perror("fork failed");
+            free(data->pipe_fd);
+            free(data->pids);
             free_list_cmd(data->commands);
+            free(data->commands);
+            data->commands = NULL;
+            data->pipe_fd = NULL;
+            data->pids = NULL;
             return(1);
         }
-        if (pids[i] == 0)
+        if (data->pids[i] == 0)
         {
             if (i > 0)
-                dup2(pipe_fd[(i - 1) * 2], STDIN_FILENO);
+                dup2(data->pipe_fd[(i - 1) * 2], STDIN_FILENO);
             if (i < data->cmd_count - 1)
-                dup2(pipe_fd[i * 2 + 1], STDOUT_FILENO);
-            close_pipes(pipe_fd, data->cmd_count);
-            if (child_process(data, cmd, pipe_fd, i))
+                dup2(data->pipe_fd[i * 2 + 1], STDOUT_FILENO);
+            close_pipes(data, data->cmd_count);
+            if (child_process(data, cmd, i))
             {
-                free(pids);
-                free(pipe_fd);
+                free(data->pids);
+                free(data->pipe_fd);
                 free_list_cmd(data->commands);
+                free(data->commands);
+                data->commands = NULL;
                 exit(1);
             }
         }
