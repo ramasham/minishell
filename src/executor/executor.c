@@ -6,19 +6,45 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/23 00:13:40 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/24 01:41:34 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    execution_process(t_data *data)
+// int    execution_process(t_data *data)
+// {
+//     if (piping(data))
+//     {
+//         free(data->pipe_fd);
+//         data->pipe_fd = NULL;
+//         return(1);
+//     }
+//     if (create_children(data))
+//     {
+//         free(data->pipe_fd);
+//         free(data->pids);
+//         data->pipe_fd = NULL;
+//         data->pids = NULL;
+//         return(1);
+//     }
+//     close_pipes(data, data->cmd_count);
+//     return (0);
+// }
+
+int execution_process(t_data *data)
 {
     if (piping(data))
     {
         free(data->pipe_fd);
         data->pipe_fd = NULL;
-        return(1);
+        return (1);
+    }
+    if (data->heredoc_delimiter)
+    {
+        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
+        if (data->heredoc_fd == -1)
+            return (1);
     }
     if (create_children(data))
     {
@@ -26,7 +52,7 @@ int    execution_process(t_data *data)
         free(data->pids);
         data->pipe_fd = NULL;
         data->pids = NULL;
-        return(1);
+        return (1);
     }
     close_pipes(data, data->cmd_count);
     return (0);
@@ -82,6 +108,30 @@ int execute_pipeline(t_data *data)
 }
 
 
+// int executor(t_data *data)
+// {
+//     int exit_status;
+//     int dot_slash_status;
+
+//     dot_slash_status = handle_dot_slash_exec(data);
+//     if (dot_slash_status != 0)
+//     {
+//         return (dot_slash_status);
+//     }
+//     exit_status = not_pipeline(data);
+//     if (exit_status != -1)
+//     {
+//         free_list_cmd(data->commands);
+//         free(data->commands);
+//         data->commands = NULL;
+//         return (exit_status);
+//     }
+//     else
+//     {
+//         execute_pipeline(data);
+//     }
+//     return (data->last_exit_status);
+// }
 int executor(t_data *data)
 {
     int exit_status;

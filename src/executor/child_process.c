@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/23 00:13:30 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/24 01:24:34 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,52 @@ void handle_dup2(t_command *cmd, t_data *data, int index)
         dup2(data->pipe_fd[(index * 2) + 1], STDOUT_FILENO);
 }
 
-int child_process(t_data *data, t_command *cmd, int index) 
+// int child_process(t_data *data, t_command *cmd, int index) 
+// {
+//     (void)cmd;
+//     handle_dup2((*data->commands), data, index);
+    
+//     if (ft_strcmp((*data->commands)->full_cmd[0], "exit") == 0)
+//         ft_exit((*data->commands), data);
+//     get_cmd_path((*data->commands), data);
+//     if (check_path(data) != 0)
+//     {
+//         free(data->pipe_fd);
+//         free(data->pids);
+//         // free_list_cmd(&cmd);
+//         free_list_cmd(data->commands);
+//         free(data->commands);
+//         data->commands = NULL;
+//         exit(data->last_exit_status);
+//     }
+//     signal(SIGINT, SIG_DFL);
+//     signal(SIGQUIT, SIG_DFL);
+//     execve((*data->commands)->full_path, (*data->commands)->full_cmd, data->envp);
+//     free(data->pipe_fd);;
+//     free(data->pids);
+//     exit(data->last_exit_status);
+// }
+ 
+int child_process(t_data *data, t_command *cmd, int index)
 {
-    (void)cmd;
-    handle_dup2((*data->commands), data, index);
-    if (ft_strcmp((*data->commands)->full_cmd[0], "exit") == 0)
-        ft_exit((*data->commands), data);
-    get_cmd_path((*data->commands), data);
+    handle_dup2(cmd, data, index);
+    if (cmd->infile != STDIN_FILENO)
+    {
+        dup2(cmd->infile, STDIN_FILENO);
+        close(cmd->infile);
+    }
+    if (cmd->outfile != STDOUT_FILENO)
+    {
+        dup2(cmd->outfile, STDOUT_FILENO);
+        close(cmd->outfile);
+    }
+    if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
+        ft_exit(cmd, data);
+    get_cmd_path(cmd, data);
     if (check_path(data) != 0)
     {
         free(data->pipe_fd);
         free(data->pids);
-        // free_list_cmd(&cmd);
         free_list_cmd(data->commands);
         free(data->commands);
         data->commands = NULL;
@@ -63,12 +97,11 @@ int child_process(t_data *data, t_command *cmd, int index)
     }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
-    execve((*data->commands)->full_path, (*data->commands)->full_cmd, data->envp);
-    free(data->pipe_fd);;
+    execve(cmd->full_path, cmd->full_cmd, data->envp);
+    free(data->pipe_fd);
     free(data->pids);
     exit(data->last_exit_status);
 }
-
 
 int  create_children(t_data *data)
 {

@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 23:46:10 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/23 02:26:24 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void handle_redirections(t_command *cmd, t_data *data)
     i = 0;
     cmd->infile = STDIN_FILENO;
     cmd->outfile = STDOUT_FILENO;
+
     while (cmd->full_cmd[i])
     {
         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
