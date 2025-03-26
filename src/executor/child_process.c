@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 22:49:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/24 01:24:34 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void handle_dup2(t_command *cmd, t_data *data, int index)
     if (cmd->outfile == STDOUT_FILENO && index < data->cmd_count - 1)
         dup2(data->pipe_fd[(index * 2) + 1], STDOUT_FILENO);
 }
-
-int child_process(t_data *data, t_command *cmd, int index) 
+ 
+int child_process(t_data *data, t_command *cmd, int index)
 {
     handle_dup2(cmd, data, index);
     if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
@@ -63,13 +63,14 @@ int child_process(t_data *data, t_command *cmd, int index)
     signal(SIGQUIT, SIG_DFL);
     execve(cmd->full_path, cmd->full_cmd, data->envp);
     free(data->pipe_fd);
+    execve(cmd->full_path, cmd->full_cmd, data->envp);
+    free(data->pipe_fd);
     free(data->pids);
     free_list_cmd(data->commands);
     free(data->commands);
     free_env(data->envp);
     exit(data->last_exit_status);
 }
-
 
 int  create_children(t_data *data)
 {

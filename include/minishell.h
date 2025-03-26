@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 22:29:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/24 00:11:59 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ typedef struct s_data
     int         cmd_count;
     char        **envp;
     char        *heredoc;
+    char        *heredoc_delimiter;
+    int         heredoc_fd;
     int         *pipe_fd;
     pid_t       *pids;
     int         stdin_backup;

@@ -3,22 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 23:30:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/24 01:41:34 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    execution_process(t_data *data)
+int execution_process(t_data *data)
 {
     if (piping(data))
     {
         free(data->pipe_fd);
         data->pipe_fd = NULL;
-        return(1);
+        return (1);
+    }
+    if (data->heredoc_delimiter)
+    {
+        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
+        if (data->heredoc_fd == -1)
+            return (1);
     }
     if (create_children(data))
     {
@@ -26,7 +32,7 @@ int    execution_process(t_data *data)
         free(data->pids);
         data->pipe_fd = NULL;
         data->pids = NULL;
-        return(1);
+        return (1);
     }
     close_pipes(data, data->cmd_count);
     return (0);
@@ -64,6 +70,12 @@ int execute_pipeline(t_data *data)
         data->pipe_fd = NULL;
         return (data->last_exit_status);
     }
+    if (data->heredoc_delimiter)
+    {
+        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
+        if (data->heredoc_fd == -1)
+            return (1);
+    }
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
     free(data->pids);
     free(data->pipe_fd);
@@ -75,7 +87,6 @@ int execute_pipeline(t_data *data)
     data->commands = NULL;
     return (data->last_exit_status);
 }
-
 
 int executor(t_data *data)
 {
