@@ -37,42 +37,49 @@ void	free_env(char **envp)
 	}
 	free(envp);
 }
-char **get_env(char **envp)
+
+
+
+void get_env(t_data *data, char **envp)
 {
-	int		size;
-	char	**new_envp;
+    int size = 0;
     int i;
+
+    while (envp[size])
+        size++;
+    data->envp = malloc(sizeof(char *) * (size + 1)); // Allocate memory for envp
+    if (!data->envp)
+        return;
     
-	size = 0;
-	while (envp[size])
-		size++;
-	new_envp = malloc(sizeof(char *) * ++size);
-	i = 0;
-	while (envp[i])
-	{
-		size = ft_strlen(envp[i]);
-		new_envp[i] = malloc(sizeof(char)*size + 1);
-		ft_strcpy(new_envp[i],envp[i]);
-		i++;
- 	}
-	new_envp[i] = NULL;
-	return (new_envp);
+    i = 0;
+    while (envp[i])
+    {
+        size = ft_strlen(envp[i]);
+        data->envp[i] = malloc(sizeof(char) * (size + 1)); // Allocate memory for each string
+        if (!data->envp[i]) // Handle malloc failure
+        {
+            while (--i >= 0)
+                free(data->envp[i]);
+            free(data->envp);
+            data->envp = NULL;
+            return;
+        }
+        ft_strcpy(data->envp[i], envp[i]);
+        i++;
+    }
+    data->envp[i] = NULL;
 }
 
-int	init_shell(t_data **data, char **envp)
+
+int	init_shell(t_data *data, char **envp)
 {
-	*data = malloc(sizeof(t_data));
-	if (!*data)
-	{
-		perror("minishell");
-		return (1);
-	}
-	init_data(*data);
-	(*data)->envp = get_env(envp);
-	if (!(*data)->envp)
-	{
-		free(*data);
-		return (1);
-	}
+	// *data = malloc(sizeof(t_data));
+	// if (!*data)
+	// {
+	// 	perror("minishell");
+	// 	return (1);
+	// }
+	init_data(data);
+	get_env(data, envp);
 	return (0);
 }

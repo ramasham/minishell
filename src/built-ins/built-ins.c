@@ -12,62 +12,53 @@
 
 #include "minishell.h"
 
+int is_builtinn(char *cmd)
+{
+    return (cmd && (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
+            !ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") ||
+            !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") ||
+            !ft_strcmp(cmd, "exit")));
+}
+
+void execute_builtins(t_command *command, t_data *data)
+{
+    if (!command || !command->full_cmd || !command->full_cmd[0])
+        return;
+    if (!ft_strcmp(command->full_cmd[0], "echo"))
+        ft_echo(data, command);
+    else if (!ft_strcmp(command->full_cmd[0], "cd"))
+        ft_cd(data, command->full_cmd[1]);
+    else if (!ft_strcmp(command->full_cmd[0], "pwd"))
+        ft_pwd();
+    else if (!ft_strcmp(command->full_cmd[0], "export"))
+        ft_export(data, command);
+    else if (!ft_strcmp(command->full_cmd[0], "unset"))
+        ft_unset(data, command);
+    else if (!ft_strcmp(command->full_cmd[0], "env"))
+        ft_env(data->envp);
+    else if (!ft_strcmp(command->full_cmd[0], "exit"))
+        ft_exit(command, data);
+}
+
 int built_ins(t_command *command, t_data *data)
 {
-    int stdin_backup = -1;
-    int stdout_backup = -1;
+    int stdin_backup;
+    int stdout_backup;
 
+    stdin_backup = -1;
+    stdout_backup = -1;
     if (!command || !command->full_cmd || !command->full_cmd[0])
         return (0);
-
-    // If it's a built-in command, apply redirection
-    if (ft_strcmp(command->full_cmd[0], "echo") == 0 || 
-        ft_strcmp(command->full_cmd[0], "cd") == 0 ||
-        ft_strcmp(command->full_cmd[0], "pwd") == 0 ||
-        ft_strcmp(command->full_cmd[0], "export") == 0 ||
-        ft_strcmp(command->full_cmd[0], "unset") == 0 ||
-        ft_strcmp(command->full_cmd[0], "env") == 0 ||
-        ft_strcmp(command->full_cmd[0], "exit") == 0)
-    {
-        // Backup original stdin and stdout before redirecting
-        stdin_backup = dup(STDIN_FILENO);
-        stdout_backup = dup(STDOUT_FILENO);
-        
-        // Apply redirection for the built-in command
-        set_redi(command, data);
-    }
-
-    // Execute the built-in command
-    if (ft_strcmp(command->full_cmd[0], "echo") == 0)
-        ft_echo(command);
-    else if (ft_strcmp(command->full_cmd[0], "cd") == 0)
-        ft_cd(data, command->full_cmd[1]);
-    else if (ft_strcmp(command->full_cmd[0], "pwd") == 0)
-        ft_pwd();
-    else if (ft_strcmp(command->full_cmd[0], "export") == 0)
-        ft_export(data, command);
-    else if (ft_strcmp(command->full_cmd[0], "unset") == 0)
-        ft_unset(data, command);
-    else if (ft_strcmp(command->full_cmd[0], "env") == 0)
-        ft_env(data->envp);
-    else if (ft_strcmp(command->full_cmd[0], "exit") == 0)
-    {
-        ft_exit(command, data);
-        return (1);
-    }
-    else
+    if (!is_builtinn(command->full_cmd[0]))
         return (0);
-
-    // Restore original stdin and stdout after built-in command execution
-    if (stdin_backup != -1)
-    {
-        dup2(stdin_backup, STDIN_FILENO);
-        dup2(stdout_backup, STDOUT_FILENO);
-        close(stdin_backup);
-        close(stdout_backup);
-    }
-
-    data->last_exit_status = 0;
+    stdin_backup = dup(STDIN_FILENO);
+    stdout_backup = dup(STDOUT_FILENO);
+    set_redi(command, data);
+    execute_builtins(command, data);
+    dup2(stdin_backup, STDIN_FILENO);
+    dup2(stdout_backup, STDOUT_FILENO);
+    close(stdin_backup);
+    close(stdout_backup);
     return (1);
 }
 

@@ -31,22 +31,22 @@ void	free_full_cmd(t_command *cmd)
 {
 	int	i;
 
-	if (cmd)
+	if (!cmd)
+		return;
+	if (cmd->full_cmd)
 	{
-		if (cmd->full_cmd)
-		{
-			i = 0;
-			while (cmd->full_cmd[i])
-			{
-				free(cmd->full_cmd[i]);
-				i++;
-			}
-			free(cmd->full_cmd);
-		}
-		if (cmd->full_path)
-			free(cmd->full_path);
-		free(cmd);
+		i = 0;
+		while (cmd->full_cmd[i])
+			free(cmd->full_cmd[i++]);
+		free(cmd->full_cmd);
+		cmd->full_cmd = NULL;
 	}
+	if (cmd->full_path)
+	{
+		free(cmd->full_path);
+		cmd->full_path = NULL;
+	}
+	free(cmd);
 }
 
 //free a list of commands
@@ -86,7 +86,6 @@ void	free_list(t_node **node)
 
 void cleanup_shell(t_data *data)
 {
-	// int i = 0;
     if (!data)
         return;
     if (data->input)
@@ -104,8 +103,9 @@ void cleanup_shell(t_data *data)
     if (data->heredoc)
 		free(data->heredoc);
 	if(data->envp)
-	{
 		free_env(data->envp);
-	}
-    free(data);
+	if (data->pids)
+		free(data->pids);
+	if (data->pipe_fd)
+		free(data->pipe_fd);
 }

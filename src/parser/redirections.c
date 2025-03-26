@@ -54,22 +54,49 @@ void handle_redirections(t_command *cmd, t_data *data)
     }
 }
 
-
 void set_redi(t_command *cmd, t_data *data)
 {
     handle_redirections(cmd, data);
-    
+
+    // Handle input redirection
     if (cmd->infile != STDIN_FILENO)
     {
-        dup2(cmd->infile, STDIN_FILENO);
+        if (dup2(cmd->infile, STDIN_FILENO) == -1)
+        {
+            ft_putstr_fd("Error duplicating input file descriptor\n", 2);
+            return;
+        }
         close(cmd->infile);
     }
+
+    // Handle output redirection
     if (cmd->outfile != STDOUT_FILENO)
     {
-        dup2(cmd->outfile, STDOUT_FILENO);
+        if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
+        {
+            ft_putstr_fd("Error duplicating output file descriptor\n", 2);
+            return;
+        }
         close(cmd->outfile);
     }
 }
+
+
+// void set_redi(t_command *cmd, t_data *data)
+// {
+//     handle_redirections(cmd, data);
+    
+//     if (cmd->infile != STDIN_FILENO)
+//     {
+//         dup2(cmd->infile, STDIN_FILENO);
+//         close(cmd->infile);
+//     }
+//     if (cmd->outfile != STDOUT_FILENO)
+//     {
+//         dup2(cmd->outfile, STDOUT_FILENO);
+//         close(cmd->outfile);
+//     }
+// }
 
 int handle_output_redirection(char *operator, char *filename)
 {

@@ -47,6 +47,7 @@ void ft_unset(t_data *data, t_command *command)
         remove_env_var(data, command->full_cmd[i]);
         i++;
     }
+    data->last_exit_status = 0;
 }
 
 

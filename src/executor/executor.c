@@ -53,21 +53,22 @@ int execute_pipeline(t_data *data)
     data->pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!data->pids)
     {
-        // free_list_cmd(data->commands);
+        free_list_cmd(data->commands);
         return(1);
     }
     if (execution_process(data))
     {
         free(data->pids);
         data->pids = NULL;
+        free(data->pipe_fd);
+        data->pipe_fd = NULL;
         return (data->last_exit_status);
     }
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
-    // free(data->pids);
-    // free(data->pipe_fd);
-    // free_env(data->envp);
-    // free_list_cmd(data->commands);
-    // free(data->commands);
+    free(data->pids);
+    free(data->pipe_fd);
+    free_list_cmd(data->commands);
+    free(data->commands);
 
     data->pids = NULL;
     data->pipe_fd = NULL;

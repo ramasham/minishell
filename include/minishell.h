@@ -35,13 +35,6 @@ extern int g_exit_status;
 //enum
 typedef enum
 {
-    ARG,
-    REDIR_IN,
-    REDIR_OUT,
-    HERE_DOC,
-    APPEND,
-    PIPE,
-    CMD,
     DQUOTES,
     SQUOTES,
 } TokenType;
@@ -77,10 +70,12 @@ typedef struct s_data
     char        *heredoc;
     int         *pipe_fd;
     pid_t       *pids;
+    int         stdin_backup;
+    int         stdout_backup;
 } t_data;
 
 //shell
-int	init_shell(t_data **data, char **envp);
+int	init_shell(t_data *data, char **envp);
 
 //lexer
 int     extract_word(const char *content, int i, char *token, int inside_quotes);
@@ -152,7 +147,7 @@ void    ft_exit(t_command *command, t_data *data);
 void    ft_export(t_data *data, t_command *command);
 void    ft_pwd(void);
 void    ft_env(char **env);
-void    ft_echo(t_command *command);
+void    ft_echo(t_data *data, t_command *command);
 void    ft_unset(t_data *data, t_command *command);
 
 //exectuter
@@ -160,13 +155,6 @@ int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
 int     check_path(t_data *data);
 int    executor(t_data *data);
-// int    piping(t_data *data, int **pipe_fd);
-// int child_process(t_data *data, pid_t *pids, int *pipe_fd, int index) ;
-// int    child_process(t_data *data, t_command *cmd, int *pipe_fd, int index);
-// int    create_children(t_data *data, int *pipe_fd, pid_t *pids);
-// void    close_pipes(int *pipe_fd, int cmd_count);
-// int    execution_process(t_data *data, int **pipe_fd, pid_t *pids);
-// void    wait_for_children(t_data *data, pid_t *pids, int cmd_count, int *exit_status);
 int handle_dot_command(t_data *data);
 int handle_dot_slash_command(t_data *data);
 int handle_dot_slash_exec(t_data *data);
@@ -177,12 +165,6 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status);
 void handle_dup2(t_command *cmd, t_data *data, int index);
 int child_process(t_data *data, t_command *cmd, int index);
 int  create_children(t_data *data);
-
-
-
-
-
-
 
 
 //signals

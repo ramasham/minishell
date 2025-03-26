@@ -30,7 +30,7 @@ SRS = \
 		functions/ft_string/ft_strtok.c			\
 		functions/ft_string/ft_split.c		\
 
-SRS +=	\
+SRS += \
 		functions/ft_memory/ft_bzero.c			\
 		functions/ft_memory/ft_memset.c			\
 		functions/ft_memory/ft_memcpy.c			\
@@ -39,7 +39,7 @@ SRS +=	\
 		functions/ft_memory/ft_memcmp.c			\
 		functions/ft_memory/ft_calloc.c
 
-SRS +=	\
+SRS += \
 		functions/ft_io/ft_putchar_fd.c				\
 		functions/ft_io/ft_putstr_fd.c				\
 		functions/ft_io/ft_putendl_fd.c			\
