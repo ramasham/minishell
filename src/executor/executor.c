@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/24 01:41:34 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/27 02:30:23 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int execution_process(t_data *data)
     }
     if (data->heredoc_delimiter)
     {
+        cleanup_heredoc(data);
         data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
         if (data->heredoc_fd == -1)
             return (1);

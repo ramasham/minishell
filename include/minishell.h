@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/24 00:11:59 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/27 02:46:01 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,17 +135,16 @@ int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
 
-//heredoc and it's utils
-int         handle_heredoc(char *delimiter , t_data *data);
-void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
-int		setup_heredoc_pipe(int pipe_fd[2]);
-int		process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter);
-int		read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter);
-void	free_node(t_node *node);
-void	close_pipe(int pipe_fd[2]);
-char	*expand_heredoc_line(char *line, t_data *data);
-int		process_delimiter(char *line, char *delimiter);
-int		is_quoted_delimiter(char *delimiter);
+//heredoc.c
+int     handle_heredoc(char *delimiter, t_data *data);
+void    cleanup_heredoc(t_data *data);
+
+//heredoc_utils.c
+void    write_heredoc_to_pipe(char *line, int pipe_fd[2]);
+int     is_quoted_delimiter(char *delimiter);
+int     process_delimiter(char *line, char *delimiter);
+void    free_node(t_node *node);
+char    *expand_heredoc_line(char *line, t_data *data);
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);
@@ -179,7 +178,6 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status);
 void handle_dup2(t_command *cmd, t_data *data, int index);
 int child_process(t_data *data, t_command *cmd, int index);
 int  create_children(t_data *data);
-
 
 
 
