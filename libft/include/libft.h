@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 22:23:08 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 16:32:38 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/27 01:53:17 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char				*ft_strjoin_gnl(char *s1, char *s2);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_itoa(int n);
+char				*ft_strcpy(char *dest, char *src);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);

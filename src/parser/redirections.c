@@ -15,15 +15,22 @@
 void handle_redirections(t_command *cmd, t_data *data)
 {
     int i;
+    int j;
 
     i = 0;
     cmd->infile = STDIN_FILENO;
     cmd->outfile = STDOUT_FILENO;
+    cmd->heredoc_fd = -1;
 
     while (cmd->full_cmd[i])
     {
         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
         {
+            if (!cmd->full_cmd[i + 1])
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
+                return;
+            }
             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
             if (cmd->outfile == -1)
                 return;
@@ -33,6 +40,11 @@ void handle_redirections(t_command *cmd, t_data *data)
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
         {
+            if (!cmd->full_cmd[i + 1])
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
+                return;
+            }
             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
             if (cmd->infile == -1)
                 return;
@@ -42,7 +54,14 @@ void handle_redirections(t_command *cmd, t_data *data)
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
+            if (!cmd->full_cmd[i + 1])
+            {
+                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
+                return;
+            }
             cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
+            if (cmd->heredoc_fd == -1)
+                return;
             cmd->infile = cmd->heredoc_fd;
             cmd->full_cmd[i] = NULL;
             cmd->full_cmd[i + 1] = NULL;
@@ -53,7 +72,65 @@ void handle_redirections(t_command *cmd, t_data *data)
             i++;
         }
     }
+
+    // Clean up NULL entries in full_cmd
+    i = 0;
+    j = 0;
+    while (cmd->full_cmd[i])
+    {
+        if (cmd->full_cmd[i] != NULL)
+        {
+            if (i != j)
+                cmd->full_cmd[j] = cmd->full_cmd[i];
+            j++;
+        }
+        i++;
+    }
+    cmd->full_cmd[j] = NULL;
 }
+
+// void handle_redirections(t_command *cmd, t_data *data)
+// {
+//     int i;
+
+//     i = 0;
+//     cmd->infile = STDIN_FILENO;
+//     cmd->outfile = STDOUT_FILENO;
+
+//     while (cmd->full_cmd[i])
+//     {
+//         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
+//         {
+//             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
+//             if (cmd->outfile == -1)
+//                 return;
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//             i += 2;
+//         }
+//         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
+//         {
+//             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
+//             if (cmd->infile == -1)
+//                 return;
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//             i += 2;
+//         }
+//         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
+//         {
+//             cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
+//             cmd->infile = cmd->heredoc_fd;
+//             cmd->full_cmd[i] = NULL;
+//             cmd->full_cmd[i + 1] = NULL;
+//             i += 2;
+//         }
+//         else
+//         {
+//             i++;
+//         }
+//     }
+// }
 
 void set_redi(t_command *cmd, t_data *data)
 {  

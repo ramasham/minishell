@@ -141,6 +141,7 @@ void	close_pipe(int pipe_fd[2]);
 char	*expand_heredoc_line(char *line, t_data *data);
 int		process_delimiter(char *line, char *delimiter);
 int		is_quoted_delimiter(char *delimiter);
+char	*handle_backslashes(char *line);
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);

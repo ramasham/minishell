@@ -18,19 +18,15 @@ void	write_heredoc_to_pipe(char *line, int pipe_fd[2])
 	if (!line || !pipe_fd)
 		return ;
 	if (write(pipe_fd[1], line, ft_strlen(line)) == -1)
-		perror("write");
+		perror("minishell: write");
 	free(line);
 }
 
 // Check if the delimiter is quoted
-int is_quoted_delimiter(char *delimiter)
+int	is_quoted_delimiter(char *delimiter)
 {
-
 	if (delimiter[0] == '\'' || delimiter[0] == '"')
-	{
 		return (0);  // It's quoted
-	}
-
 	return (1);  // It's unquoted
 }
 
@@ -48,32 +44,66 @@ int	process_delimiter(char *line, char *delimiter)
 		return (0);
 	return (ft_strncmp(line, delimiter, delim_len) == 0);
 }
+
 void	free_node(t_node *node)
 {
-    if (node)
-	
-    {
-        if (node->content)
-            free(node->content);
-        free(node);
-    }
+	if (node)
+	{
+		if (node->content)
+			free(node->content);
+		free(node);
+	}
 }
-// Expand the heredoc line if necessary
-char *expand_heredoc_line(char *line, t_data *data)
-{
-    t_node  *current_node;
-    char    *expanded_line;
 
-    if (!line || !data)
-        return (NULL);
-    current_node = create_node(line);
-    if (!current_node || process_node(current_node, data))
-    {
-        free(line);
-        free_node(current_node);
-        return (NULL);
-    }
-    expanded_line = ft_strdup(current_node->content);
-    free_node(current_node);
-    return (expanded_line);
+// Handle backslashes in heredoc content
+char	*handle_backslashes(char *line)
+{
+	char	*result;
+	size_t	i;
+	size_t	j;
+
+	if (!line)
+		return (NULL);
+	result = malloc(ft_strlen(line) + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (line[i])
+	{
+		if (line[i] == '\\')
+		{
+			if (line[i + 1] == '$' || line[i + 1] == '`' || 
+				line[i + 1] == '"' || line[i + 1] == '\\' || 
+				line[i + 1] == '\n')
+			{
+				result[j++] = line[++i];
+				i++;
+				continue;
+			}
+		}
+		result[j++] = line[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+// Expand the heredoc line if necessary
+char	*expand_heredoc_line(char *line, t_data *data)
+{
+	t_node	*current_node;
+	char	*expanded_line;
+
+	if (!line || !data)
+		return (NULL);
+	current_node = create_node(line);
+	if (!current_node || process_node(current_node, data))
+	{
+		free(line);
+		free_node(current_node);
+		return (NULL);
+	}
+	expanded_line = ft_strdup(current_node->content);
+	free_node(current_node);
+	return (expanded_line);
 }
