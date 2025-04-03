@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/22 23:39:13 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/03/30 21:22:08 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int built_ins(t_command *command, t_data *data)
         return (0);
     stdin_backup = dup(STDIN_FILENO);
     stdout_backup = dup(STDOUT_FILENO);
-    set_redi(command, data);
+    handle_dup2(command);
     execute_builtins(command, data);
     dup2(stdin_backup, STDIN_FILENO);
     dup2(stdout_backup, STDOUT_FILENO);

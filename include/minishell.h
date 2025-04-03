@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/24 00:11:59 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:09:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,11 @@ typedef struct s_command
     char                *full_path;
     int                 infile;
     int                 outfile;
+    int                 append;
     int                 heredoc_fd;
+    char                *output_file;
+    char                *input_file;
+    char                *heredoc_delim;
     struct s_command    *next;
 } t_command;
 
@@ -109,14 +113,11 @@ int     process_env_if_needed(t_node *current, int *i, int in_single , t_data *d
 int     expander(t_data *data);
 int	    detect_env(t_data *data);
 int     process_node(t_node *current, t_data *data);
-int     handle_output_redirection(char *operator, char *filename);
-int     handle_input_redirection(char  *filename);
 char    *extract_env_name(char *s);
 char    *get_env_value(t_data *data, char *var_name);
 char    *replace_env_var(t_data *data, char *content, int i);
 void    handle_quotes(char c, int *in_single, int *in_double);
-void    handle_redirections(t_command *cmd, t_data *data);
-void    set_redi(t_command *cmd, t_data *data);
+
 
 //parser
 int         get_cmd_path(t_command *cmd, t_data *data);
@@ -129,19 +130,33 @@ void        get_command(t_data *node_lst, t_node *current);
 int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
+int     is_redirection(t_command *cmd);
+void    parse_input_redirection(t_command *cmd, int *i, int len);
+void    parse_output_redirection(t_command *cmd, int *i, int len);
+void parse_redirection(t_command *cmd, t_data *data);
+int input_redirection(t_command *cmd, t_data *data);
+int     output_redirection(t_command *cmd);
+// void handle_dup2(t_command *cmd);
+void parse_heredoc(t_data *data ,t_command *cmd, int *i, int len);
+void parse_redirection(t_command *cmd, t_data *data);
+
 
 //heredoc and it's utils
-int         handle_heredoc(char *delimiter , t_data *data);
-void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
-int		setup_heredoc_pipe(int pipe_fd[2]);
-int		process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter);
-int		read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter);
-void	free_node(t_node *node);
+// static void	handle_heredoc_signal(int sig);
+// static void	setup_heredoc_signals(void);
 void	close_pipe(int pipe_fd[2]);
-char	*expand_heredoc_line(char *line, t_data *data);
-int		process_delimiter(char *line, char *delimiter);
-int		is_quoted_delimiter(char *delimiter);
+int	setup_heredoc_pipe(int pipe_fd[2]);
+int	process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter);
+int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter);
+int	handle_heredoc(char *delimiter, t_data *data);
+void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
+int	is_quoted_delimiter(char *delimiter);
+int	process_delimiter(char *line, char *delimiter);
+void	free_node(t_node *node);
 char	*handle_backslashes(char *line);
+char	*expand_heredoc_line(char *line, t_data *data);
+
+
 
 //built-ins
 int     built_ins(t_command *command, t_data *data);
@@ -165,9 +180,13 @@ int    execution_process(t_data *data);
 int piping(t_data *data);
 void close_pipes(t_data *data, int cmd_count);
 void    wait_for_children(t_data  *data, int cmd_count, int *exit_status);
-void handle_dup2(t_command *cmd, t_data *data, int index);
-int child_process(t_data *data, t_command *cmd, int index);
-int  create_children(t_data *data);
+int child_process(t_data *data, t_command *cmd);
+int  setup_children(t_data *data);
+int     forking(t_data *data, t_command *cmd, int i);
+void cleanup_child(t_data *data);
+void handle_dup2(t_command *cmd, t_data *data);
+
+
 
 
 //signals

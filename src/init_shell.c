@@ -21,6 +21,7 @@ void    init_data(t_data *data)
     data->envp = NULL;
     data->cmd_count = 0;
     data->heredoc = NULL;
+
 }
 
 void	free_env(char **envp)

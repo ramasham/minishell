@@ -3,222 +3,159 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/23 02:26:24 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:29:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_redirections(t_command *cmd, t_data *data)
+void shift_left(char **full_cmd, int start, int len)
 {
-    int i;
-    int j;
-
-    i = 0;
-    cmd->infile = STDIN_FILENO;
-    cmd->outfile = STDOUT_FILENO;
-    cmd->heredoc_fd = -1;
-
-    while (cmd->full_cmd[i])
+    while (start < len - 2)
     {
-        if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
-        {
-            if (!cmd->full_cmd[i + 1])
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
-                return;
-            }
-            cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
-            if (cmd->outfile == -1)
-                return;
-            cmd->full_cmd[i] = NULL;
-            cmd->full_cmd[i + 1] = NULL;
-            i += 2;
-        }
-        else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
-        {
-            if (!cmd->full_cmd[i + 1])
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
-                return;
-            }
-            cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
-            if (cmd->infile == -1)
-                return;
-            cmd->full_cmd[i] = NULL;
-            cmd->full_cmd[i + 1] = NULL;
-            i += 2;
-        }
-        else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
-        {
-            if (!cmd->full_cmd[i + 1])
-            {
-                ft_putstr_fd("minishell: syntax error near unexpected token 'newline'\n", 2);
-                return;
-            }
-            cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
-            if (cmd->heredoc_fd == -1)
-                return;
-            cmd->infile = cmd->heredoc_fd;
-            cmd->full_cmd[i] = NULL;
-            cmd->full_cmd[i + 1] = NULL;
-            i += 2;
-        }
-        else
-        {
-            i++;
-        }
+        full_cmd[start] = full_cmd[start + 2];
+        start++;
     }
-
-    // Clean up NULL entries in full_cmd
-    i = 0;
-    j = 0;
-    while (cmd->full_cmd[i])
-    {
-        if (cmd->full_cmd[i] != NULL)
-        {
-            if (i != j)
-                cmd->full_cmd[j] = cmd->full_cmd[i];
-            j++;
-        }
-        i++;
-    }
-    cmd->full_cmd[j] = NULL;
+    full_cmd[start] = NULL;
 }
 
-// void handle_redirections(t_command *cmd, t_data *data)
-// {
-//     int i;
-
-//     i = 0;
-//     cmd->infile = STDIN_FILENO;
-//     cmd->outfile = STDOUT_FILENO;
-
-//     while (cmd->full_cmd[i])
-//     {
-//         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
-//         {
-//             cmd->outfile = handle_output_redirection(cmd->full_cmd[i], cmd->full_cmd[i + 1]);
-//             if (cmd->outfile == -1)
-//                 return;
-//             cmd->full_cmd[i] = NULL;
-//             cmd->full_cmd[i + 1] = NULL;
-//             i += 2;
-//         }
-//         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
-//         {
-//             cmd->infile = handle_input_redirection(cmd->full_cmd[i + 1]);
-//             if (cmd->infile == -1)
-//                 return;
-//             cmd->full_cmd[i] = NULL;
-//             cmd->full_cmd[i + 1] = NULL;
-//             i += 2;
-//         }
-//         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
-//         {
-//             cmd->heredoc_fd = handle_heredoc(cmd->full_cmd[i + 1], data);
-//             cmd->infile = cmd->heredoc_fd;
-//             cmd->full_cmd[i] = NULL;
-//             cmd->full_cmd[i + 1] = NULL;
-//             i += 2;
-//         }
-//         else
-//         {
-//             i++;
-//         }
-//     }
-// }
-
-void set_redi(t_command *cmd, t_data *data)
-{  
-    handle_redirections(cmd, data);
-
-    // Handle input redirection
-    if (cmd->infile != STDIN_FILENO)
-    {
-        if (dup2(cmd->infile, STDIN_FILENO) == -1)
-        {
-            ft_putstr_fd("Error duplicating input file descriptor\n", 2);
-            return;
-        }
-        close(cmd->infile);
-    }
-
-    // Handle output redirection
-    if (cmd->outfile != STDOUT_FILENO)
-    {
-        if (dup2(cmd->outfile, STDOUT_FILENO) == -1)
-        {
-            ft_putstr_fd("Error duplicating output file descriptor\n", 2);
-            return;
-        }
-        close(cmd->outfile);
-    }
+void    parse_input_redirection(t_command *cmd, int *i, int len)
+{
+    cmd->infile = 1;
+    (*i)++;
+    while (*i < len && is_space_str(cmd->full_cmd[*i]))
+        (*i)++;
+    if (*i < len)
+        cmd->input_file = cmd->full_cmd[*i];
 }
 
 
-// void set_redi(t_command *cmd, t_data *data)
-// {
-//     handle_redirections(cmd, data);
-    
-//     if (cmd->infile != STDIN_FILENO)
-//     {
-//         dup2(cmd->infile, STDIN_FILENO);
-//         close(cmd->infile);
-//     }
-//     if (cmd->outfile != STDOUT_FILENO)
-//     {
-//         dup2(cmd->outfile, STDOUT_FILENO);
-//         close(cmd->outfile);
-//     }
-// }
-
-int handle_output_redirection(char *operator, char *filename)
+void    parse_output_redirection(t_command *cmd, int *i, int len)
 {
-    int fd;
-    int flags;
-
-    flags = 0;
-    if (!filename)
+    if (*i + 1 < len && cmd->full_cmd[*i + 1][0] == '>')
     {
-        ft_putstr_fd("no file\n", 2);
-        return (-1);
+        cmd->append = 1;
+        (*i) += 2;
     }
-    if (ft_strcmp(operator, ">") == 0)
-        flags = O_WRONLY | O_CREAT | O_TRUNC;
-    else if (ft_strcmp(operator, ">>") == 0)
-        flags = O_WRONLY | O_CREAT | O_APPEND;
     else
     {
-        ft_putstr_fd("Invalid redirection operator\n", 2);
-        return (-1);
+        cmd->outfile = 1;
+        (*i)++;
     }
-    fd = open(filename, flags, 0644);
-    if (fd == -1)
-    {
-        ft_putstr_fd("Permission denied\n", 2);
-        return (-1);
-    }
-    return (fd);
+    while (*i < len && is_space_str(cmd->full_cmd[*i]))
+        (*i)++;
+    if (*i < len)
+        cmd->output_file = cmd->full_cmd[*i];
 }
 
-int handle_input_redirection(char  *filename)
+void parse_heredoc(t_data *data ,t_command *cmd, int *i, int len)
 {
-    int fd;
+    (*i) += 2;
+    while (*i < len && is_space_str(cmd->full_cmd[*i]))
+        (*i)++;
+    if (*i < len)
+    {
+        cmd->heredoc_delim = cmd->full_cmd[*i];
+        cmd->heredoc_fd = handle_heredoc(cmd->heredoc_delim, data); // Execute heredoc immediately
+    }
+}
 
-    if (!filename)
+int input_redirection(t_command *cmd, t_data *data)
+{
+    int fd_in;
+
+    if (cmd->heredoc_delim)
     {
-        ft_putstr_fd("no file\n", 2);
+        fd_in = handle_heredoc(cmd->heredoc_delim, data);
+        if (fd_in == -1)
+            return (-1);
+    }
+    else if (cmd->input_file)
+    {
+        fd_in = open(cmd->input_file, O_RDONLY);
+        if (fd_in == -1)
+        {
+            perror("Input redirection failed");
+            return (-1);
+        }
+    }
+    else
+        return (0);
+    if (dup2(fd_in, STDIN_FILENO) == -1)
+    {
+        perror("dup2 failed");
+        close(fd_in);
         return (-1);
     }
-    fd = open(filename, O_RDONLY);
-    if (fd == -1)
+    close(fd_in);
+    return (0);
+}
+
+int     output_redirection(t_command *cmd)
+{
+    int fd_out;
+    
+    if (cmd->output_file)
     {
-        ft_putstr_fd("No such file or directory\n", 2);
-        return (-1);
+        if (cmd->append)
+            fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        else
+            fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd_out == -1)
+        {
+            perror("Output redirection failedu");
+            return (-1);
+        }
+        if (dup2(fd_out, STDOUT_FILENO) == -1)
+        {
+            perror("dup2 failed");
+            close(fd_out);
+            return (-1);
+        }
+        close(fd_out);
     }
-    return (fd);
+    return (0);
+}
+int count_tokens(char **full_cmd)
+{
+    int count = 0;
+
+    while (full_cmd && full_cmd[count])
+        count++;
+    return (count);
+}
+
+void parse_redirection(t_command *cmd, t_data *data)
+{
+    int i;
+    int len;
+    
+    i = 0;
+    len  = count_tokens(cmd->full_cmd);
+    while (i < len)
+    {
+        if (cmd->full_cmd[i][0] == '<' && i + 1 < len && cmd->full_cmd[i][1] == '<')
+        {
+            parse_heredoc(data, cmd, &i, len);
+            shift_left(cmd->full_cmd, i - 2, len);
+            len -= 2;
+        }
+        else if (cmd->full_cmd[i][0] == '<')
+        {
+            parse_input_redirection(cmd, &i, len);
+            shift_left(cmd->full_cmd, i - 1, len);
+            len -= 2;
+        }
+        else if (cmd->full_cmd[i][0] == '>')
+        {
+            parse_output_redirection(cmd, &i, len);
+            shift_left(cmd->full_cmd, i - 1, len);
+            len -= 2;
+        }
+        else
+            i++;
+    }
 }

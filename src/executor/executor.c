@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/24 01:41:34 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:24:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int execution_process(t_data *data)
         if (data->heredoc_fd == -1)
             return (1);
     }
-    if (create_children(data))
+    if (setup_children(data))
     {
         free(data->pipe_fd);
         free(data->pids);
@@ -81,7 +81,6 @@ int execute_pipeline(t_data *data)
     free(data->pipe_fd);
     free_list_cmd(data->commands);
     free(data->commands);
-
     data->pids = NULL;
     data->pipe_fd = NULL;
     data->commands = NULL;
