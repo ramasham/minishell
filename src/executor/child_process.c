@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/03 22:09:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/03 22:39:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void handle_dup2(t_command *cmd, t_data *data)
 {
     parse_redirection(cmd, data);
 
-    // Handle heredoc first if present
     if (cmd->heredoc_fd != -1)
     {
         if (dup2(cmd->heredoc_fd, STDIN_FILENO) == -1)
