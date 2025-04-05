@@ -13,8 +13,6 @@ SRCS= \
 	src/parser/parser.c \
 	src/parser/redirections.c \
 	src/parser/handle_pipes.c \
-	src/parser/heredoc.c \
-	src/parser/heredoc_utils.c \
 	src/parser/get_cmd_paths.c \
 	src/parser/parser_utils.c \
 	src/parser/get_abs_path.c \
@@ -31,6 +29,7 @@ SRCS= \
 	src/executor/pipes.c \
 	src/executor/child_process.c \
 	src/executor/dot_slash_cmd.c \
+	src/heredoc/heredoc.c \
 	src/env.c \
 	src/signals.c \
 	utils/free.c \

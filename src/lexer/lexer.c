@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/12 00:48:07 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 00:58:42 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int    validate_input(t_data *data)
 {
-    if (operator_at_start(data))
-        return (1);   
+    // if (operator_at_start(data))
+    //     return (1);   
     if (check_unclosed_quotes(data))
         return (1);
     if (check_multiple_pipes(data))
@@ -35,5 +35,6 @@ int  tokenizer(t_data *data)
         return (1);
     split_input(data);
     trim_operators(data);
+    print_command(data);
     return (0);
 }
