@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/03 21:29:04 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 02:24:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void parse_heredoc(t_data *data ,t_command *cmd, int *i, int len)
     if (*i < len)
     {
         cmd->heredoc_delim = cmd->full_cmd[*i];
-        cmd->heredoc_fd = handle_heredoc(cmd->heredoc_delim, data); // Execute heredoc immediately
+        if (cmd->full_cmd[*i][0] == '"')
+            cmd->quoted = 1;
     }
 }
 

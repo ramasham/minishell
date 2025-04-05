@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/03 22:09:19 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 02:23:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_command
     char                *output_file;
     char                *input_file;
     char                *heredoc_delim;
+    int                 quoted;
     struct s_command    *next;
 } t_command;
 
@@ -71,9 +72,6 @@ typedef struct s_data
     int         last_exit_status;
     int         cmd_count;
     char        **envp;
-    char        *heredoc;
-    char        *heredoc_delimiter;
-    int         heredoc_fd;
     int         *pipe_fd;
     pid_t       *pids;
     int         stdin_backup;
