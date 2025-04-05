@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void ft_echo(t_command *cmd)
+void ft_echo(t_data *data, t_command *cmd)
 {
     int i = 1;
     int newline = 1;
@@ -31,5 +31,6 @@ void ft_echo(t_command *cmd)
     }
     if (newline)
         write(STDOUT_FILENO, "\n", 1);
+    data->last_exit_status = 0;
 }
 

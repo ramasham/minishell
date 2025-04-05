@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 21:04:14 by rsham            ###   ########.fr       */
+/*   Updated: 2025/03/30 05:25:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,45 @@ int piping(t_data *data)
 void close_pipes(t_data *data, int cmd_count)
 {
     int i;
+
+    if (!data->pipe_fd)
+        return;
     
     i = 0;
     while (i < 2 * (cmd_count - 1))
     {
+        // Close both ends of the pipe (read and write)
         if (close(data->pipe_fd[i]) == -1)
-            perror("closed failed");
-        i++;
+        {
+            perror("Failed to close pipe file descriptor");
+            return;
+        }
+        if (close(data->pipe_fd[i + 1]) == -1)
+        {
+            perror("Failed to close pipe file descriptor");
+            return;
+        }
+        i += 2;  // Move to the next pair of file descriptors
     }
 }
+
+// void close_pipes(t_data *data, int cmd_count)
+// {
+//     int i;
+    
+//     if (!data->pipe_fd)
+//         return;
+//     i = 0;
+//     while (i < 2 * (cmd_count - 1))
+//     {
+//         if (close(data->pipe_fd[i]) == -1)
+//         {
+//             perror("Failed to close pipe file descriptor");
+//             return;
+//         }
+//         i++;
+//     }
+// }
 
 // void cleanup_pipes(t_data *data)
 // {

@@ -46,7 +46,6 @@ void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
     new_cmd->full_cmd = malloc(sizeof(char *) * (arg_count + 1));
     if (!new_cmd->full_cmd)
     {
-        // free_list_cmd(&new_cmd);
         free(new_cmd);
         return;
     }
@@ -55,8 +54,16 @@ void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
         new_cmd->full_cmd[i] = ft_strdup((*current)->content);
         if (!new_cmd->full_cmd[i])
         {
-            free_full_cmd(new_cmd);
-            return;
+            // free_full_cmd(new_cmd);
+            // return;
+            while (i-- > 0)
+            {
+                free(new_cmd->full_cmd[i]);
+            }
+            free(new_cmd->full_cmd);
+            new_cmd->full_cmd = NULL;
+            return ;
+            
         }
         *current = (*current)->next;
         i++;
@@ -98,7 +105,6 @@ void get_command(t_data *node_lst, t_node *current)
         {
             free_list_cmd(node_lst->commands);
             free(node_lst->commands);
-            free(new_cmd);
             return ;
         }
         add_command(node_lst, new_cmd);
@@ -109,3 +115,4 @@ void get_command(t_data *node_lst, t_node *current)
     free(node_lst->node);
     node_lst->node = NULL;
 }
+

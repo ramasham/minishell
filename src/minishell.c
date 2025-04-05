@@ -32,14 +32,16 @@ static void	minishell_loop(t_data *data)
 		set_commands(data);
 		executor(data);
 	}
-	if (*data->input)
+	if (*data->input && data->input)
 		add_history(data->input);
 	free(data->input);
+	data->input = NULL;
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	*data;
+	t_data	data;
 	(void)argc;
 	(void)argv;
 
@@ -50,23 +52,23 @@ int	main(int argc, char **argv, char **envp)
 		setup_signal_handlers();
 		if (g_exit_status == 130 || g_exit_status == 131)
 		{
-			data->last_exit_status = g_exit_status;
+			data.last_exit_status = g_exit_status;
 			g_exit_status = 0;
 		}
 		if (isatty(STDIN_FILENO))
-			data->input = readline("\033[1;35mminishell$\033[0m ");
-		if (handle_eof(data->input))
+			data.input = readline("\033[1;35mminishell$\033[0m ");
+		if (handle_eof(data.input))
 		{
-			free(data->input);
+			free(data.input);
 			break ;
 		}
-        if (process_empty_input(data->input))
+        if (process_empty_input(data.input))
 		{
-			free(data->input);
+			free(data.input);
 			continue ;
 		}
-		minishell_loop(data);
+		minishell_loop(&data);
 	}
-	cleanup_shell(data);
+	cleanup_shell(&data);
 	return (0);
 }
