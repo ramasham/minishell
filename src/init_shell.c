@@ -20,8 +20,6 @@ void    init_data(t_data *data)
     data->last_exit_status = 0;
     data->envp = NULL;
     data->cmd_count = 0;
-    data->heredoc = NULL;
-
 }
 
 void	free_env(char **envp)

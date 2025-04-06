@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 02:23:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 19:44:21 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,31 +128,19 @@ void        get_command(t_data *node_lst, t_node *current);
 int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
-int     is_redirection(t_command *cmd);
-void    parse_input_redirection(t_command *cmd, int *i, int len);
-void    parse_output_redirection(t_command *cmd, int *i, int len);
-void parse_redirection(t_command *cmd, t_data *data);
-int input_redirection(t_command *cmd, t_data *data);
-int     output_redirection(t_command *cmd);
-// void handle_dup2(t_command *cmd);
-void parse_heredoc(t_data *data ,t_command *cmd, int *i, int len);
-void parse_redirection(t_command *cmd, t_data *data);
+int         is_redirection(t_command *cmd);
+void        parse_input_redirection(t_command *cmd, int *i, int len);
+void        parse_output_redirection(t_command *cmd, int *i, int len);
+void        parse_redirection(t_command *cmd, t_data *data);
+int         input_redirection(t_command *cmd);
+int         output_redirection(t_command *cmd);
+void        parse_heredoc(t_command *cmd, int *i, int len);
+void        parse_redirection(t_command *cmd, t_data *data);
 
 
 //heredoc and it's utils
-// static void	handle_heredoc_signal(int sig);
-// static void	setup_heredoc_signals(void);
-void	close_pipe(int pipe_fd[2]);
-int	setup_heredoc_pipe(int pipe_fd[2]);
-int	process_heredoc_line(char *line, int pipe_fd[2], t_data *data, char *delimiter);
-int	read_heredoc_input(int pipe_fd[2], t_data *data, char *delimiter);
-int	handle_heredoc(char *delimiter, t_data *data);
-void	write_heredoc_to_pipe(char *line, int pipe_fd[2]);
-int	is_quoted_delimiter(char *delimiter);
-int	process_delimiter(char *line, char *delimiter);
-void	free_node(t_node *node);
-char	*handle_backslashes(char *line);
-char	*expand_heredoc_line(char *line, t_data *data);
+int handle_heredoc(t_command *cmd);
+
 
 
 

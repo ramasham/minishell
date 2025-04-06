@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/06 02:21:15 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 19:30:36 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,33 @@
 // close the write-end of the pipe
 // store the read-end fd in the command struct (cmd->heredoc_fd)
 
-int handle_heredoc(char *delim, t_data *data)
+int handle_heredoc(t_command *cmd)
 {
-    int pipe[2];
+    int     pipe_fd[2];
+    char    *line;
+    // char    *newline;
     
+    if (pipe(pipe_fd) == -1)
+        return (-1);
+    // printf("delim = %s\n", cmd->heredoc_delim);
+    // printf("is q = %d\n", cmd->quoted);
     while (1)
     {
-        ft_putchar_fd("> ", 1);
-        
+        ft_putstr_fd("> ", 1);
+        line = get_next_line(STDIN_FILENO);
+        if (!line)
+            break;
+        // if (cmd->quoted)
+        //     heredoc_expander(line);
+        if (cmd->heredoc_delim && ft_strncmp(line, cmd->heredoc_delim, ft_strlen(cmd->heredoc_delim)) == 0)
+        {
+            free(line);
+            break;
+        }
+        write(pipe_fd[1], line, ft_strlen(line));
+        free(line);
     }
+    close(pipe_fd[1]);
+    return (0);
 }
+

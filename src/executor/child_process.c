@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/03 22:39:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 20:05:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,23 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
 
 void handle_dup2(t_command *cmd, t_data *data)
 {
+    (void)data;
     parse_redirection(cmd, data);
-
     if (cmd->heredoc_fd != -1)
     {
         if (dup2(cmd->heredoc_fd, STDIN_FILENO) == -1)
         {
             perror("dup2 heredoc failed");
-            close(cmd->heredoc_fd);
-            return;
         }
         close(cmd->heredoc_fd);
+        return;
     }
     else if (cmd->infile == 1 && cmd->input_file)
     {
-        if (input_redirection(cmd, data) == -1)
+        if (input_redirection(cmd) == -1)
             return;
     }
-    if (cmd->outfile == 1 && cmd->output_file)
+    else if (cmd->outfile == 1 && cmd->output_file)
     {
         if (output_redirection(cmd) == -1)
             return;

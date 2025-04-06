@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/06 02:08:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 19:13:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	minishell_loop(t_data *data)
 	{
 		expander(data);
 		set_commands(data);
-		// executor(data);
+		executor(data);
 	}
 	if (*data->input && data->input)
 		add_history(data->input);

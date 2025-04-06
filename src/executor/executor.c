@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/03 21:24:46 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 20:05:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ int execution_process(t_data *data)
         free(data->pipe_fd);
         data->pipe_fd = NULL;
         return (1);
-    }
-    if (data->heredoc_delimiter)
-    {
-        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
-        if (data->heredoc_fd == -1)
-            return (1);
     }
     if (setup_children(data))
     {
@@ -70,12 +64,6 @@ int execute_pipeline(t_data *data)
         data->pipe_fd = NULL;
         return (data->last_exit_status);
     }
-    if (data->heredoc_delimiter)
-    {
-        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
-        if (data->heredoc_fd == -1)
-            return (1);
-    }
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
     free(data->pids);
     free(data->pipe_fd);
@@ -87,11 +75,36 @@ int execute_pipeline(t_data *data)
     return (data->last_exit_status);
 }
 
+int prepare_heredocs(t_data *data)
+{
+    t_command *cmd = *(data->commands);
+    while (cmd)
+    {
+        if (cmd->heredoc_delim)
+        {
+            cmd->heredoc_fd = handle_heredoc(cmd);
+            if (cmd->heredoc_fd == -1)
+                return (1);
+        }
+        cmd = cmd->next;
+    }
+    return (0);
+}
+void prepare_redirections(t_data *data)
+{
+    t_command *cmd = *data->commands;
+    while (cmd)
+    {
+        // Call parse_redirection once in the parent process
+        parse_redirection(cmd, data);
+        cmd = cmd->next;
+    }
+}
+
 int executor(t_data *data)
 {
     int exit_status;
     int dot_slash_status;
-
     dot_slash_status = handle_dot_slash_exec(data);
     if (dot_slash_status != 0)
     {
@@ -105,9 +118,8 @@ int executor(t_data *data)
         data->commands = NULL;
         return (exit_status);
     }
-    else
-    {
-        execute_pipeline(data);
-    }
+    // if (prepare_heredocs(data))
+    //     return (1);
+    execute_pipeline(data);
     return (data->last_exit_status);
 }

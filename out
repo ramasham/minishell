@@ -1,0 +1,10 @@
+include
+include.mk
+libft
+Makefile
+minishell
+out
+readline.supp
+README.md
+src
+utils

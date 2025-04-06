@@ -100,8 +100,6 @@ void cleanup_shell(t_data *data)
         free_list_cmd(data->commands);
         free(data->commands);
     }
-    if (data->heredoc)
-		free(data->heredoc);
 	if(data->envp)
 		free_env(data->envp);
 	if (data->pids)
