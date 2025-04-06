@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/05 14:30:54 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/06 14:25:03 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,38 @@ int	setup_heredoc_pipe(int pipe_fd[2])
 		return (-1);
 	}
 	return (0);
+}
+
+static char	*handle_backslashes(char *line)
+{
+	char	*result;
+	size_t	i;
+	size_t	j;
+
+	if (!line)
+		return (NULL);
+	result = malloc(ft_strlen(line) + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (line[i])
+	{
+		if (line[i] == '\\')
+		{
+			if (line[i + 1] == '$' || line[i + 1] == '`' || 
+				line[i + 1] == '"' || line[i + 1] == '\\' || 
+				line[i + 1] == '\n')
+			{
+				result[j++] = line[++i];
+				i++;
+				continue;
+			}
+		}
+		result[j++] = line[i++];
+	}
+	result[j] = '\0';
+	return (result);
 }
 
 // Process each line of heredoc input

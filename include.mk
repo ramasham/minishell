@@ -13,11 +13,11 @@ SRCS= \
 	src/parser/parser.c \
 	src/parser/redirections.c \
 	src/parser/handle_pipes.c \
-	src/parser/heredoc.c \
-	src/parser/heredoc_utils.c \
 	src/parser/get_cmd_paths.c \
 	src/parser/parser_utils.c \
 	src/parser/get_abs_path.c \
+	src/heredoc/heredoc.c \
+	src/heredoc/heredoc_utils.c \
 	src/built-ins/built-ins.c \
 	src/built-ins/ft_cd.c \
 	src/built-ins/ft_echo.c \

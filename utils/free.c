@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 22:22:52 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 14:24:32 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void cleanup_shell(t_data *data)
         free_list_cmd(data->commands);
         free(data->commands);
     }
-    if (data->heredoc)
-		free(data->heredoc);
+    if (data->heredoc_delimiter)
+		free(data->heredoc_delimiter);
 	if(data->envp)
 		free_env(data->envp);
 	if (data->pids)

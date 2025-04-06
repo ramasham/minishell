@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/05 14:27:31 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/06 14:26:19 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,42 +83,42 @@ int parse_heredoc(t_command *cmd, int *i, int len)
     return (0);
 }
 
-int handle_heredoc(const char *delimiter, t_data *data)
-{
-    (void)data; // Mark data as unused to prevent compiler warning
-    int fd[2];
-    char *line;
+// int handle_heredoc(char *delimiter, t_data *data)
+// {
+//     (void)data;
+//     int fd[2];
+//     char *line;
     
-    if (pipe(fd) == -1) {
-        perror("minishell: pipe");
-        return (-1);
-    }
+//     if (pipe(fd) == -1) {
+//         perror("minishell: pipe");
+//         return (-1);
+//     }
     
-    signal(SIGINT, heredoc_sig_handler);
-    while (1) {
-        line = readline(HEREDOC_PROMPT);
-        if (g_exit_status == SIGINT) {
-            free(line);
-            close(fd[0]);
-            close(fd[1]);
-            return (-1);
-        }
-        if (!line) {
-            ft_putstr_fd("minishell: warning: here-document delimited by EOF\n", 2);
-            break;
-        }
-        if (ft_strcmp(line, delimiter) == 0) {
-            free(line);
-            break;
-        }
-        write(fd[1], line, ft_strlen(line));
-        write(fd[1], "\n", 1);
-        free(line);
-    }
-    close(fd[1]);
-    signal(SIGINT, SIG_DFL);
-    return (fd[0]);
-}
+//     // signal(SIGINT, );
+//     while (1) {
+//         line = readline(HEREDOC_PROMPT);
+//         if (g_exit_status == SIGINT) {
+//             free(line);
+//             close(fd[0]);
+//             close(fd[1]);
+//             return (-1);
+//         }
+//         if (!line) {
+//             ft_putstr_fd("minishell: warning: here-document delimited by EOF\n", 2);
+//             break;
+//         }
+//         if (ft_strcmp(line, delimiter) == 0) {
+//             free(line);
+//             break;
+//         }
+//         write(fd[1], line, ft_strlen(line));
+//         write(fd[1], "\n", 1);
+//         free(line);
+//     }
+//     close(fd[1]);
+//     signal(SIGINT, SIG_DFL);
+//     return (fd[0]);
+// }
 
 int input_redirection(t_command *cmd, t_data *data)
 {
