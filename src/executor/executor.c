@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 20:05:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 00:46:24 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,33 +75,33 @@ int execute_pipeline(t_data *data)
     return (data->last_exit_status);
 }
 
-int prepare_heredocs(t_data *data)
+int prepare_heredocs(t_command *cmd)
 {
-    t_command *cmd = *(data->commands);
-    while (cmd)
+    t_command *curr = cmd;
+
+    // Parse heredocs for all commands
+    // while (curr)
+    // {
+    //     heredoc_parse(curr);
+    //     curr = curr->next;
+    // }
+
+    // Handle heredoc input for all commands
+    curr = cmd;
+    while (curr)
     {
-        if (cmd->heredoc_delim)
+        if (curr->heredoc_delim)
         {
-            cmd->heredoc_fd = handle_heredoc(cmd);
-            if (cmd->heredoc_fd == -1)
+            curr->heredoc_fd = handle_heredoc(curr);
+            if (curr->heredoc_fd == -1)
                 return (1);
         }
-        cmd = cmd->next;
+        curr = curr->next;
     }
     return (0);
 }
-void prepare_redirections(t_data *data)
-{
-    t_command *cmd = *data->commands;
-    while (cmd)
-    {
-        // Call parse_redirection once in the parent process
-        parse_redirection(cmd, data);
-        cmd = cmd->next;
-    }
-}
 
-int executor(t_data *data)
+int executor(t_data *data, t_command *cmd)
 {
     int exit_status;
     int dot_slash_status;
@@ -118,8 +118,8 @@ int executor(t_data *data)
         data->commands = NULL;
         return (exit_status);
     }
-    // if (prepare_heredocs(data))
-    //     return (1);
+    if (prepare_heredocs(cmd))
+        return (1);
     execute_pipeline(data);
     return (data->last_exit_status);
 }

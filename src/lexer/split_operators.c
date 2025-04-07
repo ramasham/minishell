@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:43:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 22:16:47 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/07 23:24:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ void process_content(t_node **new_lst, char *content)
         if (content[i] == '"' || content[i] == '\'')
             inside_quotes = !inside_quotes;
         i = extract_word(content, i, token, inside_quotes);
+        token[255] = '\0';
         add_token_to_list(new_lst, token);
         if (!inside_quotes && (content[i] == '|' || content[i] == '>' || content[i] == '<'))
         {
             i = extract_operator(content, i, op, inside_quotes);
+            op[2] = '\0';
             add_token_to_list(new_lst, op);
         }
     }

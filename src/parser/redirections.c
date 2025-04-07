@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 19:56:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 00:45:58 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,26 @@ int count_tokens(char **full_cmd)
         count++;
     return (count);
 }
+
+// void heredoc_parse(t_command *cmd)
+// {
+//     int i = 0;
+//     if (!cmd || !cmd->full_cmd)
+//         return;
+//     int len = count_tokens(cmd->full_cmd);
+
+//     while (i < len)
+//     {
+//         if (cmd->full_cmd[i][0] == '<' && i + 1 < len && cmd->full_cmd[i][1] == '<')
+//         {
+//             parse_heredoc(cmd, &i, len);
+//             shift_left(cmd->full_cmd, i - 1, len);
+//             len -= 2;
+//         }
+//         else
+//             i++;
+//     }
+// }
 
 void parse_redirection(t_command *cmd, t_data *data)
 {

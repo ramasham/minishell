@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/07 18:12:04 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/07 23:44:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,9 @@ void    ft_unset(t_data *data, t_command *command);
 int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
 int     check_path(t_data *data);
-int    executor(t_data *data);
+// int    executor(t_data *data);
+int executor(t_data *data, t_command *cmd);
+void heredoc_parse(t_command *cmd);
 int handle_dot_command(t_data *data);
 int handle_dot_slash_command(t_data *data);
 int handle_dot_slash_exec(t_data *data);
