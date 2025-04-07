@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 20:05:11 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/07 18:59:27 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
     i = 0;
     while (i < cmd_count)
     {
+        signal(SIGINT, SIG_IGN);
         waitpid(data->pids[i], &status, 0);
         if (WIFEXITED(status))
         {
@@ -58,6 +59,8 @@ void handle_dup2(t_command *cmd, t_data *data)
         if (dup2(cmd->heredoc_fd, STDIN_FILENO) == -1)
         {
             perror("dup2 heredoc failed");
+            close(cmd->heredoc_fd);
+            return;
         }
         close(cmd->heredoc_fd);
         return;
@@ -134,6 +137,7 @@ int     forking(t_data *data, t_command *cmd, int i)
     }
     return (0);
 }
+
 int  setup_children(t_data *data)
 {
     int i;

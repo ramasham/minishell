@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 19:44:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/07 18:12:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_command
     char                *output_file;
     char                *input_file;
     char                *heredoc_delim;
+    char                *heredoc_input;
     int                 quoted;
     struct s_command    *next;
 } t_command;
