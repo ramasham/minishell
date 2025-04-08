@@ -32,6 +32,7 @@ static int handle_output_redirection(t_command *cmd, char *filename, int append)
         perror("");
         return (1);
     }
+    
     if (cmd->outfile_fd != STDOUT_FILENO)
         close(cmd->outfile_fd);
     cmd->outfile_fd = fd;
@@ -91,6 +92,11 @@ void parse_redirection(t_command *cmd)
                 return;
             }
             handle_input_redirection(cmd, cmd->full_cmd[i + 1]);
+            i += 2;
+        }
+        else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
+        {
+            // Skip heredoc operator and delimiter - they will be handled separately
             i += 2;
         }
         else

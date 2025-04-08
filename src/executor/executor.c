@@ -76,7 +76,6 @@ int execute_pipeline(t_data *data)
 }
 
 
-
 int executor(t_data *data)
 {
     int exit_status;

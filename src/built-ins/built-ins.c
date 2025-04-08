@@ -42,23 +42,41 @@ void execute_builtins(t_command *command, t_data *data)
 
 int built_ins(t_command *command, t_data *data)
 {
-    // int stdin_backup;
-    // int stdout_backup;
+    int stdin_backup;
+    int stdout_backup;
 
-    // stdin_backup = -1;
-    // stdout_backup = -1;
     if (!command || !command->full_cmd || !command->full_cmd[0])
         return (0);
     if (!is_builtinn(command->full_cmd[0]))
         return (0);
-    // stdin_backup = dup(STDIN_FILENO);
-    // stdout_backup = dup(STDOUT_FILENO);
-    // handle_dup2(command, data);
+    
+    // Save the original file descriptors
+    stdin_backup = dup(STDIN_FILENO);
+    stdout_backup = dup(STDOUT_FILENO);
+    
+    // Set up redirections
+    if (setup_redirections(command) != 0)
+    {
+        // Restore original file descriptors
+        dup2(stdin_backup, STDIN_FILENO);
+        dup2(stdout_backup, STDOUT_FILENO);
+        close(stdin_backup);
+        close(stdout_backup);
+        return (0);
+    }
+    
+    // Execute the built-in command
     execute_builtins(command, data);
-    // dup2(stdin_backup, STDIN_FILENO);
-    // dup2(stdout_backup, STDOUT_FILENO);
-    // close(stdin_backup);
-    // close(stdout_backup);
+    
+    // Restore original file descriptors
+    dup2(stdin_backup, STDIN_FILENO);
+    dup2(stdout_backup, STDOUT_FILENO);
+    close(stdin_backup);
+    close(stdout_backup);
+    
+    // Clean up redirections
+    cleanup_redirections(command);
+    
     return (1);
 }
 
