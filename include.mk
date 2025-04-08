@@ -29,7 +29,7 @@ SRCS= \
 	src/executor/pipes.c \
 	src/executor/child_process.c \
 	src/executor/dot_slash_cmd.c \
-	src/heredoc/heredoc.c \
+	src/heredoc/heredoc1.c \
 	src/heredoc/heredoc_utils.c \
 	src/env.c \
 	src/signals.c \

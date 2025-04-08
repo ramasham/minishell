@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/07 18:58:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 22:59:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int handle_heredoc(t_command *cmd)
         cmd->heredoc_input = readline("> ");
         if (!cmd->heredoc_input)
             break;
-        // if (cmd->quoted)
-        //     expansion_process(cmd->heredoc_input);
         if (stop(cmd, cmd->heredoc_input))
         {
             free(cmd->heredoc_input);
             break;
         }
+        // if (cmd->quoted)
+        //     expansion_process(cmd->heredoc_input);
         write(pipe_fd[1],cmd->heredoc_input, ft_strlen(cmd->heredoc_input));
         write(pipe_fd[1], "\n", 1);
         free(cmd->heredoc_input);

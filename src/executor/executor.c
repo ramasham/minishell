@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 00:46:24 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 23:33:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,33 +75,9 @@ int execute_pipeline(t_data *data)
     return (data->last_exit_status);
 }
 
-int prepare_heredocs(t_command *cmd)
-{
-    t_command *curr = cmd;
 
-    // Parse heredocs for all commands
-    // while (curr)
-    // {
-    //     heredoc_parse(curr);
-    //     curr = curr->next;
-    // }
 
-    // Handle heredoc input for all commands
-    curr = cmd;
-    while (curr)
-    {
-        if (curr->heredoc_delim)
-        {
-            curr->heredoc_fd = handle_heredoc(curr);
-            if (curr->heredoc_fd == -1)
-                return (1);
-        }
-        curr = curr->next;
-    }
-    return (0);
-}
-
-int executor(t_data *data, t_command *cmd)
+int executor(t_data *data)
 {
     int exit_status;
     int dot_slash_status;
@@ -118,8 +94,6 @@ int executor(t_data *data, t_command *cmd)
         data->commands = NULL;
         return (exit_status);
     }
-    if (prepare_heredocs(cmd))
-        return (1);
     execute_pipeline(data);
     return (data->last_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/07 18:59:27 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 23:33:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,38 +50,9 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
     }
 }
 
-void handle_dup2(t_command *cmd, t_data *data)
-{
-    (void)data;
-    parse_redirection(cmd, data);
-    if (cmd->heredoc_fd != -1)
-    {
-        if (dup2(cmd->heredoc_fd, STDIN_FILENO) == -1)
-        {
-            perror("dup2 heredoc failed");
-            close(cmd->heredoc_fd);
-            return;
-        }
-        close(cmd->heredoc_fd);
-        return;
-    }
-    else if (cmd->infile == 1 && cmd->input_file)
-    {
-        if (input_redirection(cmd) == -1)
-            return;
-    }
-    else if (cmd->outfile == 1 && cmd->output_file)
-    {
-        if (output_redirection(cmd) == -1)
-            return;
-    }
-}
 
- 
 int child_process(t_data *data, t_command *cmd)
 {
-    if (is_redirection(cmd))
-        handle_dup2(cmd, data);
     if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
         ft_exit(cmd, data);
     get_cmd_path(cmd, data);
@@ -90,12 +61,21 @@ int child_process(t_data *data, t_command *cmd)
         cleanup_child(data);
         exit(data->last_exit_status);
     }
+    // Set up redirections before executing the command
+    if (setup_redirections(cmd) != 0)
+    {
+        cleanup_redirections(cmd);
+        cleanup_child(data);
+        exit(1);
+    }
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     execve(cmd->full_path, cmd->full_cmd, data->envp);
+    cleanup_redirections(cmd);
     cleanup_child(data);
     exit(data->last_exit_status);
 }
+
 void setup_redirection(t_data *data, int i)
 {
     if (i > 0)
@@ -116,7 +96,7 @@ void setup_redirection(t_data *data, int i)
     }
 }
 
-int     forking(t_data *data, t_command *cmd, int i)
+int forking(t_data *data, t_command *cmd, int i)
 {
     data->pids[i] = fork();
     if (data->pids[i] == -1)
@@ -138,7 +118,7 @@ int     forking(t_data *data, t_command *cmd, int i)
     return (0);
 }
 
-int  setup_children(t_data *data)
+int setup_children(t_data *data)
 {
     int i;
     t_command *cmd;
