@@ -6,7 +6,12 @@ include.mk
 libft
 minishell
 out
+out1
+out2
+out3
 ouy
 readline.supp
 src
+tmp.txt
+tmp2.txt
 utils

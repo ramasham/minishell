@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 23:33:19 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 00:35:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int child_process(t_data *data, t_command *cmd)
         cleanup_child(data);
         exit(data->last_exit_status);
     }
-    // Set up redirections before executing the command
     if (setup_redirections(cmd) != 0)
     {
         cleanup_redirections(cmd);

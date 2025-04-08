@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 23:01:08 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 00:29:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void set_commands(t_data *data)
 {   
+    t_command *cmd;
+
     get_command(data, *(data->node));
-    get_cmd_path(*(data->commands), data);
-    
-    // Initialize command structure
-    t_command *cmd = *(data->commands);
+    get_cmd_path(*(data->commands), data);    
+    cmd = *(data->commands);
     while (cmd)
     {
         cmd->append = 0;
@@ -30,10 +30,7 @@ void set_commands(t_data *data)
         cmd->heredoc_delim = NULL;
         cmd->heredoc_input = NULL;
         cmd->quoted = 0;
-        
-        // Parse redirections for this command
-        parse_redirection(cmd);
-        
+        parse_redirection(cmd, data);
         cmd = cmd->next;
     }
 }

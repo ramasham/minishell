@@ -136,17 +136,18 @@ int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
 t_command   *create_new_command();
 int         is_redirection(t_command *cmd);
-void        parse_redirection(t_command *cmd);
+void        parse_redirection(t_command *cmd, t_data *data);
 int         setup_redirections(t_command *cmd);
 void        cleanup_redirections(t_command *cmd);
 
 
 //heredoc and it's utils
-int handle_heredoc(t_command *cmd);
-int handle_heredoc_with_expansion(t_command *cmd, t_data *data);
-void parse_heredoc(t_command *cmd, int *i, int len);
+int handle_heredoc(t_command *cmd, t_data *data);
+char *expand_heredoc_content(char *content, t_data *data);
+void parse_heredoc(t_command *cmd, int *i, int len, t_data *data);
 int has_heredoc(t_command *cmd);
 void process_heredoc_with_priority(t_command *cmd, t_data *data);
+void cleanup_heredoc(t_command *cmd);
 
 
 
