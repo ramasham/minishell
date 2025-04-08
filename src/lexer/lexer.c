@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 00:58:42 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 17:09:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int  tokenizer(t_data *data)
         return (1);
     split_input(data);
     trim_operators(data);
-    print_command(data);
+    printf("tokens:\n");
+    print_list(*data->node);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/21 01:08:20 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 19:24:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int handle_quotes_and_trim(t_node *current, int in_double)
             return (1);
         free(current->content);
         current->content = trimmed;
-        // free(trimmed);
     }
     return (0);
 }
@@ -80,11 +79,11 @@ int	detect_env(t_data *data)
 	{
 		if (!current->content || !*(current->content))
 			return (1);
-		if (trim_quotes(current) == 1)
-		{
-			if (process_node(current, data))
-				return (1);
-		}
+		// if (trim_quotes(current) == 1)
+		// {
+		// 	if (process_node(current, data))
+		// 		return (1);
+		// }
 		current = current->next;
 	}
 	return (0);

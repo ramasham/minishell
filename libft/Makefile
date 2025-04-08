@@ -29,6 +29,7 @@ SRS = \
 		functions/ft_string/ft_atoi.c				\
 		functions/ft_string/ft_strtok.c			\
 		functions/ft_string/ft_split.c		\
+		functions/ft_string/ft_strcpy.c \
 
 SRS += \
 		functions/ft_memory/ft_bzero.c			\
@@ -62,10 +63,9 @@ SRS +=	\
 
 SRS += \
 	functions/ft_printf/ft_printf.c			\
-	functions/ft_printf/ft_print_hex.c			\
-	functions/ft_printf/ft_print_ptr.c			\
-	functions/ft_printf/ft_additional.c			\
-	functions/ft_printf/ft_write.c			\
+	functions/ft_printf/func_1.c \
+	functions/ft_printf/func_2.c \
+
 
 OBJS = $(SRS:.c=.o)
 

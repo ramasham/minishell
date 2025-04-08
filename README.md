@@ -5,83 +5,83 @@
 
 minishell/
 ├── src/
-│   ├── lexer.c         (Tokenizer)  
-│   ├── parser.c        (Syntax structuring)  
-│   ├── expander.c      (Variable expansion)  
-│   ├── executor.c      (Command execution)  
-│   ├── builtins.c      (Built-in functions)  
-│   ├── redirections.c  (Redirections handling)  
-│   ├── signals.c       (Handling CTRL+C, CTRL+D, etc.)  
-│   ├── env.c           (Environment variables)  
-├── includes/  
-├── libft/  
-├── Makefile  
-└── minishell.c  
-   
-Lexer → Expander → Parser → Executor.  
+│   ├── lexer.c         (Tokenizer)
+│   ├── parser.c        (Syntax structuring)
+│   ├── expander.c      (Variable expansion)
+│   ├── executor.c      (Command execution)
+│   ├── builtins.c      (Built-in functions)
+│   ├── redirections.c  (Redirections handling)
+│   ├── signals.c       (Handling CTRL+C, CTRL+D, etc.)
+│   ├── env.c           (Environment variables)
+├── includes/
+├── libft/
+├── Makefile
+└── minishell.c
+ 
+Lexer → Expander → Parser → Executor.
 --------------------------------------------------------------------------------------
-1️⃣  Tokenizer(lexer):  
-📌 Goal: Convert user input into structured tokens.    
-	✅️ 1. Split input by spaces while respecting quotes (", ').   
-	✅️ 2. Recognize special tokens (|, <, >, >>, <<).   
-	✅️ 3. Store tokens in a linked list.   
+1️⃣  Tokenizer(lexer):
+📌 Goal: Convert user input into structured tokens.
+	✅️ 1. Split input by spaces while respecting quotes (", ').
+	✅️ 2. Recognize special tokens (|, <, >, >>, <<). 
+	✅️ 3. Store tokens in a linked list.
 	
 🔴 Error Handling:
-	✅️ - Unclosed quotes: echo "hello → Syntax error.  
-	✅️ - Redundant pipes: ls || wc → Syntax error.  
-	🟠 - Special Tokens without Arguments: echo hello    
-	✅️ - Invalid Redirection: ls >| wc.  
-	✅️ - after operators there's an argumant.  
-	✅️ - Tokenizer should handle spaces and still tokenize correctly.  
+	✅️ - Unclosed quotes: echo "hello → Syntax error.
+	✅️ - Redundant pipes: ls || wc → Syntax error.
+	🟠 - Special Tokens without Arguments: echo hello      
+	✅️ - Invalid Redirection: ls >| wc.
+	✅️ - after operators there's an argumant.
+	✅️ - Tokenizer should handle spaces and still tokenize correctly.
 	✅️ - check >>> or <<<
 	
-Example:  
-Input: echo "hello world" > file  
-Output: [echo] ["hello world"] [>] [file]  
+Example:
+Input: echo "hello world" > file
+Output: [echo] ["hello world"] [>] [file]
 
-🟠 Incomplete :  
-	✅️ 1- write strtok  
-	✅️   2- 2 fucntions more than 25 lines  
-	🟡 4- valgrind  
-	✅️ 5- " '" && '"' should output correctly:  
-		- "rama'" is valid because the single quote is inside double quotes.  
-		- 'rama"' is valid for the same reason.  
-		- 'rama' is valid because the single quotes are correctly closed.  
-		- "rama" is valid for the same reason.  
-		- 'rama or "rama is invalid because they are unclosed.  
+🟠 Incomplete :
+	✅️ 1- write strtok
+	✅️   2- 2 fucntions more than 25 lines
+	🟡 4- valgrind
+	✅️ 5- " '" && '"' should output correctly:
+		- "rama'" is valid because the single quote is inside double quotes.
+		- 'rama"' is valid for the same reason.
+		- 'rama' is valid because the single quotes are correctly closed.
+		- "rama" is valid for the same reason.
+		- 'rama or "rama is invalid because they are unclosed.
 --------------------------------------------------------------------------------------
-2️⃣  Expander:  
-📌 Goal: Replace variables ($VAR) with their values.  
-	1. Traverse tokens and detect variables ($).  
-		- echo $HOME → echo /Users/yourname  
-		🟠 - $? → Last exit status. (handle it the execution part)  
-	2. Replace with corresponding values from envp.  
-	3. spliting the node to search for $anything  
+2️⃣  Expander:
+📌 Goal: Replace variables ($VAR) with their values.
+	1. Traverse tokens and detect variables ($).
+		- echo $HOME → echo /Users/yourname
+		🟠 - $? → Last exit status. (handle it the execution part)
+	2. Replace with corresponding values from envp.
+	3. spliting the node to search for $anything
 
-🔴 Error Handling:  
-	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.  
-	✅ - No expansion inside single quotes:  
-	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").  
+🔴 Error Handling:
+	✅️ - Undefined variables: echo $UNDEFINED_VAR should print an empty string.
+	✅ - No expansion inside single quotes:
+	✅️ - Ignore expansion inside single quotes ('), but allow in double quotes (").
 
-🟠 Incomplete :  
-		1- 123$123 -> 123123 -> still need to handle without quotations  
-	✅️  2- $0  
+🟠 Incomplete :
+		1- 123$123 -> 123123 -> still need to handle without quotations
+	✅️  2- $0
 --------------------------------------------------------------------------------------
-3️⃣ Parser  
-📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.  
+3️⃣ Parser
+📌 Goal: The parser is in charge of storing the tokenized string and save it in a useful manner for the executor to use later.
 
-1️⃣ Handle Redirections First  
-2️⃣ Handle Pipes (|)  
-3️⃣ Build the Command Linked List (t_command)  
-5️⃣ Finally, pass the list to the executor.  
+1️⃣ Handle Redirections First
+2️⃣ Handle Pipes (|)
+3️⃣ Build the Command Linked List (t_command)
+5️⃣ Finally, pass the list to the executor.
 
-✅️ - Redirection handling: Inside t_node, you check for redirection tokens and modify the input/output file descriptors.  
+✅️ - Redirection handling: Inside t_node, you check for redirection tokens and modify the input/output file descriptors.
 
-✅️ - Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.  
+✅️ - Command creation: After processing redirections, you create a t_command struct that holds the command arguments and the correct file descriptors.
 
-- Final command list: Each command (with its arguments and redirections) is added to the command list for further execution.  
+- Final command list: Each command (with its arguments and redirections) is added to the command list for further execution.
 
-🔸example :  
+🔸example :
 
 		argv = ["echo", "hello", NULL]
 		infile = STDIN_FILENO
@@ -94,24 +94,24 @@ Output: [echo] ["hello world"] [>] [file]
 		outfile = File descriptor for "output.txt"
 		next → NULL
 
-🔴 Error Handling:  
-	- Missing file after redirection: echo hello > → Syntax error.  
-	- Unmatched pipes: | echo hello → Syntax error.  
-	- Disallow special tokens together: ls >| wc is invalid.  
-	- Permission issues  
-🟠 Incomplete :  
-	- heredoc  
+🔴 Error Handling:
+	- Missing file after redirection: echo hello > → Syntax error.
+	- Unmatched pipes: | echo hello → Syntax error.
+	- Disallow special tokens together: ls >| wc is invalid.
+	- Permission issues
+🟠 Incomplete :
+	- heredoc
 ----------------------------------------------------------------------------------------
-⚠️  Test that lexer and expander work together.  
+⚠️  Test that lexer and expander work together.
 
-4️⃣  Execution & Built-ins  
-📌 Goal: Run commands and built-ins.  
-	1. Handle external commands (using fork() + execve()).  
-	2. Implement built-ins (without fork() when needed).  
-		cd, exit, echo, pwd, export, unset, env.  
-	3. Manages pipes and redirections.  
+4️⃣  Execution & Built-ins
+📌 Goal: Run commands and built-ins.
+	1. Handle external commands (using fork() + execve()).
+	2. Implement built-ins (without fork() when needed).
+		cd, exit, echo, pwd, export, unset, env.
+	3. Manages pipes and redirections.
 
-🟠 - $? → Last exit status. (handle it the execution part)  
+🟠 - $? → Last exit status. (handle it the execution part)
 
 	-Set Up Pipes Before Forking:
 		If you have n commands, create n - 1 pipes to connect them.
@@ -125,39 +125,39 @@ Output: [echo] ["hello world"] [>] [file]
 		Execute using execve().
 
 
-🔴 Error Handling:  
-	✅️ - Command not found: hello → command not found error.  
-	- Permission denied: ./file.sh without chmod +x should return an error.  
-	✅️ - Invalid redirection targets: cat < non_existing_file.txt should return an error.  
-	✅️ - Invalid cd paths: cd /wrong/path → Error.  
+🔴 Error Handling:
+	✅️ - Command not found: hello → command not found error.
+	- Permission denied: ./file.sh without chmod +x should return an error.
+	✅️ - Invalid redirection targets: cat < non_existing_file.txt should return an error.
+	✅️ - Invalid cd paths: cd /wrong/path → Error.
 
---------------------------------------------------------------------------------------  
-6️⃣  Signals:  
-📌 Goal: Handle user interruptions (CTRL+C, CTRL+D, CTRL+).  
-	#signals:  
-		1. CTRL+C (SIGINT): Interrupt the current process but don't exit the shell.  
-		2. CTRL+D (EOF): Exit only if input is empty.  
-		3. CTRL+\ (SIGQUIT): Ignore for interactive shell.  
+--------------------------------------------------------------------------------------
+6️⃣  Signals:
+📌 Goal: Handle user interruptions (CTRL+C, CTRL+D, CTRL+).
+	#signals:
+		1. CTRL+C (SIGINT): Interrupt the current process but don't exit the shell.
+		2. CTRL+D (EOF): Exit only if input is empty.
+		3. CTRL+\ (SIGQUIT): Ignore for interactive shell.
 
-----------------------------------------------------------------------------------------  
-7️⃣  Testing & Memory Management:  
-📌 Goal: Ensure stability and fix memory leaks.  
+----------------------------------------------------------------------------------------
+7️⃣  Testing & Memory Management:
+📌 Goal: Ensure stability and fix memory leaks.
 
-----------------------------------------------------------------------------------------  
-🔴 tests:  
-✅️ 1- handle absolute path  
-✅️ 2- spaces and tab then enter -> sigfault and leaks   
-3- exit after executed some commands -> leaks  
-✅️ 4- command with quotes: (only if there's a pipe or operator should take it as argument)  
-✅️ 5- unset PATH  
-	minishell$ unset PATH  
-	==1102110== Invalid free() / delete / delete[] / realloc()  
-	==1102110==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)  
-	==1102110==    by 0x10CF4D: remove_env_var (in /home/rsham/core/minishell/minishell)  
-	==1102110==    by 0x10D02A: ft_unset (in /home/rsham/core/minishell/minishell)  
-	==1102110==    by 0x10BF64: built_ins (in /home/rsham/core/minishell/minishell)  
-	==1102110==    by 0x10D150: executor (in /home/rsham/core/minishell/minishell)  
-	==1102110==    by 0x10954F: minishell_loop (in /home/rsham/core/minishell/minishell)  
-	==1102110==    by 0x109657: main (in /home/rsham/core/minishell/minishell)  
-	==1102110==  Address 0x1fff0002fd is on thread 1's stack  
-6- execute binaries  
+----------------------------------------------------------------------------------------
+🔴 tests:
+✅️ 1- handle absolute path
+✅️ 2- spaces and tab then enter -> sigfault and leaks 
+3- exit after executed some commands -> leaks
+✅️ 4- command with quotes: (only if there's a pipe or operator should take it as argument)
+✅️ 5- unset PATH
+	minishell$ unset PATH
+	==1102110== Invalid free() / delete / delete[] / realloc()
+	==1102110==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+	==1102110==    by 0x10CF4D: remove_env_var (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10D02A: ft_unset (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10BF64: built_ins (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10D150: executor (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x10954F: minishell_loop (in /home/rsham/core/minishell/minishell)
+	==1102110==    by 0x109657: main (in /home/rsham/core/minishell/minishell)
+	==1102110==  Address 0x1fff0002fd is on thread 1's stack
+6- execute binaries

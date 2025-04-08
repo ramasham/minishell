@@ -6,27 +6,27 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/22 23:30:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/06 20:05:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    execution_process(t_data *data)
+int execution_process(t_data *data)
 {
     if (piping(data))
     {
         free(data->pipe_fd);
         data->pipe_fd = NULL;
-        return(1);
+        return (1);
     }
-    if (create_children(data))
+    if (setup_children(data))
     {
         free(data->pipe_fd);
         free(data->pids);
         data->pipe_fd = NULL;
         data->pids = NULL;
-        return(1);
+        return (1);
     }
     close_pipes(data, data->cmd_count);
     return (0);
@@ -69,19 +69,42 @@ int execute_pipeline(t_data *data)
     free(data->pipe_fd);
     free_list_cmd(data->commands);
     free(data->commands);
-
     data->pids = NULL;
     data->pipe_fd = NULL;
     data->commands = NULL;
     return (data->last_exit_status);
 }
 
+int prepare_heredocs(t_data *data)
+{
+    t_command *cmd = *(data->commands);
+    while (cmd)
+    {
+        if (cmd->heredoc_delim)
+        {
+            cmd->heredoc_fd = handle_heredoc(cmd);
+            if (cmd->heredoc_fd == -1)
+                return (1);
+        }
+        cmd = cmd->next;
+    }
+    return (0);
+}
+void prepare_redirections(t_data *data)
+{
+    t_command *cmd = *data->commands;
+    while (cmd)
+    {
+        // Call parse_redirection once in the parent process
+        parse_redirection(cmd, data);
+        cmd = cmd->next;
+    }
+}
 
 int executor(t_data *data)
 {
     int exit_status;
     int dot_slash_status;
-
     dot_slash_status = handle_dot_slash_exec(data);
     if (dot_slash_status != 0)
     {
@@ -95,9 +118,8 @@ int executor(t_data *data)
         data->commands = NULL;
         return (exit_status);
     }
-    else
-    {
-        execute_pipeline(data);
-    }
+    // if (prepare_heredocs(data))
+    //     return (1);
+    execute_pipeline(data);
     return (data->last_exit_status);
 }

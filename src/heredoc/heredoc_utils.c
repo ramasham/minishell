@@ -1,28 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printptr.c                                      :+:      :+:    :+:   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 11:03:38 by rsham             #+#    #+#             */
-/*   Updated: 2024/09/08 18:51:33 by rsham            ###   ########.fr       */
+/*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
+/*   Updated: 2025/04/06 01:06:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "minishell.h"
 
-int	ft_print_ptr(unsigned long n)
-{
-	int	i;
-
-	i = 0;
-	if (n)
-	{
-		ft_print_char('0');
-		ft_print_char('x');
-		i += ft_print_hex(n);
-		return (i + 2);
-	}
-	return (ft_print_str("(nil)"));
-}
