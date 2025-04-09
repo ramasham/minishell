@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 16:31:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 20:15:33 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int not_pipeline(t_data *data)
 
 int execute_pipeline(t_data *data)
 {
-
     data->pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!data->pids)
     {
@@ -80,11 +79,14 @@ int executor(t_data *data)
 {
     int exit_status;
     int dot_slash_status;
-    dot_slash_status = handle_dot_slash_exec(data);
-    if (dot_slash_status != 0)
+
+    if ((*data->commands)->full_cmd[0])
     {
-        return (dot_slash_status);
-    }
+        dot_slash_status = handle_dot_slash_exec(data);
+        if (dot_slash_status != 0)
+        {
+            return (dot_slash_status);
+        }
     exit_status = not_pipeline(data);
     if (exit_status != -1)
     {
@@ -94,5 +96,6 @@ int executor(t_data *data)
         return (exit_status);
     }
     execute_pipeline(data);
+    }
     return (data->last_exit_status);
 }

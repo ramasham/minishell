@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/09 17:38:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 18:16:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,12 @@ static void	add_or_update_env(t_data *data, char *var)
 
 	eq_pos = ft_strchr(var, '=');
 	if (!eq_pos || !update_existing_var(data, var, eq_pos))
+	{
 		if (!add_new_var(data, var))
+		{
 			perror("minishell: export");
+		}
+	}
 }
 
 void	ft_export(t_data *data, t_command *command)
@@ -202,3 +206,5 @@ void	ft_export(t_data *data, t_command *command)
 		i++;
 	}
 }
+
+

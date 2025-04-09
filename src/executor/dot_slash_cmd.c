@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 01:28:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 16:33:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 19:58:10 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,11 @@ int handle_dot_command(t_data *data)
 int handle_dot_slash_command(t_data *data)
 {
     t_command *cmd;
-    char *file;
     
     cmd = *data->commands;
-    file = cmd->full_cmd[0] + 2;
-    // if (access(file, F_OK) == 0 && access(file, X_OK) == 0)
-    // {
-    //     execve(file, cmd->full_cmd, data->envp);
-    //     perror("execve failed");
-    // }
-    // else
-    // {
-        // ft_putstr_fd("./: Is a directory\n", 1);
-        // data->last_exit_status = 1;
-    // }
-    return (1);
+    ft_putstr_fd("./: Is a directory\n", 1);
+    data->last_exit_status = 1;
+    return (data->last_exit_status);
 }
 
 void    cmd_error_msg(t_data *data)
@@ -69,7 +59,6 @@ int handle_dot_slash_exec(t_data *data)
 {
     t_command *cmd;
 
-
     cmd = *data->commands;
     if (ft_strcmp(cmd->full_cmd[0], ".") == 0)
     {
@@ -79,15 +68,15 @@ int handle_dot_slash_exec(t_data *data)
             return (data->last_exit_status);
         }
     }
-    // else if (cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/')
-    // {
+    else if ((cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/') && (!cmd->full_cmd[0][2]))
+    {
         
-    //     if (handle_dot_slash_command(data))
-    //     {
-    //         free_list_cmd(data->commands);
-    //         return (data->last_exit_status);
-    //     }
-    // }
+        if (handle_dot_slash_command(data))
+        {
+            free_list_cmd(data->commands);
+            return (data->last_exit_status);
+        }
+    }
     else if (cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '.')
     {
         cmd_error_msg(data);

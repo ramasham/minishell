@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 17:19:20 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 19:39:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int forking(t_data *data, t_command *cmd, int i)
         cleanup_child(data);
         return(1);
     }
-
     if (data->pids[i] == 0)
     {
         setup_redirection(data, i);

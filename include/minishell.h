@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 17:25:22 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 18:15:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_data
     int         last_exit_status;
     int         cmd_count;
     char        **envp;
-    char	**export_only;
     int         *pipe_fd;
     pid_t       *pids;
 } t_data;

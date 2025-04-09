@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 16:57:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 18:49:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int handle_input_redirection(t_command *cmd, char *filename)
     cmd->input_file = filename;
     return (0);
 }
-
 
 int setup_redirections(t_command *cmd)
 {

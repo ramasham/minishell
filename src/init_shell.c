@@ -20,7 +20,6 @@ void    init_data(t_data *data)
     data->commands = NULL;
     data->last_exit_status = 0;
     data->envp = NULL;
-    data->export_only = NULL;
     data->cmd_count = 0;
     data->pipe_fd = NULL;
 }
@@ -49,16 +48,15 @@ void get_env(t_data *data, char **envp)
 
     while (envp[size])
         size++;
-    data->envp = malloc(sizeof(char *) * (size + 1)); // Allocate memory for envp
+    data->envp = malloc(sizeof(char *) * (size + 1));
     if (!data->envp)
         return;
-    
     i = 0;
     while (envp[i])
     {
         size = ft_strlen(envp[i]);
-        data->envp[i] = malloc(sizeof(char) * (size + 1)); // Allocate memory for each string
-        if (!data->envp[i]) // Handle malloc failure
+        data->envp[i] = malloc(sizeof(char) * (size + 1));
+        if (!data->envp[i])
         {
             while (--i >= 0)
                 free(data->envp[i]);
@@ -75,12 +73,6 @@ void get_env(t_data *data, char **envp)
 
 int	init_shell(t_data *data, char **envp)
 {
-	// *data = malloc(sizeof(t_data));
-	// if (!*data)
-	// {
-	// 	perror("minishell");
-	// 	return (1);
-	// }
 	init_data(data);
 	get_env(data, envp);
 	return (0);
