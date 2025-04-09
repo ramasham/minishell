@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/30 05:41:15 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 14:28:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,12 @@ int check_path(t_data *data)
     result = get_cmd_path(*data->commands, data);
     if (result == CMD_NOT_EXECUTABLE) 
     {
-        // free_list_cmd(data->commands);
-        // free(data->commands);
-        // data->commands = NULL;  
         data->last_exit_status = CMD_NOT_EXECUTABLE;
         return (data->last_exit_status);
     }
     if (result != 0)
     {
         cmd_not_found_msg(*data->commands);
-        // free_list_cmd(data->commands);
-        // free(data->commands);
-        // data->commands = NULL;  
         data->last_exit_status = CMD_NOT_FOUND;
         return (data->last_exit_status);
     }

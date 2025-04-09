@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:09:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/06 19:14:39 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 16:24:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ void handle_quotes(char c, int *in_single, int *in_double)
         *in_double = !*in_double;     
 }
 
-int     trim_quotes(t_node *node)
+int trim_quotes(t_node *node)
 {
-    char    *trimmed;
+    char *trimmed;
 
     if (!node->content)
-        return(1);
+        return (1);
+    if (ft_strncmp(node->content, "<<", 2) == 0)
+        return (1);  
     if (node->content[0] == '\'' && node->content[ft_strlen(node->content) - 1] == '\'')
     {
         trimmed = ft_strtrim(node->content, "'");
@@ -44,4 +46,5 @@ int     trim_quotes(t_node *node)
     }
     return (1);
 }
+
 

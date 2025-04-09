@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/06 19:13:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 16:21:39 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ int	main(int argc, char **argv, char **envp)
 			data.input = readline("\033[1;35mminishell$\033[0m ");
 		if (handle_eof(data.input))
 		{
-			free(data.input);
+			if (data.input)
+				free(data.input);
 			break ;
 		}
         if (process_empty_input(data.input))
 		{
-			free(data.input);
+			if (data.input)
+				free(data.input);
 			continue ;
 		}
 		minishell_loop(&data);

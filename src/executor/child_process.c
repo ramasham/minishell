@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 00:35:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 17:19:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
     i = 0;
     while (i < cmd_count)
     {
+        if((fcntl((*data->commands)->outfile_fd,F_GETFD) != -1)
+            && (*data->commands)->outfile_fd != STDOUT_FILENO )
+            close((*data->commands)->outfile_fd);
         signal(SIGINT, SIG_IGN);
         waitpid(data->pids[i], &status, 0);
         if (WIFEXITED(status))
@@ -49,7 +52,6 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
         i++;
     }
 }
-
 
 int child_process(t_data *data, t_command *cmd)
 {
@@ -67,6 +69,10 @@ int child_process(t_data *data, t_command *cmd)
         cleanup_child(data);
         exit(1);
     }
+    if((fcntl(cmd->outfile_fd, F_GETFD) != -1) && cmd->outfile_fd != STDOUT_FILENO)
+        close(cmd->outfile_fd);
+    if((fcntl(cmd->infile_fd, F_GETFD) != -1) && cmd->infile_fd != STDIN_FILENO)
+        close(cmd->infile_fd);
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     execve(cmd->full_path, cmd->full_cmd, data->envp);
@@ -97,6 +103,7 @@ void setup_redirection(t_data *data, int i)
 
 int forking(t_data *data, t_command *cmd, int i)
 {
+
     data->pids[i] = fork();
     if (data->pids[i] == -1)
     {
@@ -104,6 +111,7 @@ int forking(t_data *data, t_command *cmd, int i)
         cleanup_child(data);
         return(1);
     }
+
     if (data->pids[i] == 0)
     {
         setup_redirection(data, i);
@@ -131,5 +139,6 @@ int setup_children(t_data *data)
         cmd = cmd->next;
         i++;
     }
+
     return (0);
 }

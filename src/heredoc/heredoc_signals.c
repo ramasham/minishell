@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*   heredoc_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/09 11:34:38 by rsham            ###   ########.fr       */
+/*   Created: 2025/04/09 11:35:40 by rsham             #+#    #+#             */
+/*   Updated: 2025/04/09 11:49:09 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-void cleanup_heredoc(t_command *cmd)
+void handle_sigint_heredoc(int sig)
 {
-    if (cmd->heredoc_fd != -1)
-        close(cmd->heredoc_fd);
-    if (cmd->heredoc_delim)
-        free(cmd->heredoc_delim);
-    cmd->heredoc_fd = -1;
-    cmd->heredoc_delim = NULL;
+    (void)sig;
+    ft_putstr_fd("\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+    exit(130);
 }
 
+void setup_heredoc_signals(void)
+{
+    signal(SIGINT, handle_sigint_heredoc);
+    signal(SIGQUIT, SIG_IGN);
+}

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:02:50 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 17:12:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 15:44:12 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void fill_full_cmd(t_node **current, t_command *new_cmd, int arg_count)
         new_cmd->full_cmd[i] = ft_strdup((*current)->content);
         if (!new_cmd->full_cmd[i])
         {
-            // free_full_cmd(new_cmd);
-            // return;
             while (i-- > 0)
             {
                 free(new_cmd->full_cmd[i]);
@@ -108,6 +106,7 @@ void get_command(t_data *node_lst, t_node *current)
             return ;
         }
         add_command(node_lst, new_cmd);
+        
         if (current && ft_strcmp(current->content, "|") == 0)
             current = current->next;
     }

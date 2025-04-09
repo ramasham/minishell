@@ -15,11 +15,14 @@
 void    init_data(t_data *data)
 {
     data->input = NULL;
+    data->pids = NULL;
     data->node = NULL;
     data->commands = NULL;
     data->last_exit_status = 0;
     data->envp = NULL;
+    data->export_only = NULL;
     data->cmd_count = 0;
+    data->pipe_fd = NULL;
 }
 
 void	free_env(char **envp)

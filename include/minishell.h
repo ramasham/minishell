@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 23:34:51 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 17:25:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,13 @@ typedef enum s_type
 {
     DQUOTES,
     SQUOTES,
-    CMD,
-    REDIRECT_OUT,
-    REDIRECT_IN,
-    APPEND,
-    HERE_DOC,
-    PIPE,
 } t_type;
 
 //struct for node linked list
 typedef struct s_node
 {
     char            *content;
-    t_type       type;
+    t_type          type;
     struct s_node  *next;
 } t_node;
 
@@ -79,10 +73,9 @@ typedef struct s_data
     int         last_exit_status;
     int         cmd_count;
     char        **envp;
+    char	**export_only;
     int         *pipe_fd;
     pid_t       *pids;
-    int         stdin_backup;
-    int         stdout_backup;
 } t_data;
 
 //shell
@@ -96,7 +89,6 @@ int     has_invalid_redirection(char *ptr);
 int     check_redirection(t_data *data);
 int     check_append_heredoc(t_data *data);
 int     operator_at_end(t_data *data);
-int     operator_at_start(t_data *data);
 int     check_multiple_pipes(t_data *data);
 int     validate_input(t_data *data);
 int     tokenizer(t_data *data);
@@ -134,20 +126,36 @@ void        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
 int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
-t_command   *create_new_command();
 int         is_redirection(t_command *cmd);
 void        parse_redirection(t_command *cmd, t_data *data);
 int         setup_redirections(t_command *cmd);
 void        cleanup_redirections(t_command *cmd);
+t_command   *create_new_command();
+int         handle_output_redirection(t_command *cmd, char *filename, int append);
+int         handle_input_redirection(t_command *cmd, char *filename);
+int         setup_redirections(t_command *cmd);
 
 
-//heredoc and it's utils
-int handle_heredoc(t_command *cmd, t_data *data);
+
+
+//heredoc
+int     handle_heredoc(t_command *cmd, t_data *data);
+
+char    *expand_heredoc_content(char *content, t_data *data);
+// void    parse_heredoc(t_command *cmd, int *i, int len, t_data *data);
+void parse_heredoc(t_command *cmd, int *i, t_data *data);
+void    heredoc_delim(t_command *cmd, int *i);
+
+
+void    cleanup_heredoc(t_command *cmd);
+char *expand_env_var_heredoc(char *content, int *i, t_data *data);
 char *expand_heredoc_content(char *content, t_data *data);
-void parse_heredoc(t_command *cmd, int *i, int len, t_data *data);
-int has_heredoc(t_command *cmd);
-void process_heredoc_with_priority(t_command *cmd, t_data *data);
-void cleanup_heredoc(t_command *cmd);
+void handle_sigint_heredoc(int sig);
+void setup_heredoc_signals(void);
+
+
+
+
 
 
 
@@ -165,22 +173,19 @@ void    ft_unset(t_data *data, t_command *command);
 //exectuter
 int     is_external(t_command *cmd, t_data *data);
 int     count_commands(t_command *cmds);
-int     check_path(t_data *data);
-// int    executor(t_data *data);
-int executor(t_data *data);
-void heredoc_parse(t_command *cmd);
-int handle_dot_command(t_data *data);
-int handle_dot_slash_command(t_data *data);
-int handle_dot_slash_exec(t_data *data);
-int    execution_process(t_data *data);
-int piping(t_data *data);
-void close_pipes(t_data *data, int cmd_count);
+int     check_path(t_data *data);;
+int     executor(t_data *data);
+int     handle_dot_command(t_data *data);
+int     handle_dot_slash_command(t_data *data);
+int     handle_dot_slash_exec(t_data *data);
+int     execution_process(t_data *data);
+int     piping(t_data *data);
+void    close_pipes(t_data *data, int cmd_count);
 void    wait_for_children(t_data  *data, int cmd_count, int *exit_status);
-int child_process(t_data *data, t_command *cmd);
-int  setup_children(t_data *data);
+int     child_process(t_data *data, t_command *cmd);
+int     setup_children(t_data *data);
 int     forking(t_data *data, t_command *cmd, int i);
-void cleanup_child(t_data *data);
-int handle_dup2(t_command *cmd);
+void    cleanup_child(t_data *data);
 
 
 
@@ -214,15 +219,10 @@ void      ft_nodeadd_back(t_node **head, t_node *new_node);
 void      print_list(t_node *head);
 void      init_data(t_data *data);
 void	  free_list(t_node **node);
-t_node    *create_node(const char *token);
 int	       is_space_str(char *str);
 void    cmd_not_found_msg(t_command *cmds);
-void print_command(t_data *newcmd);
-
-
-
-
-
+void    print_command(t_data *newcmd);
+t_node    *create_node(const char *token);
 
 
 
