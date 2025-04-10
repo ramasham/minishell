@@ -57,7 +57,7 @@ int update_envp(t_data *data, int index, char *new_var)
 
     if (index != -1)
     {
-        free(data->envp[index]);//
+        free(data->envp[index]);
         data->envp[index] = new_var;
     }
     else

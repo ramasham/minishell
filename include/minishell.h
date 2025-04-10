@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 18:15:04 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 19:46:44 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/wait.h> 
 # include <signal.h>
 #include <sys/stat.h>
-
+#include <sys/ioctl.h>
 # include "libft.h"
 # include "ft_printf.h"
 
@@ -75,10 +75,16 @@ typedef struct s_data
     char        **envp;
     int         *pipe_fd;
     pid_t       *pids;
+    int         error;
+    int         redirection;
 } t_data;
 
 //shell
 int	init_shell(t_data *data, char **envp);
+void	remove_empty_commands(t_command **cmd_list);
+int handle_output_redirection(t_data *data, t_command *cmd, char *filename, int append);
+
+
 
 //lexer
 int     extract_word(const char *content, int i, char *token, int inside_quotes);
@@ -121,7 +127,7 @@ int         check_access(t_data *data, t_command *cmd, char *path);
 char        *join_path_cmd(char  *path, char *cmd);
 char        **find_path(t_data *data);
 void        add_command(t_data *data, t_command *new_cmd);
-void        set_commands(t_data *data);
+int        set_commands(t_data *data);
 void        get_command(t_data *node_lst, t_node *current);
 int         is_abs_path(char *cmd);
 int         handle_abs_path(t_command *cmd);
@@ -130,9 +136,10 @@ void        parse_redirection(t_command *cmd, t_data *data);
 int         setup_redirections(t_command *cmd);
 void        cleanup_redirections(t_command *cmd);
 t_command   *create_new_command();
-int         handle_output_redirection(t_command *cmd, char *filename, int append);
+// int         handle_output_redirection(t_command *cmd, char *filename, int append);
 int         handle_input_redirection(t_command *cmd, char *filename);
 int         setup_redirections(t_command *cmd);
+int    parse_output(t_data *data, t_command *cmd, int *i);
 
 
 

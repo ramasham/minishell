@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:02:50 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 20:00:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 14:41:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,5 @@ void get_command(t_data *node_lst, t_node *current)
     free_list(node_lst->node);
     free(node_lst->node);
     node_lst->node = NULL;
-    // print_list(current);
 }
 

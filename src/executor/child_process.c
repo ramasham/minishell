@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 19:39:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 17:58:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
 {
     int i;
     int status;
-
     i = 0;
+    
     while (i < cmd_count)
     {
-        if((fcntl((*data->commands)->outfile_fd,F_GETFD) != -1)
-            && (*data->commands)->outfile_fd != STDOUT_FILENO )
+        if((*data->commands)->outfile_fd != -1)
             close((*data->commands)->outfile_fd);
+        cleanup_redirections((*data->commands));
         signal(SIGINT, SIG_IGN);
         waitpid(data->pids[i], &status, 0);
         if (WIFEXITED(status))
@@ -69,10 +69,11 @@ int child_process(t_data *data, t_command *cmd)
         cleanup_child(data);
         exit(1);
     }
-    if((fcntl(cmd->outfile_fd, F_GETFD) != -1) && cmd->outfile_fd != STDOUT_FILENO)
-        close(cmd->outfile_fd);
-    if((fcntl(cmd->infile_fd, F_GETFD) != -1) && cmd->infile_fd != STDIN_FILENO)
-        close(cmd->infile_fd);
+    if(cmd->outfile_fd != -1)
+            close(cmd->outfile_fd);
+       if(cmd->infile_fd != -1)
+            close(cmd->infile_fd);
+    cleanup_heredoc(cmd);
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
     execve(cmd->full_path, cmd->full_cmd, data->envp);

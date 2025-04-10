@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/09 16:21:39 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 19:47:29 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,19 @@ static int	process_empty_input(char *input)
 
 static void	minishell_loop(t_data *data)
 {
+	data->error = 0;
 	if (!tokenizer(data))
 	{
 		expander(data);
-		set_commands(data);
-		executor(data);
+		if (set_commands(data) != 1)
+			executor(data);
 	}
 	if (*data->input && data->input)
 		add_history(data->input);
 	free(data->input);
 	data->input = NULL;
 }
+
 
 
 int	main(int argc, char **argv, char **envp)
@@ -49,6 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	while (1)
 	{
+		// init_shell(&data, envp);
 		setup_signal_handlers();
 		if (g_exit_status == 130 || g_exit_status == 131)
 		{

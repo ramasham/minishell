@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 22:54:36 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 13:45:14 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ int    validate_input(t_data *data)
         return (1);
     if (check_multiple_pipes(data))
         return (1);
-    if (check_redirection(data))
-        return (1);
-    if (operator_at_end(data))
-        return (1);
-    if (check_append_heredoc(data))
-        return (1);
+    // if (check_redirection(data))
+    //     return (1);
+    // if (operator_at_end(data))
+    //     return (1);
+    // if (check_append_heredoc(data))
+    //     return (1);
     return (0);
 }
 

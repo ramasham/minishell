@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:36:05 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 18:58:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 12:17:08 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,6 @@ int     count_commands(t_command *cmds)
         cmds = cmds->next;
     }
     return (i);
-}
-
-
-int is_redirection(t_command *cmd)
-{
-    int i;
-
-    i = 0;
-    while (cmd->full_cmd[i])
-    {
-        if (ft_strcmp(cmd->full_cmd[i], ">") == 0)
-            return (1);
-        else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
-            return (1);
-        else if (ft_strncmp(cmd->full_cmd[i], ">>", 2) == 0)
-            return (1);
-        else if (ft_strncmp(cmd->full_cmd[i], "<<", 2) == 0)
-            return (1);
-        i++;
-    }
-    return (0);
 }
 
 

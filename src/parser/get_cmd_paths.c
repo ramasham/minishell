@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 15:14:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 16:31:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,24 @@ char    **find_path(t_data *data)
 
 int check_access(t_data *data, t_command *cmd, char *path)
 {
+    (void)data;
     if (!path)
         return (1);
+    // printf("Checking path: %s\n", path);
     if (access(path, F_OK) == -1)
     {
         free(path);
         return (1);
+        
     }
     if (access(path, X_OK) == -1)
     {
         ft_putstr_fd("bash: ", 2);
-        ft_putstr_fd(path, 2);
+        // ft_putstr_fd(path, 2);
         ft_putstr_fd(": Permission denied\n", 2);
         free(path);
         data->last_exit_status = CMD_NOT_EXECUTABLE;
+        data->error = 1;
         return (CMD_NOT_EXECUTABLE);
     }
     cmd->full_path = ft_strdup(path);
@@ -73,7 +77,7 @@ char    *join_path_cmd(char  *path, char *cmd)
 
     if (!path || !cmd)
     {
-        printf("no path");
+        printf("no path\n");
         return (NULL);
     }
     temp = ft_strjoin(path, "/");
@@ -120,3 +124,4 @@ int    get_cmd_path(t_command *cmd, t_data *data)
     free_2d(paths);
     return (1);
 }
+

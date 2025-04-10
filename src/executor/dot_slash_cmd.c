@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 01:28:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 19:58:10 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 13:27:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,6 @@ int handle_dot_command(t_data *data)
         data->last_exit_status = 1;
         return (1);
     }
-    // if (access(script, X_OK) == 0)
-    // {
-    //     execve(script, cmd->full_cmd + 1, data->envp);
-    //     perror("execve failed");
-    // }
-    // else
-    // {
-    //     perror("Error: script is not executable");
-    //     data->last_exit_status = 1;
-    // }
     return (1);
 }
 
@@ -57,9 +47,11 @@ void    cmd_error_msg(t_data *data)
 
 int handle_dot_slash_exec(t_data *data)
 {
-    t_command *cmd;
+    t_command *cmd = *data->commands;
 
-    cmd = *data->commands;
+    if (!cmd || !cmd->full_cmd || !cmd->full_cmd[0])
+        return (0);
+
     if (ft_strcmp(cmd->full_cmd[0], ".") == 0)
     {
         if (handle_dot_command(data))
@@ -68,9 +60,9 @@ int handle_dot_slash_exec(t_data *data)
             return (data->last_exit_status);
         }
     }
-    else if ((cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/') && (!cmd->full_cmd[0][2]))
+    else if (((cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/') && !cmd->full_cmd[0][2])
+          || (cmd->full_cmd[0][0] == '/'))
     {
-        
         if (handle_dot_slash_command(data))
         {
             free_list_cmd(data->commands);
@@ -82,5 +74,6 @@ int handle_dot_slash_exec(t_data *data)
         cmd_error_msg(data);
         return (data->last_exit_status);
     }
+
     return (0);
 }

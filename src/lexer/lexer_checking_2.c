@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 17:03:25 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 19:25:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/10 13:45:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int operator_at_end(t_data *data)
 
     i = 0;
     j = 0;
-    operators = "|<>";
+    operators = "|";
     ptr = data->input;
     while (ptr[j])
         j++;

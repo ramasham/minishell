@@ -22,6 +22,8 @@ void    init_data(t_data *data)
     data->envp = NULL;
     data->cmd_count = 0;
     data->pipe_fd = NULL;
+    data->error = 0;
+    data->redirection = 0;
 }
 
 void	free_env(char **envp)
@@ -38,8 +40,6 @@ void	free_env(char **envp)
 	}
 	free(envp);
 }
-
-
 
 void get_env(t_data *data, char **envp)
 {
@@ -69,7 +69,6 @@ void get_env(t_data *data, char **envp)
     }
     data->envp[i] = NULL;
 }
-
 
 int	init_shell(t_data *data, char **envp)
 {
