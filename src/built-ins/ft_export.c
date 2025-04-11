@@ -6,7 +6,7 @@
 /*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/22 23:40:15 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:49:28 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,22 @@ static int	add_new_var(t_data *data, char *var)
 }
 
 
-static void	add_or_update_env(t_data *data, char *var)
+void	add_or_update_env(t_data *data, char *var)
 {
 	char	*eq_pos;
 
 	eq_pos = ft_strchr(var, '=');
-	if (!eq_pos || !update_existing_var(data, var, eq_pos))
-		if (!add_new_var(data, var))
-			perror("minishell: export");
+	if (!eq_pos)
+		add_to_export_only(data, var);
+	else
+	{
+		if (!update_existing_var(data, var, eq_pos))
+			if (!add_new_var(data, var))
+				perror("minishell: export");
+		remove_from_export_only(data, var, eq_pos - var);
+	}
 }
+
 
 void	ft_export(t_data *data, t_command *command)
 {
@@ -173,6 +180,7 @@ void	ft_export(t_data *data, t_command *command)
 	if (!command->full_cmd[1])
 	{
 		print_env_sorted(data->envp);
+		print_export_only(data->export_only);
 		return ;
 	}
 	i = 1;

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:49:36 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/21 01:33:22 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 16:12:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void ft_echo(t_data *data, t_command *cmd)
 {
-    int i = 1;
-    int newline = 1;
-
+    int i;
+    int newline;
+    
+    i = 1;
+    newline = 1;
     if (cmd->full_cmd[1] && ft_strcmp(cmd->full_cmd[1], "-n") == 0)
     {
         newline = 0;

@@ -16,9 +16,8 @@ SRCS= \
 	src/parser/get_cmd_paths.c \
 	src/parser/parser_utils.c \
 	src/parser/get_abs_path.c \
-	src/heredoc/heredoc.c \
-	src/heredoc/heredoc_utils.c \
 	src/built-ins/built-ins.c \
+	src/parser/parse_redirections.c \
 	src/built-ins/ft_cd.c \
 	src/built-ins/ft_echo.c \
 	src/built-ins/ft_env.c \
@@ -26,11 +25,17 @@ SRCS= \
 	src/built-ins/ft_export.c \
 	src/built-ins/ft_pwd.c \
 	src/built-ins/ft_unset.c \
+	src/built-ins/export_utils.c \
 	src/executor/executor.c \
 	src/executor/executor_utils.c \
 	src/executor/pipes.c \
 	src/executor/child_process.c \
 	src/executor/dot_slash_cmd.c \
+	src/heredoc/heredoc.c \
+	src/heredoc/heredoc_expander.c \
+	src/heredoc/parse_heredoc.c \
+	src/heredoc/heredoc_signals.c \
+	src/heredoc/heredoc_utils.c \
 	src/env.c \
 	src/signals.c \
 	utils/free.c \

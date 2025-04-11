@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/22 23:45:41 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:21:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static int handle_quotes_and_trim(t_node *current, int in_double)
     char *trimmed;
     char *tmp;
 
+    if (ft_strncmp(current->content, "<<", 2) == 0)
+        return (1);  
     if (!in_double && current->content[0] == '"' &&
         current->content[ft_strlen(current->content) - 1] == '"')
     {
@@ -41,7 +43,6 @@ static int handle_quotes_and_trim(t_node *current, int in_double)
             return (1);
         free(current->content);
         current->content = trimmed;
-        // free(trimmed);
     }
     return (0);
 }
@@ -96,3 +97,4 @@ int	expander(t_data *data)
 		return (1);
 	return (0);
 }
+

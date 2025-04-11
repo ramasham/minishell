@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:53:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 14:24:32 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:46:53 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	free_list(t_node **node)
 }
 
 
+
 void cleanup_shell(t_data *data)
 {
     if (!data)
@@ -100,8 +101,6 @@ void cleanup_shell(t_data *data)
         free_list_cmd(data->commands);
         free(data->commands);
     }
-    if (data->heredoc_delimiter)
-		free(data->heredoc_delimiter);
 	if(data->envp)
 		free_env(data->envp);
 	if (data->pids)

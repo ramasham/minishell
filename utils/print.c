@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 19:04:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/17 15:58:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/08 18:38:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void print_command_info(t_command *cmd)
     while (cmd)
     {
         printf("Command #%d:\n", i + 1);
-        printf("  Infile FD: %d\n", cmd->infile);
-        printf("  Outfile FD: %d\n", cmd->outfile);
+        printf("  Infile FD: %d\n", cmd->infile_fd);
+        printf("  Outfile FD: %d\n", cmd->outfile_fd);
 
         if (cmd->full_path)
             printf("  Full Path: %s\n", cmd->full_path);

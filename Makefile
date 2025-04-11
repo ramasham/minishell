@@ -40,4 +40,4 @@ fclean: clean
 re: fclean all
 	@echo "$(YELLOW)Rebuild done$(RESET)"
 
-.PHONY: all clean fclean re libft header
+.PHONY: all clean fclean re libft

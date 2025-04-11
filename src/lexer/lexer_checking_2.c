@@ -83,7 +83,7 @@ int operator_at_end(t_data *data)
 //     }
 //     return (0);
 // }
-int operator_at_start(t_data *data)
+/*int operator_at_start(t_data *data)
 {
     char    *ptr;
 
@@ -104,7 +104,7 @@ int operator_at_start(t_data *data)
             ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
             return (1);
         }
-        data->heredoc_delimiter = delimiter;
+        //data->heredoc_delimiter = delimiter;
         return (0);
     }
     else if (ptr[0] == '<' || ptr[0] == '>')
@@ -115,7 +115,7 @@ int operator_at_start(t_data *data)
         return (1);
     }
     return (0);
-}
+}*/
 
 int    check_multiple_pipes(t_data *data)
 {

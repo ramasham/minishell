@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/21 00:38:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/09 15:14:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int    get_cmd_path(t_command *cmd, t_data *data)
         }
         cmd = cmd->next;
     }
+
     free_2d(paths);
     return (1);
 }

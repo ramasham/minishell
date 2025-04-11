@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: laburomm <laburomm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/05 14:24:52 by laburomm         ###   ########.fr       */
+/*   Updated: 2025/04/09 18:49:19 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ int execution_process(t_data *data)
         free(data->pipe_fd);
         data->pipe_fd = NULL;
         return (1);
-    }
-    if (data->heredoc_delimiter)
-    {
-        // cleanup_heredoc(data);
-        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
-        if (data->heredoc_fd == -1)
-            return (1);
     }
     if (setup_children(data))
     {
@@ -71,12 +64,6 @@ int execute_pipeline(t_data *data)
         data->pipe_fd = NULL;
         return (data->last_exit_status);
     }
-    if (data->heredoc_delimiter)
-    {
-        data->heredoc_fd = handle_heredoc(data->heredoc_delimiter, data);
-        if (data->heredoc_fd == -1)
-            return (1);
-    }
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
     free(data->pids);
     free(data->pipe_fd);
@@ -88,16 +75,16 @@ int execute_pipeline(t_data *data)
     return (data->last_exit_status);
 }
 
+
 int executor(t_data *data)
 {
     int exit_status;
-    int dot_slash_status;
-
-    dot_slash_status = handle_dot_slash_exec(data);
-    if (dot_slash_status != 0)
-    {
-        return (dot_slash_status);
-    }
+    // int dot_slash_status;
+    // dot_slash_status = handle_dot_slash_exec(data);
+    // if (dot_slash_status != 0)
+    // {
+    //     return (dot_slash_status);
+    // }
     exit_status = not_pipeline(data);
     if (exit_status != -1)
     {
@@ -106,9 +93,6 @@ int executor(t_data *data)
         data->commands = NULL;
         return (exit_status);
     }
-    else
-    {
-        execute_pipeline(data);
-    }
+    execute_pipeline(data);
     return (data->last_exit_status);
 }

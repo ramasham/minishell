@@ -32,6 +32,7 @@ int find_env_var(t_data *data, const char *name, char **env_var, char **eq_pos)
     return (-1);
 }
 
+
 //Creates a new environment variable string in "NAME=VALUE" format.
 char *create_new_var(const char *name, const char *value)
 {
@@ -49,6 +50,7 @@ char *create_new_var(const char *name, const char *value)
     ft_memcpy(new_var + name_len + 1, value, value_len + 1);
     return (new_var);
 }
+
 
 //Updates an environment variable if it exists, or adds a new one if it doesn't.
 int update_envp(t_data *data, int index, char *new_var)
@@ -71,6 +73,7 @@ int update_envp(t_data *data, int index, char *new_var)
     return (0);
 }
 
+
 //Adds or updates an environment variable.
 int my_setenv(t_data *data, const char *name, const char *value, int overwrite)
 {
@@ -89,6 +92,7 @@ int my_setenv(t_data *data, const char *name, const char *value, int overwrite)
         return (-1);
     return (update_envp(data, index, new_var));
 }
+
 
 //Updates OLDPWD (previous working directory) and PWD (current working directory).
 void update_env_vars(t_data *data, char *oldpwd, char *newpwd)
