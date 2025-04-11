@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 01:28:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 13:27:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/11 21:15:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ int handle_dot_command(t_data *data)
 
 int handle_dot_slash_command(t_data *data)
 {
-    t_command *cmd;
-    
-    cmd = *data->commands;
     ft_putstr_fd("./: Is a directory\n", 1);
     data->last_exit_status = 1;
     return (data->last_exit_status);

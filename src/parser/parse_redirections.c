@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:37:55 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 20:01:10 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/11 22:17:43 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int    parse_input(t_command *cmd, int *i)
     return(0);
 }
 
+
 void	remove_empty_commands(t_command **cmd_list)
 {
 	t_command *prev;
@@ -65,6 +66,8 @@ void	remove_empty_commands(t_command **cmd_list)
 				prev->next = next;
 			else
 				*cmd_list = next;
+            if (curr->skip == 1)
+                cleanup_redirections(curr);
 			free(curr->full_cmd);
 			free(curr);
 		}
@@ -88,14 +91,12 @@ void parse_redirection(t_command *cmd, t_data *data)
     {
         if (ft_strcmp(cmd->full_cmd[i], ">") == 0 || ft_strcmp(cmd->full_cmd[i], ">>") == 0)
         {
-            data->redirection = 1;
             parse_output(data, cmd, &i);
             free(cmd->full_cmd[i - 2]);
             free(cmd->full_cmd[i - 1]);
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<") == 0)
         {
-            data->redirection = 1;
             parse_input(cmd, &i);
             free(cmd->full_cmd[i - 2]);
             free(cmd->full_cmd[i - 1]);
@@ -103,7 +104,6 @@ void parse_redirection(t_command *cmd, t_data *data)
         }
         else if (ft_strcmp(cmd->full_cmd[i], "<<") == 0)
         {
-            data->redirection = 1;
             parse_heredoc(cmd, &i, data);
             free(cmd->full_cmd[i - 2]);// remove <<     
             free(cmd->full_cmd[i - 1]); // remvove 1
@@ -113,5 +113,8 @@ void parse_redirection(t_command *cmd, t_data *data)
             cmd->full_cmd[len++] = cmd->full_cmd[i++];
     }
     cmd->full_cmd[len] = NULL;
+    if (len == 0)
+        cmd->skip = 1;
+    
 }
 

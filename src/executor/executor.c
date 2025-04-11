@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 19:46:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/11 20:55:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int executor(t_data *data)
     int cmd_num;
     
     cmd_num = count_commands(*(data)->commands);
-    // printf("count = %d\n", cmd_num);
-   
     if (cmd_num < 1 || data->error == 1 )
     {
         return (1);

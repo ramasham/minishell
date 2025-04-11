@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 20:01:58 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/11 22:17:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int set_commands(t_data *data)
 {   
     t_command *cmd;
-    int cmd_num;
+    // int cmd_num;
 
-    cmd_num = 0;
+    // cmd_num = 0;
     get_command(data, *(data->node));
     get_cmd_path(*(data->commands), data);
     cmd = *(data->commands);
@@ -36,10 +36,8 @@ int set_commands(t_data *data)
         cmd = cmd->next;
     }
     remove_empty_commands(data->commands);
-    cmd_num = count_commands(*data->commands);
-    if (cmd_num <= 0)
-    {
-        return (1);
-    }
+    // cmd_num = count_commands(cmd);
+    // if (cmd_num <= 0)
+    //     return (1);
     return (0);
 }
