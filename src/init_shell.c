@@ -23,7 +23,7 @@ void    init_data(t_data *data)
     data->cmd_count = 0;
     data->pipe_fd = NULL;
     data->error = 0;
-    data->redirection = 0;
+    data->stop = 0;
 }
 
 void	free_env(char **envp)

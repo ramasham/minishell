@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:23:46 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/08 01:48:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 11:11:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void ft_env(char **env)
     i = 0;
     while (env[i])
     {
-        write(1, env[i], ft_strlen(env[i]));
-        write(1, "\n", 1);
+        if (ft_strchr(env[i], '=') != NULL)
+        {
+            write(1, env[i], ft_strlen(env[i]));
+            write(1, "\n", 1);
+        }
         i++;
     }
 }

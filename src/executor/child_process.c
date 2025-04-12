@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 17:58:07 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 18:39:09 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
 {
     int i;
     int status;
-    i = 0;
-    
+
+    i = 0;    
     while (i < cmd_count)
     {
         if((*data->commands)->outfile_fd != -1)
@@ -46,7 +46,11 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
                 data->last_exit_status = 0;
         }
         else if (WIFSIGNALED(status))
+        {
             *exit_status = 128 + WTERMSIG(status);
+            if (WTERMSIG(status) == SIGQUIT)
+                ft_putstr_fd("Quit (core dumped)\n", 2);
+        }
         else
             *exit_status = 1;
         i++;
@@ -55,6 +59,7 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
 
 int child_process(t_data *data, t_command *cmd)
 {
+
     if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
         ft_exit(cmd, data);
     get_cmd_path(cmd, data);
@@ -71,8 +76,8 @@ int child_process(t_data *data, t_command *cmd)
     }
     if(cmd->outfile_fd != -1)
             close(cmd->outfile_fd);
-       if(cmd->infile_fd != -1)
-            close(cmd->infile_fd);
+    if(cmd->infile_fd != -1)
+        close(cmd->infile_fd);
     cleanup_heredoc(cmd);
     signal(SIGINT, SIG_DFL);
     signal(SIGQUIT, SIG_DFL);
@@ -108,7 +113,6 @@ int forking(t_data *data, t_command *cmd, int i)
     data->pids[i] = fork();
     if (data->pids[i] == -1)
     {
-        perror("fork failed");
         cleanup_child(data);
         return(1);
     }

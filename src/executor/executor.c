@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 19:46:57 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 19:13:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ int not_pipeline(t_data *data)
         return (data->last_exit_status);
     }
     if (data->cmd_count == 1 && built_ins(*data->commands, data))
-    {
         return (data->last_exit_status);
-    }
     return (-1);
 }
 
@@ -64,7 +62,6 @@ int execute_pipeline(t_data *data)
         return (data->last_exit_status);
     }
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
-    // cleanup_redirections(*data->commands);
     free(data->pids);
     free(data->pipe_fd);
     free_list_cmd(data->commands);
@@ -81,10 +78,10 @@ int executor(t_data *data)
     int dot_slash_status;
     int cmd_num;
     
+    if (data->stop == 1)
+        return(1);
     cmd_num = count_commands(*(data)->commands);
-    // printf("count = %d\n", cmd_num);
-   
-    if (cmd_num < 1 || data->error == 1 )
+    if (cmd_num < 1 || data->error == 1)
     {
         return (1);
     }
@@ -100,7 +97,7 @@ int executor(t_data *data)
         free(data->commands);
         data->commands = NULL;
         return (exit_status);
-    }   
+    }
     execute_pipeline(data);
     return (data->last_exit_status);
 }

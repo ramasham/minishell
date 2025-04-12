@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 01:28:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 13:27:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 11:13:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int handle_dot_slash_exec(t_data *data)
 
     if (!cmd || !cmd->full_cmd || !cmd->full_cmd[0])
         return (0);
-
     if (ft_strcmp(cmd->full_cmd[0], ".") == 0)
     {
         if (handle_dot_command(data))
@@ -74,6 +73,5 @@ int handle_dot_slash_exec(t_data *data)
         cmd_error_msg(data);
         return (data->last_exit_status);
     }
-
     return (0);
 }

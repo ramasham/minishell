@@ -8,6 +8,7 @@ SRCS= \
 	src/lexer/lexer.c \
 	src/expander/expander_utils.c \
 	src/expander/expander_utils_2.c \
+	src/expander/expander_utils_3.c \
 	src/expander/expander.c \
 	src/parser/parser.c \
 	src/parser/redirections.c \
@@ -18,10 +19,12 @@ SRCS= \
 	src/built-ins/built-ins.c \
 	src/parser/parse_redirections.c \
 	src/built-ins/ft_cd.c \
+	src/built-ins/ft_cd_utils.c \
 	src/built-ins/ft_echo.c \
 	src/built-ins/ft_env.c \
 	src/built-ins/ft_exit.c \
 	src/built-ins/ft_export.c \
+	src/built-ins/ft_export_utils.c \
 	src/built-ins/ft_pwd.c \
 	src/built-ins/ft_unset.c \
 	src/executor/executor.c \

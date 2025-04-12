@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/10 16:31:25 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 13:13:40 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int check_access(t_data *data, t_command *cmd, char *path)
     (void)data;
     if (!path)
         return (1);
-    // printf("Checking path: %s\n", path);
     if (access(path, F_OK) == -1)
     {
         free(path);
@@ -56,7 +55,6 @@ int check_access(t_data *data, t_command *cmd, char *path)
     if (access(path, X_OK) == -1)
     {
         ft_putstr_fd("bash: ", 2);
-        // ft_putstr_fd(path, 2);
         ft_putstr_fd(": Permission denied\n", 2);
         free(path);
         data->last_exit_status = CMD_NOT_EXECUTABLE;
@@ -120,7 +118,6 @@ int    get_cmd_path(t_command *cmd, t_data *data)
         }
         cmd = cmd->next;
     }
-
     free_2d(paths);
     return (1);
 }

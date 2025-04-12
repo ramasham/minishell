@@ -1,0 +1,17 @@
+a.out
+include
+include.mk
+libft
+Makefile
+minishell
+out
+out1
+out2
+readline.supp
+README.md
+shell
+src
+test2.c
+test.c
+test.sh
+utils

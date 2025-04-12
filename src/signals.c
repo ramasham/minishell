@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:03:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/20 21:47:35 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 17:36:34 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int handle_eof(char *input)
     if (input == NULL)
     {
         write(1, "exit\n", 5);
-        return 1;
+        return(1);
     }
-    return 0;
+    return(0);
 }
 
 void setup_signal_handlers()
@@ -50,6 +50,9 @@ void setup_signal_handlers()
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     sigaction(SIGINT, &sa, NULL);
+    
     sa.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &sa, NULL);
+    sa.sa_flags = SA_RESTART;
     sigaction(SIGQUIT, &sa, NULL);
 }

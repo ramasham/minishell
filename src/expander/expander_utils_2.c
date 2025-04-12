@@ -6,97 +6,44 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 14:12:07 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/09 14:39:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 13:03:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *extract_env_name(char *s)
+char	*trim_if_quotes(char *res)
 {
-    int i;
-    char *var_name;
+	char	*new;
 
-    if(!s || s[0] != '$')
-        return (NULL);
-    i = 1;
-    if (s[i] == '0')
-        var_name = ft_strdup("0");
-    else if (s[i] == '!')
-        var_name = ft_strdup("!");
-    else if (ft_isdigit(s[i]))
-    {
-        i--;
-        var_name = ft_substr(s, i, i + 1);
-    }
-    else
-    {
-        while (s[i] && (ft_isalpha(s[i]) || s[i] == '_'
-            || (i > 1 && ft_isdigit(s[i]))))
-            i++;
-        var_name = ft_substr(s, 1 , i - 1);
-    }
-    return(var_name);
-}
-
-char	*get_env_value(t_data *data, char *var_name)
-{
-	int		i;
-	char	*eq_pos;
-	size_t	name_len;
-
-	if (ft_strcmp(var_name, "?") == 0)
-		return (ft_itoa(data->last_exit_status));
-	if (ft_strcmp(var_name, "0") == 0)
-		return (ft_strdup("minishell"));
-	if (ft_strcmp(var_name, "!") == 0 || ft_isdigit(var_name[0]))
-		return (ft_strdup(""));
-	name_len = ft_strlen(var_name);
-	i = 0;
-	while (data->envp[i])
+	if (res[0] == '"' || res[ft_strlen(res) - 1] == '"')
 	{
-		eq_pos = ft_strchr(data->envp[i], '=');
-		if (eq_pos && (size_t)(eq_pos - data->envp[i]) == name_len
-			&& !ft_strncmp(data->envp[i], var_name, name_len))
-			return (ft_strdup(eq_pos + 1));
-		i++;
+		new = ft_strremove(ft_strtrim(res, "\""), "\"");
+		free(res);
+		return (new);
 	}
-	return (ft_strdup(""));
+	return (res);
 }
 
-char *replace_env_var(t_data *data, char *content, int i)
+char	*replace_env_var(t_data *data, char *content, int i)
 {
-    char *var_name;
-    char *env_value;
-    char *new_str;
-    char *before;
-    char *after;
-    char *result;
-    
-    var_name = extract_env_name(content + i);
-    after = ft_strdup(content + i + ft_strlen(var_name) + 1);
-    if (!var_name)
-        return (NULL);
-    env_value = get_env_value(data, var_name);
-    free(var_name);
-    if (!env_value)
-        return (NULL);
-    before = ft_substr(content, 0, i);
-    new_str = ft_strjoin(before, env_value);
-    free(before);
-    free(env_value);
-    result = ft_strjoin(new_str, after);
-    free(new_str);
-    free(after);
-    if (result[0] == '"' || result[ft_strlen(result) - 1] == '"')
-    {
-        new_str = ft_strremove(ft_strtrim(result, "\""), "\"");
-        free(result);
-        return(new_str);
-    }
-    return(result);
-}
+	char	*var;
+	char	*env;
+	char	*before;
+	char	*after;
 
+	var = get_parts(content, i, &after, &var);
+	if (!var)
+		return (NULL);
+	env = get_env_value(data, var);
+	free(var);
+	if (!env)
+		return (free(after), NULL);
+	before = ft_substr(content, 0, i);
+	if (!before)
+		return (free(env), free(after), NULL);
+	return (trim_if_quotes(build_result(before, env, after)));
+}
 
 int process_env_var(t_node *current, int *i, int in_single, t_data *data)
 {
