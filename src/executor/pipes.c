@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 14:22:53 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 19:54:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void close_pipes(t_data *data, int cmd_count)
 
     if (!data->pipe_fd)
         return;
-    
     i = 0;
     while (i < 2 * (cmd_count - 1))
     {

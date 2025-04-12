@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 19:13:37 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 20:10:12 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int execution_process(t_data *data)
 {
+    // printf("gggggg\n");
     if (piping(data))
     {
         free(data->pipe_fd);

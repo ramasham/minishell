@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 19:33:02 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/12 19:57:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int set_commands(t_data *data)
     remove_empty_commands(data->commands);
     cmd_num = count_commands(*data->commands);
     if (cmd_num <= 0)
+    {
         return (1);
+    }
     return (0);
 }
