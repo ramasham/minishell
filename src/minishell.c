@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/12 19:22:43 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/13 17:40:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	minishell_loop(t_data *data)
 	g_exit_status = 0;
 	if (!tokenizer(data))
 	{
+		// printf ("%d\n", (*data->commands)->infile_fd);
 		expander(data);
 		if (set_commands(data) != 1)
 			executor(data);

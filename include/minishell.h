@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 19:28:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/13 17:52:27 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,20 +116,14 @@ int						process_env_if_needed(t_node *current, int *i,
 							int in_single, t_data *data);
 int						expander(t_data *data);
 int						detect_env(t_data *data);
-char	*trim_if_quotes(char *res);
-char	*replace_env_var(t_data *data, char *content, int i);
-int process_env_var(t_node *current, int *i, int in_single, t_data *data);
-int process_env_if_needed(t_node *current, int *i, int in_single , t_data *data);
-char	*build_result(char *before, char *env, char *after);
-char *extract_env_name(char *s);
-char	*get_env_value(t_data *data, char *var_name);
-char	*get_parts(char *content, int i, char **after, char **var_name);
-
-
-
-
-
-
+char					*trim_if_quotes(char *res);
+char					*replace_env_var(t_data *data, char *content, int i);
+int 					process_env_var(t_node *current, int *i, int in_single, t_data *data);
+int 					process_env_if_needed(t_node *current, int *i, int in_single , t_data *data);
+char					*build_result(char *before, char *env, char *after);
+char 					*extract_env_name(char *s);
+char					*get_env_value(t_data *data, char *var_name);
+char					*get_parts(char *content, int i, char **after, char **var_name);
 
 
 int						process_node(t_node *current, t_data *data);

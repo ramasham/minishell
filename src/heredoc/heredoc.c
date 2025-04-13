@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/12 20:05:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/13 17:45:59 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int handle_heredoc(t_command *cmd, t_data *data)
     setup_heredoc_signals();
     if (pid == 0)
     {
+        close(pipe_fd[0]);
         if (handle_heredoc_input(cmd, pipe_fd, expanded, data))
         {
             cleanup_heredoc(cmd);

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:37:55 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 19:29:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/13 18:25:40 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int    parse_output(t_data *data, t_command *cmd, int *i)
         redirection_syntax_error();
         return(1);
     }
-    handle_output_redirection(data, cmd, cmd->full_cmd[*i + 1], cmd->append);
+    if (handle_output_redirection(data, cmd, cmd->full_cmd[*i + 1], cmd->append))
+        return (1);
     *i += 2;
     return(0);
 }
@@ -36,7 +37,8 @@ int    parse_input(t_command *cmd, int *i)
         redirection_syntax_error();
         return (1);
     }
-    handle_input_redirection(cmd, cmd->full_cmd[*i + 1]);
+    if (handle_input_redirection(cmd, cmd->full_cmd[*i + 1]))
+        return (1);
     *i += 2;
     return(0);
 }
