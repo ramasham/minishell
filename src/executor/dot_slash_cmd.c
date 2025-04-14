@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 01:28:42 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 11:13:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 11:29:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,49 +29,49 @@ int handle_dot_command(t_data *data)
     return (1);
 }
 
-int handle_dot_slash_command(t_data *data)
-{
-    t_command *cmd;
+// int handle_dot_slash_command(t_data *data)
+// {
+//     t_command *cmd;
     
-    cmd = *data->commands;
-    ft_putstr_fd("./: Is a directory\n", 1);
-    data->last_exit_status = 1;
-    return (data->last_exit_status);
-}
+//     cmd = *data->commands;
+//     ft_putstr_fd("./: Is a directory\n", 1);
+//     data->last_exit_status = 1;
+//     return (data->last_exit_status);
+// }
 
-void    cmd_error_msg(t_data *data)
-{
-    ft_putstr_fd("..: command not found\n", 2);
-    free_list_cmd(data->commands);
-}
+// void    cmd_error_msg(t_data *data)
+// {
+//     ft_putstr_fd("..: command not found\n", 2);
+//     free_list_cmd(data->commands);
+// }
 
-int handle_dot_slash_exec(t_data *data)
-{
-    t_command *cmd = *data->commands;
+// int handle_dot_slash_exec(t_data *data)
+// {
+//     t_command *cmd = *data->commands;
 
-    if (!cmd || !cmd->full_cmd || !cmd->full_cmd[0])
-        return (0);
-    if (ft_strcmp(cmd->full_cmd[0], ".") == 0)
-    {
-        if (handle_dot_command(data))
-        {
-            free_list_cmd(data->commands);
-            return (data->last_exit_status);
-        }
-    }
-    else if (((cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/') && !cmd->full_cmd[0][2])
-          || (cmd->full_cmd[0][0] == '/'))
-    {
-        if (handle_dot_slash_command(data))
-        {
-            free_list_cmd(data->commands);
-            return (data->last_exit_status);
-        }
-    }
-    else if (cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '.')
-    {
-        cmd_error_msg(data);
-        return (data->last_exit_status);
-    }
-    return (0);
-}
+//     if (!cmd || !cmd->full_cmd || !cmd->full_cmd[0])
+//         return (0);
+//     if (ft_strcmp(cmd->full_cmd[0], ".") == 0)
+//     {
+//         if (handle_dot_command(data))
+//         {
+//             free_list_cmd(data->commands);
+//             return (data->last_exit_status);
+//         }
+//     }
+//     else if (((cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '/') && !cmd->full_cmd[0][2])
+//           || (cmd->full_cmd[0][0] == '/'))
+//     {
+//         if (handle_dot_slash_command(data))
+//         {
+//             free_list_cmd(data->commands);
+//             return (data->last_exit_status);
+//         }
+//     }
+//     else if (cmd->full_cmd[0][0] == '.' && cmd->full_cmd[0][1] == '.')
+//     {
+//         cmd_error_msg(data);
+//         return (data->last_exit_status);
+//     }
+//     return (0);
+// }

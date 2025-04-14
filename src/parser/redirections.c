@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/13 18:22:15 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:07:45 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,11 @@ int setup_redirections(t_command *cmd)
     return (0);
 }
 
+
 void cleanup_redirections(t_command *cmd)
 {
     if (cmd->infile_fd != -1)
-    {
         close(cmd->infile_fd);
-    }
     if (cmd->outfile_fd != -1)
         close(cmd->outfile_fd);
     cleanup_heredoc(cmd);

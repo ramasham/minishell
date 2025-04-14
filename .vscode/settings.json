@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "minishell.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "cerrno": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

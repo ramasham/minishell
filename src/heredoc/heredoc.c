@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/13 17:45:59 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:58:01 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int handle_heredoc_input(t_command *cmd, int pipe_fd[2], char *expanded, t_data 
         if (stop(cmd, cmd->heredoc_input))
         {
             free(cmd->heredoc_input);
+            cleanup_heredoc(cmd);
             return (1);
         }
         write_to_pipe(cmd, pipe_fd, expanded, data);
@@ -62,11 +63,11 @@ int handle_heredoc_input(t_command *cmd, int pipe_fd[2], char *expanded, t_data 
     return (0);
 }
 
-int handle_parent_process(int pipe_fd[2], pid_t pid, int *status)
+int handle_parent_process(int pipe_fd[2], t_data *data, int *status)
 {
+    (void)data;
     signal(SIGINT, SIG_IGN);
     close(pipe_fd[1]);
-    (void ) pid;
     wait(status);
     if (WIFSIGNALED(*status) || WIFEXITED(*status))
     {
@@ -99,6 +100,8 @@ int handle_heredoc(t_command *cmd, t_data *data)
         }
     }
     else
-        return (handle_parent_process(pipe_fd, pid, &status));    
+    {
+        return (handle_parent_process(pipe_fd, data, &status));
+    }    
     return(0);
 }

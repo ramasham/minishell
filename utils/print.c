@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 19:04:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 18:38:37 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:20:04 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,31 @@ void    print_list(t_node *head)
 //     }
 // }
 
+// void print_command(t_data *newcmd)
+// {
+//     int i = 0;
+
+//     if (!newcmd || !newcmd->commands)
+//         return;
+
+//     t_command *current = *newcmd->commands;
+//     while (current)
+//     {
+//         ft_printf("%d: command is ", i);
+//         if (current->full_cmd) // Ensure full_cmd is not NULL
+//         {
+//             int j = 0;
+//             while (current->full_cmd[j]) // Iterate over the array of strings
+//             {
+//                 ft_printf("%s ", current->full_cmd[j]);
+//                 j++;
+//             }
+//         }
+//         ft_printf("\n");
+//         current = current->next;
+//         i++;
+//     }
+// }
 void print_command(t_data *newcmd)
 {
     int i = 0;
@@ -83,12 +108,12 @@ void print_command(t_data *newcmd)
     while (current)
     {
         ft_printf("%d: command is ", i);
-        if (current->full_cmd) // Ensure full_cmd is not NULL
+        if (current->exe_cmd) // Ensure full_cmd is not NULL
         {
             int j = 0;
-            while (current->full_cmd[j]) // Iterate over the array of strings
+            while (current->exe_cmd[j]) // Iterate over the array of strings
             {
-                ft_printf("%s ", current->full_cmd[j]);
+                ft_printf("%s ", current->exe_cmd[j]);
                 j++;
             }
         }
@@ -97,5 +122,4 @@ void print_command(t_data *newcmd)
         i++;
     }
 }
-
 

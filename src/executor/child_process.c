@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 18:39:09 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:56:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void cleanup_child(t_data *data)
         free(data->pids);
     if (data->commands)
     {
-        free_list_cmd(data->commands);
+        free_list_exec(data->commands);
         free(data->commands);
     }
     free_env(data->envp);
@@ -56,35 +56,67 @@ void    wait_for_children(t_data  *data, int cmd_count, int *exit_status)
         i++;
     }
 }
-
-int child_process(t_data *data, t_command *cmd)
+static void	handle_execve_error(t_command *cmd, t_data *data)
 {
+	int	exit_code;
 
-    if (ft_strcmp(cmd->full_cmd[0], "exit") == 0)
-        ft_exit(cmd, data);
-    get_cmd_path(cmd, data);
-    if (check_path(data) != 0)
-    {
-        cleanup_child(data);
-        exit(data->last_exit_status);
+	if (errno == EACCES)
+	{
+		ft_putstr_fd(": Permission denied\n", 2);
+		exit_code = 126;
     }
-    if (setup_redirections(cmd) != 0)
+	else
+	{
+		perror(cmd->exe_cmd[0]);
+		exit_code = 1;
+	}
+	cleanup_redirections(cmd);
+	cleanup_child(data);
+	exit(exit_code);
+}
+
+
+static void	pre_exec_checks(t_command *cmd, t_data *data)
+{
+	struct stat	path_stat;
+
+	if (stat(cmd->full_path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+	{
+		ft_putstr_fd(cmd->exe_cmd[0], 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		cleanup_redirections(cmd);
+		cleanup_child(data);
+		exit(126);
+	}
+}
+
+void	child_process(t_data *data, t_command *cmd)
+{
+	if (ft_strcmp(cmd->exe_cmd[0], "exit") == 0)
+		ft_exit(cmd, data);
+	get_cmd_path(cmd, data);
+	if (!cmd->full_path)
+	{
+		cmd_not_found_msg(cmd);
+		cleanup_child(data);
+		exit(127);
+	}
+	if (setup_redirections(cmd) != 0)
     {
         cleanup_redirections(cmd);
         cleanup_child(data);
         exit(1);
     }
-    if(cmd->outfile_fd != -1)
-            close(cmd->outfile_fd);
-    if(cmd->infile_fd != -1)
-        close(cmd->infile_fd);
-    cleanup_heredoc(cmd);
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
-    execve(cmd->full_path, cmd->full_cmd, data->envp);
-    cleanup_redirections(cmd);
-    cleanup_child(data);
-    exit(data->last_exit_status);
+	if (cmd->outfile_fd != -1)
+		close(cmd->outfile_fd);
+	if (cmd->infile_fd != -1)
+		close(cmd->infile_fd);
+	cleanup_heredoc(cmd);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	pre_exec_checks(cmd, data);
+	execve(cmd->full_path, cmd->exe_cmd, data->envp);
+	handle_execve_error(cmd, data);
 }
 
 void setup_redirection(t_data *data, int i)
@@ -120,11 +152,7 @@ int forking(t_data *data, t_command *cmd, int i)
     {
         setup_redirection(data, i);
         close_pipes(data, data->cmd_count);
-        if (child_process(data, cmd))
-        {
-            cleanup_child(data);
-            exit(1);
-        }
+        child_process(data, cmd);
     }
     return (0);
 }

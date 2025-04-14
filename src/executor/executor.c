@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 20:10:12 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:55:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int execution_process(t_data *data)
 {
-    // printf("gggggg\n");
     if (piping(data))
     {
         free(data->pipe_fd);
@@ -38,7 +37,7 @@ int not_pipeline(t_data *data)
     data->cmd_count = count_commands(*data->commands);
     if (data->cmd_count == 0)
     {
-        free_list_cmd(data->commands);
+        free_list_exec(data->commands);
         return (data->last_exit_status);
     }
     if (data->cmd_count == 1 && built_ins(*data->commands, data))
@@ -51,7 +50,7 @@ int execute_pipeline(t_data *data)
     data->pids = malloc(sizeof(pid_t) * data->cmd_count);
     if (!data->pids)
     {
-        free_list_cmd(data->commands);
+        free_list_exec(data->commands);
         return(1);
     }
     if (execution_process(data))
@@ -65,7 +64,7 @@ int execute_pipeline(t_data *data)
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
     free(data->pids);
     free(data->pipe_fd);
-    free_list_cmd(data->commands);
+    free_list_exec (data->commands);
     free(data->commands);
     data->pids = NULL;
     data->pipe_fd = NULL;
@@ -76,7 +75,6 @@ int execute_pipeline(t_data *data)
 int executor(t_data *data)
 {
     int exit_status;
-    int dot_slash_status;
     int cmd_num;
     
     if (data->stop == 1)
@@ -86,15 +84,10 @@ int executor(t_data *data)
     {
         return (1);
     }
-    dot_slash_status = handle_dot_slash_exec(data);
-    if (dot_slash_status != 0)
-    {
-        return (dot_slash_status);
-    }
     exit_status = not_pipeline(data);
     if (exit_status != -1)
     {
-        free_list_cmd(data->commands);
+        free_list_exec(data->commands);
         free(data->commands);
         data->commands = NULL;
         return (exit_status);

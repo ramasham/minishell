@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 13:13:40 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:02:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int    get_cmd_path(t_command *cmd, t_data *data)
     char    **paths;
     int     i;
     
-    if (is_abs_path(cmd->full_cmd[0]))
+    if (is_abs_path(cmd->exe_cmd[0]))
         return(handle_abs_path(cmd));
     paths = find_path(data);
     if (!paths)
@@ -109,7 +109,7 @@ int    get_cmd_path(t_command *cmd, t_data *data)
         i = -1;
         while (paths[++i])
         {
-            path = join_path_cmd(paths[i], cmd->full_cmd[0]);
+            path = join_path_cmd(paths[i], cmd->exe_cmd[0]);
             if (check_access(data, cmd, path) == 0)
             {
                 free_2d(paths);

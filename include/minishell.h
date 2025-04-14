@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/13 17:52:27 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 19:29:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@
 # include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+#include <errno.h>
+
 
 // macros
 # define CMD_NOT_FOUND 127
 # define CMD_NOT_EXECUTABLE 126
 # define SPACES " \t\n\v\f\r"
+# define OPERATORS "<>"
 
 extern int				g_exit_status;
 
@@ -51,6 +54,7 @@ typedef struct s_node
 typedef struct s_command
 {
 	char				**full_cmd;
+	char				**exe_cmd;
 	char				*full_path;
 	int					infile_fd;
 	int					outfile_fd;
@@ -154,6 +158,12 @@ void					remove_empty_commands(t_command **cmd_list);
 int						handle_output_redirection(t_data *data, t_command *cmd,
 							char *filename, int append);
 t_command				*create_new_command(void);
+// int    					create_exec_cmd(t_command *cmd);
+int 					is_operator(char *str);
+int    create_exec_cmd(t_data *data, t_command *cmd);
+
+
+
 
 // heredoc
 int						handle_heredoc(t_command *cmd, t_data *data);
@@ -198,7 +208,7 @@ int						piping(t_data *data);
 void					close_pipes(t_data *data, int cmd_count);
 void					wait_for_children(t_data *data, int cmd_count,
 							int *exit_status);
-int						child_process(t_data *data, t_command *cmd);
+void						child_process(t_data *data, t_command *cmd);
 int						setup_children(t_data *data);
 int						forking(t_data *data, t_command *cmd, int i);
 void					cleanup_child(t_data *data);
@@ -237,5 +247,7 @@ int						is_space_str(char *str);
 void					cmd_not_found_msg(t_command *cmds);
 void					print_command(t_data *newcmd);
 t_node					*create_node(const char *token);
+void	free_exec_cmd(t_command *cmd);
+void	free_list_exec(t_command **cmds);
 
 #endif
