@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:49:36 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/09 16:12:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:53:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void ft_echo(t_data *data, t_command *cmd)
     
     i = 1;
     newline = 1;
-    if (cmd->full_cmd[1] && ft_strcmp(cmd->full_cmd[1], "-n") == 0)
+    if (cmd->exe_cmd[1] && ft_strcmp(cmd->exe_cmd[1], "-n") == 0)
     {
         newline = 0;
         i++;
     }
-    while (cmd->full_cmd[i])
+    while (cmd->exe_cmd[i])
     {
-        write(STDOUT_FILENO, cmd->full_cmd[i], ft_strlen(cmd->full_cmd[i]));
-        if (cmd->full_cmd[i + 1])
+        write(STDOUT_FILENO, cmd->exe_cmd[i], ft_strlen(cmd->exe_cmd[i]));
+        if (cmd->exe_cmd[i + 1])
             write(STDOUT_FILENO, " ", 1);
         i++;
     }

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:37:55 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 18:38:44 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:59:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	handle_redirection(t_command *cmd, t_data *data, int *i)
 		result = parse_heredoc(cmd, i, data);
     if (result != 0)
     {
+        printf("fdj");
         return (1);
     }
     return (0);
@@ -86,13 +87,8 @@ int	parse_redirection(t_command *cmd, t_data *data)
             }
         }
 		else
-			// cmd->full_cmd[len++] = cmd->full_cmd[i++];
             i++;
 	}
-	// if (len == 0)
-    // {
-	// 	cmd->skip = 1;
-    // }
     return (0);
 }
 

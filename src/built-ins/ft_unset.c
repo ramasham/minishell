@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 02:06:43 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/09 14:29:19 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:51:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void ft_unset(t_data *data, t_command *command)
     int i;
 
     i = 1;
-    if (!command->full_cmd[1])
+    if (!command->exe_cmd[1])
         return;
-    while (command->full_cmd[i])
+    while (command->exe_cmd[i])
     {
-        remove_env_var(data, command->full_cmd[i]);
+        remove_env_var(data, command->exe_cmd[i]);
         i++;
     }
     data->last_exit_status = 0;

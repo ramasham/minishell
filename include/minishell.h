@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:29:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 19:06:27 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_data
 	pid_t				*pids;
 	int					error;
 	int					stop;
+	int					empty;
 }						t_data;
 
 // shell
@@ -154,11 +155,10 @@ int						handle_input_redirection(t_command *cmd,
 							char *filename);
 int						setup_redirections(t_command *cmd);
 int						parse_output(t_data *data, t_command *cmd, int *i);
-void					remove_empty_commands(t_command **cmd_list);
 int						handle_output_redirection(t_data *data, t_command *cmd,
 							char *filename, int append);
 t_command				*create_new_command(void);
-// int    					create_exec_cmd(t_command *cmd);
+// int 
 int 					is_operator(char *str);
 int    create_exec_cmd(t_data *data, t_command *cmd);
 
@@ -249,5 +249,9 @@ void					print_command(t_data *newcmd);
 t_node					*create_node(const char *token);
 void	free_exec_cmd(t_command *cmd);
 void	free_list_exec(t_command **cmds);
+void print_command_exec(t_data *newcmd);
+void cleanup_child_exe(t_data *data);
+
+
 
 #endif

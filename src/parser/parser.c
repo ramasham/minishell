@@ -6,51 +6,12 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:59:13 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 19:12:15 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	remove_empty_commands(t_command **cmd_list)
-{
-	t_command *prev;
-	t_command *curr;
-	t_command *next;
-    
-    prev = NULL;
-    curr = *cmd_list;
-	while (curr)
-	{
-		next = curr->next;
-		if (!curr->exe_cmd || !curr->exe_cmd[0])
-		{
-			if (prev)
-				prev->next = next;
-			else
-				*cmd_list = next;
-            // if (curr->skip == 0)
-            // {
-            //     printf("skip\n");
-            //     cleanup_redirections(curr);
-            // }
-            if (curr->exe_cmd)
-            {
-                int i = 0;
-                while (curr->exe_cmd[i])
-                {
-                    free(curr->exe_cmd[i]);
-                    i++;
-                }
-                free(curr->exe_cmd);
-            }
-			free(curr);
-		}
-		else
-			prev = curr;
-		curr = next;
-	}
-}
 
 static char *remove_quotes(const char *str, int remove_all)
 {
@@ -111,7 +72,6 @@ static void remove_quotes_from_command(t_command *cmd)
     }
 }
 
-
 int is_operator(char *str)
 {
     return (ft_strcmp(str, "|") == 0
@@ -131,6 +91,8 @@ int create_exec_cmd(t_data *data, t_command *cmd)
     (void)data;
     if (!cmd->full_cmd)
         return (1);
+
+    // Count non-operator elements (i.e., actual command arguments)
     while (cmd->full_cmd[i])
     {
         if (is_operator(cmd->full_cmd[i]))
@@ -145,9 +107,28 @@ int create_exec_cmd(t_data *data, t_command *cmd)
             i++;
         }
     }
+
+    // If no command arguments found, skip exe_cmd creation
+    if (count == 0)
+    {
+        data->empty = 1;
+        // Still need to free full_cmd
+        i = 0;
+        while (cmd->full_cmd[i])
+            free(cmd->full_cmd[i++]);
+        free(cmd->full_cmd);
+        cmd->full_cmd = NULL;
+        // cmd->exe_cmd = NULL;
+        cleanup_redirections(cmd);
+        return (0);
+    }
+
+    // Allocate exe_cmd
     cmd->exe_cmd = malloc((count + 1) * sizeof(char *));
     if (!cmd->exe_cmd)
         return (1);
+
+    // Copy non-operator args to exe_cmd
     i = 0;
     j = 0;
     while (cmd->full_cmd[i])
@@ -170,19 +151,18 @@ int create_exec_cmd(t_data *data, t_command *cmd)
         free(cmd->full_cmd[i++]);
     free(cmd->full_cmd);
     cmd->full_cmd = NULL;
+
     return (0);
 }
 
 
 int set_commands(t_data *data)
 {    
-    t_command *cmd;
-    int cmd_num;
-    int redirection_error;
+    t_command   *cmd;
+    int         redirection_error;
 
     get_command(data, *(data->node));
     remove_quotes_from_command(*data->commands);
-    cmd_num = 0;
     cmd = *(data->commands);
     redirection_error = 0;
     while (cmd)
@@ -199,12 +179,22 @@ int set_commands(t_data *data)
         cmd->skip = 0;
         if (parse_redirection(cmd, data))
         {
+            free_list_cmd(data->commands);
+            free(data->commands);
+            data->commands = NULL;
             redirection_error = 1;
             break;
         }
         if (create_exec_cmd(data, cmd))
             return (1);
         cmd = cmd->next;
+    }
+    if (data->empty)
+    {
+        free_list_exec(data->commands);
+        free(data->commands);
+        data->commands = NULL;
+        return (1);
     }
     if (redirection_error)
     {
@@ -213,10 +203,6 @@ int set_commands(t_data *data)
         data->commands = NULL;
         return (1);
     }
-    remove_empty_commands(data->commands);
-    cmd_num = count_commands(*data->commands);
-    if (cmd_num <= 0)
-        return (1);
     get_cmd_path(*(data->commands), data);
     return (0);
 }

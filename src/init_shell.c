@@ -24,6 +24,7 @@ void    init_data(t_data *data)
     data->pipe_fd = NULL;
     data->error = 0;
     data->stop = 0;
+    data->empty = 0;
 }
 
 void	free_env(char **envp)

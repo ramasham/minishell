@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/09 16:13:56 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:52:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ int is_builtinn(char *cmd)
 
 void execute_builtins(t_command *command, t_data *data)
 {
-    if (!command || !command->full_cmd || !command->full_cmd[0])
+    if (!command || !command->exe_cmd || !command->exe_cmd[0])
         return;
-    if (!ft_strcmp(command->full_cmd[0], "echo"))
+    if (!ft_strcmp(command->exe_cmd[0], "echo"))
         ft_echo(data, command);
-    else if (!ft_strcmp(command->full_cmd[0], "cd"))
-        ft_cd(data, command->full_cmd[1]);
-    else if (!ft_strcmp(command->full_cmd[0], "pwd"))
+    else if (!ft_strcmp(command->exe_cmd[0], "cd"))
+        ft_cd(data, command->exe_cmd[1]);
+    else if (!ft_strcmp(command->exe_cmd[0], "pwd"))
         ft_pwd();
-    else if (!ft_strcmp(command->full_cmd[0], "export"))
+    else if (!ft_strcmp(command->exe_cmd[0], "export"))
         ft_export(data, command);
-    else if (!ft_strcmp(command->full_cmd[0], "unset"))
+    else if (!ft_strcmp(command->exe_cmd[0], "unset"))
         ft_unset(data, command);
-    else if (!ft_strcmp(command->full_cmd[0], "env"))
+    else if (!ft_strcmp(command->exe_cmd[0], "env"))
         ft_env(data->envp);
-    else if (!ft_strcmp(command->full_cmd[0], "exit"))
+    else if (!ft_strcmp(command->exe_cmd[0], "exit"))
         ft_exit(command, data);
 }
 
@@ -61,7 +61,7 @@ int built_ins(t_command *command, t_data *data)
     int stdin_backup;
     int stdout_backup;
 
-    if (!command || !command->full_cmd || !command->full_cmd[0] || !is_builtinn(command->full_cmd[0]))
+    if (!command || !command->exe_cmd || !command->exe_cmd[0] || !is_builtinn(command->exe_cmd[0]))
         return (0);
     if (save_fds(&stdin_backup, &stdout_backup))
         return (0);

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 23:16:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/03/11 20:01:06 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:45:07 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,25 @@ void ft_exit(t_command *command, t_data *data)
 
     if (data->cmd_count == 1)
         ft_putstr_fd("exit\n", 1);
-    if (!command->full_cmd[1])
+    if (!command->exe_cmd[1])
     {
         g_exit_status = 0;
         cleanup_shell(data);
         exit(0);
     }
-    status = ft_atoi_exit(command->full_cmd[1], &endptr);
+    if (command->exe_cmd[2])
+    {
+        ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+        g_exit_status = 1;
+        return; // Don't exit, just return to shell
+    }
+    status = ft_atoi_exit(command->exe_cmd[1], &endptr);
     if (*endptr != '\0')
     {
         ft_putstr_fd("minishell: exit: numeric argument required\n", 2);
-        g_exit_status = 255;
+        g_exit_status = 2;
         cleanup_shell(data);
-        exit(255);
+        exit(2);
     }
     g_exit_status = status;
     cleanup_shell(data);

@@ -31,7 +31,6 @@ SRCS= \
 	src/executor/executor_utils.c \
 	src/executor/pipes.c \
 	src/executor/child_process.c \
-	src/executor/dot_slash_cmd.c \
 	src/heredoc/heredoc.c \
 	src/heredoc/heredoc_expander.c \
 	src/heredoc/parse_heredoc.c \

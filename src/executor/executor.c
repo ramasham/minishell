@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:55:46 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:21:36 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int execute_pipeline(t_data *data)
     wait_for_children(data, data->cmd_count, &(data->last_exit_status));
     free(data->pids);
     free(data->pipe_fd);
-    free_list_exec (data->commands);
+    free_list_exec(data->commands);
     free(data->commands);
     data->pids = NULL;
     data->pipe_fd = NULL;
@@ -78,7 +78,11 @@ int executor(t_data *data)
     int cmd_num;
     
     if (data->stop == 1)
+    {
+        cleanup_child_exe(data);
+        cleanup_redirections(*data->commands);
         return(1);
+    }
     cmd_num = count_commands(*(data)->commands);
     if (cmd_num < 1 || data->error == 1)
     {

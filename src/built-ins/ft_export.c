@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/12 12:23:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:53:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ void	ft_export(t_data *data, t_command *command)
 {
 	int	i;
 
-	if (!command->full_cmd[1])
+	if (!command->exe_cmd[1])
 		print_env_sorted(data->envp);
 	else
 	{
 		i = 1;
-		while (command->full_cmd[i])
-			handle_export_arg(data, command->full_cmd[i++]);
+		while (command->exe_cmd[i])
+			handle_export_arg(data, command->exe_cmd[i++]);
 	}
 }

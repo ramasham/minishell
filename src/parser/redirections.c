@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:07:45 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 17:51:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void cleanup_redirections(t_command *cmd)
     cmd->input_file = NULL;
     cmd->output_file = NULL;
     cmd->heredoc_delim = NULL;
+
 }
 

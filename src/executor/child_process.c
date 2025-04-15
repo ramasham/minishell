@@ -6,23 +6,30 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:56:37 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 18:49:23 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void cleanup_child_exe(t_data *data)
+{
+    if (data->pipe_fd)
+        free(data->pipe_fd);
+    if (data->pids)
+        free(data->pids);
+    free_exec_cmd(*data->commands);
+    free(data->commands);
+    free_env(data->envp);
+}
 void cleanup_child(t_data *data)
 {
     if (data->pipe_fd)
         free(data->pipe_fd);
     if (data->pids)
         free(data->pids);
-    if (data->commands)
-    {
-        free_list_exec(data->commands);
-        free(data->commands);
-    }
+    free_list_cmd(data->commands);
+    free(data->commands);
     free_env(data->envp);
 }
 
@@ -71,7 +78,7 @@ static void	handle_execve_error(t_command *cmd, t_data *data)
 		exit_code = 1;
 	}
 	cleanup_redirections(cmd);
-	cleanup_child(data);
+	cleanup_child_exe(data);
 	exit(exit_code);
 }
 
@@ -85,7 +92,7 @@ static void	pre_exec_checks(t_command *cmd, t_data *data)
 		ft_putstr_fd(cmd->exe_cmd[0], 2);
 		ft_putstr_fd(": Is a directory\n", 2);
 		cleanup_redirections(cmd);
-		cleanup_child(data);
+		cleanup_child_exe(data);
 		exit(126);
 	}
 }
@@ -93,18 +100,20 @@ static void	pre_exec_checks(t_command *cmd, t_data *data)
 void	child_process(t_data *data, t_command *cmd)
 {
 	if (ft_strcmp(cmd->exe_cmd[0], "exit") == 0)
+    {
 		ft_exit(cmd, data);
+    }
 	get_cmd_path(cmd, data);
 	if (!cmd->full_path)
 	{
 		cmd_not_found_msg(cmd);
-		cleanup_child(data);
+		cleanup_child_exe(data);
 		exit(127);
 	}
 	if (setup_redirections(cmd) != 0)
     {
         cleanup_redirections(cmd);
-        cleanup_child(data);
+        cleanup_child_exe(data);
         exit(1);
     }
 	if (cmd->outfile_fd != -1)
@@ -145,7 +154,7 @@ int forking(t_data *data, t_command *cmd, int i)
     data->pids[i] = fork();
     if (data->pids[i] == -1)
     {
-        cleanup_child(data);
+        cleanup_child_exe(data);
         return(1);
     }
     if (data->pids[i] == 0)

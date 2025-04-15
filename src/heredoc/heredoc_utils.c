@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:20 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/14 16:19:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/15 17:34:26 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int stop(t_command *cmd, char *line)
 
 void cleanup_heredoc(t_command *cmd)
 {
+    
     if (cmd->heredoc_fd != -1)
         close(cmd->heredoc_fd);
     if (cmd->heredoc_delim)
