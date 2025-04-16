@@ -12,44 +12,43 @@
 
 #include "minishell.h"
 
-void ft_nodeadd_back(t_node **head, t_node *new_node)
+void	ft_nodeadd_back(t_node **head, t_node *new_node)
 {
-    t_node  *temp;
+	t_node	*temp;
 
-    if (!head || !new_node)
-        return;
-    if (*head == NULL)
-    {
-        *head = new_node;
-        return ;
-    }
-    temp = *head;
-    while (temp->next)
-        temp = temp->next;
-    temp->next = new_node;
+	if (!head || !new_node)
+		return ;
+	if (*head == NULL)
+	{
+		*head = new_node;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new_node;
 }
 
-t_node *create_node(const char *token)
+t_node	*create_node(const char *token)
 {
-    t_node *new_node;
-    
-    new_node = (t_node *)malloc(sizeof(t_node));
-    if (!new_node)
-    {
-        perror("");
-        return (NULL);
-    }
-    new_node->content = ft_strdup(token);
-    if(!new_node->content)
-    {
-        free(new_node);
-        return (NULL);
-    }
-    if (ft_strncmp(new_node->content, "\"", 1) == 0)
-        new_node->type = DQUOTES;
-    else if (ft_strncmp(new_node->content, "'", 1) == 0)
-        new_node->type = SQUOTES;
-    new_node->next = NULL;
-    return (new_node);
-}
+	t_node	*new_node;
 
+	new_node = (t_node *)malloc(sizeof(t_node));
+	if (!new_node)
+	{
+		perror("");
+		return (NULL);
+	}
+	new_node->content = ft_strdup(token);
+	if (!new_node->content)
+	{
+		free(new_node);
+		return (NULL);
+	}
+	if (ft_strncmp(new_node->content, "\"", 1) == 0)
+		new_node->type = DQUOTES;
+	else if (ft_strncmp(new_node->content, "'", 1) == 0)
+		new_node->type = SQUOTES;
+	new_node->next = NULL;
+	return (new_node);
+}

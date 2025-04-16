@@ -1,0 +1,16 @@
+include
+include.mk
+libft
+Makefile
+minishell
+ou2
+out
+out2
+out3
+ouwadaw
+readline.supp
+README.md
+shell
+src
+test.c
+utils

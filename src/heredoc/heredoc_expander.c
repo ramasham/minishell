@@ -65,31 +65,31 @@ char	*expand_env_var_heredoc(char *content, int *i, t_data *data)
 	return (join_parts(before, env, after));
 }
 
-char *expand_heredoc_content(char *content, t_data *data)
+char	*expand_heredoc_content(char *content, t_data *data)
 {
-    char *result;
-    char *tmp;
-    int i;
+	char	*result;
+	char	*tmp;
+	int		i;
 
-    if (!content)
-        return (NULL);
-    result = ft_strdup(content);
-    if (!result)
-        return (NULL);
-    i = -1;
-    while (result[++i])
-    {
-        if (result[i] == '$' && result[i + 1])
-        {
-            tmp = expand_env_var_heredoc(result, &i, data);
-            if (!tmp)
-            {
-                free(result);
-                return (NULL);
-            }
-            free(result);
-            result = tmp;
-        }
-    }
-    return (result);
+	if (!content)
+		return (NULL);
+	result = ft_strdup(content);
+	if (!result)
+		return (NULL);
+	i = -1;
+	while (result[++i])
+	{
+		if (result[i] == '$' && result[i + 1])
+		{
+			tmp = expand_env_var_heredoc(result, &i, data);
+			if (!tmp)
+			{
+				free(result);
+				return (NULL);
+			}
+			free(result);
+			result = tmp;
+		}
+	}
+	return (result);
 }

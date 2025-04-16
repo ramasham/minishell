@@ -31,31 +31,31 @@ char	*build_result(char *before, char *env, char *after)
 	return (res);
 }
 
-char *extract_env_name(char *s)
+char	*extract_env_name(char *s)
 {
-    int i;
-    char *var_name;
+	int		i;
+	char	*var_name;
 
-    if(!s || s[0] != '$')
-        return (NULL);
-    i = 1;
-    if (s[i] == '0')
-        var_name = ft_strdup("0");
-    else if (s[i] == '!')
-        var_name = ft_strdup("!");
-    else if (ft_isdigit(s[i]))
-    {
-        i--;
-        var_name = ft_substr(s, i, i + 1);
-    }
-    else
-    {
-        while (s[i] && (ft_isalpha(s[i]) || s[i] == '_'
-            || (i > 1 && ft_isdigit(s[i]))))
-            i++;
-        var_name = ft_substr(s, 1 , i - 1);
-    }
-    return(var_name);
+	if (!s || s[0] != '$')
+		return (NULL);
+	i = 1;
+	if (s[i] == '0')
+		var_name = ft_strdup("0");
+	else if (s[i] == '!')
+		var_name = ft_strdup("!");
+	else if (ft_isdigit(s[i]))
+	{
+		i--;
+		var_name = ft_substr(s, i, i + 1);
+	}
+	else
+	{
+		while (s[i] && (ft_isalpha(s[i]) || s[i] == '_' || (i > 1
+					&& ft_isdigit(s[i]))))
+			i++;
+		var_name = ft_substr(s, 1, i - 1);
+	}
+	return (var_name);
 }
 
 char	*get_env_value(t_data *data, char *var_name)

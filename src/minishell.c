@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/15 18:58:51 by rsham            ###   ########.fr       */
+/*   Created: 2025/04/16 14:29:29 by rsham             #+#    #+#             */
+/*   Updated: 2025/04/16 14:29:32 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static int	process_empty_input(char *input)
 {
@@ -25,7 +24,6 @@ static int	process_empty_input(char *input)
 	return (0);
 }
 
-
 static void	minishell_loop(t_data *data)
 {
 	data->error = 0;
@@ -37,10 +35,10 @@ static void	minishell_loop(t_data *data)
 		expander(data);
 		if (set_commands(data))
 		{
-			return;
+			return ;
 		}
-		if (data->commands && data->commands[0] &&
-			ft_strcmp(data->commands[0]->exe_cmd[0], "exit") == 0)
+		if (data->commands && data->commands[0]
+			&& ft_strcmp(data->commands[0]->exe_cmd[0], "exit") == 0)
 		{
 			ft_exit(data->commands[0], data);
 		}
@@ -52,14 +50,12 @@ static void	minishell_loop(t_data *data)
 	data->input = NULL;
 }
 
-
-
 int	main(int argc, char **argv, char **envp)
 {
+	t_data	data;
+
 	(void)argc;
 	(void)argv;
-	t_data	data;
-	
 	if (init_shell(&data, envp))
 		return (1);
 	while (1)
@@ -74,7 +70,7 @@ int	main(int argc, char **argv, char **envp)
 			data.last_exit_status = g_exit_status;
 			g_exit_status = 0;
 		}
-        if (process_empty_input(data.input))
+		if (process_empty_input(data.input))
 			continue ;
 		minishell_loop(&data);
 	}

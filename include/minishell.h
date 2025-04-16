@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/15 19:06:27 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/16 15:41:18 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "ft_printf.h"
 # include "libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -24,14 +25,11 @@
 # include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
-#include <errno.h>
-
 
 // macros
 # define CMD_NOT_FOUND 127
 # define CMD_NOT_EXECUTABLE 126
 # define SPACES " \t\n\v\f\r"
-# define OPERATORS "<>"
 
 extern int				g_exit_status;
 
@@ -123,17 +121,20 @@ int						expander(t_data *data);
 int						detect_env(t_data *data);
 char					*trim_if_quotes(char *res);
 char					*replace_env_var(t_data *data, char *content, int i);
-int 					process_env_var(t_node *current, int *i, int in_single, t_data *data);
-int 					process_env_if_needed(t_node *current, int *i, int in_single , t_data *data);
+int						process_env_var(t_node *current, int *i, int in_single,
+							t_data *data);
+int						process_env_if_needed(t_node *current, int *i,
+							int in_single, t_data *data);
 char					*build_result(char *before, char *env, char *after);
-char 					*extract_env_name(char *s);
+char					*extract_env_name(char *s);
 char					*get_env_value(t_data *data, char *var_name);
-char					*get_parts(char *content, int i, char **after, char **var_name);
-
+char					*get_parts(char *content, int i, char **after,
+							char **var_name);
 
 int						process_node(t_node *current, t_data *data);
 char					*extract_env_name(char *s);
-char	                *get_parts(char *content, int i, char **after, char **var_name);
+char					*get_parts(char *content, int i, char **after,
+							char **var_name);
 char					*get_env_value(t_data *data, char *var_name);
 char					*replace_env_var(t_data *data, char *content, int i);
 void					handle_quotes(char c, int *in_single, int *in_double);
@@ -148,22 +149,17 @@ int						set_commands(t_data *data);
 void					get_command(t_data *node_lst, t_node *current);
 int						is_abs_path(char *cmd);
 int						handle_abs_path(t_command *cmd);
-int					    parse_redirection(t_command *cmd, t_data *data);
-int						setup_redirections(t_command *cmd);
+int						parse_redirection(t_command *cmd, t_data *data);
 void					cleanup_redirections(t_command *cmd);
 int						handle_input_redirection(t_command *cmd,
 							char *filename);
-int						setup_redirections(t_command *cmd);
 int						parse_output(t_data *data, t_command *cmd, int *i);
 int						handle_output_redirection(t_data *data, t_command *cmd,
 							char *filename, int append);
 t_command				*create_new_command(void);
-// int 
-int 					is_operator(char *str);
-int    create_exec_cmd(t_data *data, t_command *cmd);
-
-
-
+t_command				*create_and_initialize_cmd(void);
+int						is_operator(char *str);
+int						create_exec_cmd(t_data *data, t_command *cmd);
 
 // heredoc
 int						handle_heredoc(t_command *cmd, t_data *data);
@@ -175,21 +171,22 @@ char					*expand_env_var_heredoc(char *content, int *i,
 							t_data *data);
 char					*expand_heredoc_content(char *content, t_data *data);
 void					setup_heredoc_signals(void);
-int 					stop(t_command *cmd, char *line);
-
+int						stop(t_command *cmd, char *line);
 
 // built-ins
 int						built_ins(t_command *command, t_data *data);
-int	                    is_valid_identifier(const char *str);
+int						is_valid_identifier(const char *str);
 
-int	                    update_existing_var(t_data *data, char *var, char *eq_pos);
-int                 	update_existing_var(t_data *data, char *var, char *eq_pos);
+int						update_existing_var(t_data *data, char *var,
+							char *eq_pos);
+int						update_existing_var(t_data *data, char *var,
+							char *eq_pos);
 void					ft_cd(t_data *data, char *path);
 void					ft_exit(t_command *command, t_data *data);
 void					ft_export(t_data *data, t_command *command);
-void	                ft_swap(char **a, char **b);
-char	                **sort_env(char **envp);
-void	                print_env_sorted(char **envp);
+void					ft_swap(char **a, char **b);
+char					**sort_env(char **envp);
+void					print_env_sorted(char **envp);
 
 void					ft_pwd(void);
 void					ft_env(char **env);
@@ -198,20 +195,18 @@ void					ft_unset(t_data *data, t_command *command);
 
 // exectuter
 int						count_commands(t_command *cmds);
-int						check_path(t_data *data);
 int						executor(t_data *data);
-int						handle_dot_command(t_data *data);
-int						handle_dot_slash_command(t_data *data);
-int						handle_dot_slash_exec(t_data *data);
 int						execution_process(t_data *data);
 int						piping(t_data *data);
 void					close_pipes(t_data *data, int cmd_count);
 void					wait_for_children(t_data *data, int cmd_count,
 							int *exit_status);
-void						child_process(t_data *data, t_command *cmd);
+void					child_process(t_data *data, t_command *cmd);
 int						setup_children(t_data *data);
 int						forking(t_data *data, t_command *cmd, int i);
-void					cleanup_child(t_data *data);
+int						setup_fds(t_command *cmd);
+void					setup_pipes(t_data *data, int i);
+
 
 // signals
 int						handle_eof(char *input);
@@ -235,23 +230,32 @@ void					free_list_cmd(t_command **cmds);
 void					free_2d(char **str);
 void					cleanup_shell(t_data *data);
 void					free_env(char **envp);
+void					close_fds_and_cleanup(t_command *cmd);
+void					handle_child_failure(t_command *cmd, t_data *data,
+							int exit_code);
+void					clean_exe_list(t_data *data);
 
 // utils
 int						is_space(char c);
 char					*ft_strremove(char *str, const char *remove);
 void					ft_nodeadd_back(t_node **head, t_node *new_node);
-void					print_list(t_node *head);
 void					init_data(t_data *data);
 void					free_list(t_node **node);
 int						is_space_str(char *str);
-void					cmd_not_found_msg(t_command *cmds);
-void					print_command(t_data *newcmd);
 t_node					*create_node(const char *token);
-void	free_exec_cmd(t_command *cmd);
-void	free_list_exec(t_command **cmds);
-void print_command_exec(t_data *newcmd);
-void cleanup_child_exe(t_data *data);
+void					free_exec_cmd(t_command *cmd);
+void					free_list_exec(t_command **cmds);
+void					cleanup_exe(t_data *data);
+void					cleanup_cmd(t_data *data);
+void					handle_execve_error(t_command *cmd, t_data *data);
+void					pre_exec_checks(t_command *cmd, t_data *data);
+void					clean_pids_pipes(t_data *data);
+void					remove_quotes_from_command(t_command *cmd);
 
-
+// other
+void					print_command_exec(t_data *newcmd);
+void					print_list(t_node *head);
+void					print_command(t_data *newcmd);
+void					ft_error(const char *cmd, const char *msg);
 
 #endif

@@ -12,27 +12,26 @@
 
 #include "minishell.h"
 
-void ft_echo(t_data *data, t_command *cmd)
+void	ft_echo(t_data *data, t_command *cmd)
 {
-    int i;
-    int newline;
-    
-    i = 1;
-    newline = 1;
-    if (cmd->exe_cmd[1] && ft_strcmp(cmd->exe_cmd[1], "-n") == 0)
-    {
-        newline = 0;
-        i++;
-    }
-    while (cmd->exe_cmd[i])
-    {
-        write(STDOUT_FILENO, cmd->exe_cmd[i], ft_strlen(cmd->exe_cmd[i]));
-        if (cmd->exe_cmd[i + 1])
-            write(STDOUT_FILENO, " ", 1);
-        i++;
-    }
-    if (newline)
-        write(STDOUT_FILENO, "\n", 1);
-    data->last_exit_status = 0;
-}
+	int	i;
+	int	newline;
 
+	i = 1;
+	newline = 1;
+	if (cmd->exe_cmd[1] && ft_strcmp(cmd->exe_cmd[1], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (cmd->exe_cmd[i])
+	{
+		write(STDOUT_FILENO, cmd->exe_cmd[i], ft_strlen(cmd->exe_cmd[i]));
+		if (cmd->exe_cmd[i + 1])
+			write(STDOUT_FILENO, " ", 1);
+		i++;
+	}
+	if (newline)
+		write(STDOUT_FILENO, "\n", 1);
+	data->last_exit_status = 0;
+}

@@ -12,113 +12,111 @@
 
 #include "minishell.h"
 
-char    **find_path(t_data *data)
+char	**find_path(t_data *data)
 {
-    int         i;
-    char    **paths;
+	int		i;
+	char	**paths;
 
-    i = 0;
-    if (!data || !data->envp)
-    {
-        ft_putstr_fd("Error: envp is NULL\n", 2);
-        return (NULL);
-    }
-    while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
-        i++;
-    if (!data->envp[i])
-    {
-        ft_putstr_fd("Error: PATH variable not found\n", 2);
-        return (NULL);
-    }
-    paths = ft_split(data->envp[i] + 5, ':');
-    if (!paths || !paths[0])
-    {
-        free_2d(paths);
-        return (NULL);
-    }
-    if (!paths)
-        return (NULL);
-    return (paths);
+	i = 0;
+	if (!data || !data->envp)
+	{
+		ft_putstr_fd("Error: envp is NULL\n", 2);
+		return (NULL);
+	}
+	while (data->envp[i] && ft_strncmp(data->envp[i], "PATH=", 5) != 0)
+		i++;
+	if (!data->envp[i])
+	{
+		ft_putstr_fd("Error: PATH variable not found\n", 2);
+		return (NULL);
+	}
+	paths = ft_split(data->envp[i] + 5, ':');
+	if (!paths || !paths[0])
+	{
+		free_2d(paths);
+		return (NULL);
+	}
+	if (!paths)
+		return (NULL);
+	return (paths);
 }
 
-int check_access(t_data *data, t_command *cmd, char *path)
+int	check_access(t_data *data, t_command *cmd, char *path)
 {
-    (void)data;
-    if (!path)
-        return (1);
-    if (access(path, F_OK) == -1)
-    {
-        free(path);
-        return (1);
-        
-    }
-    if (access(path, X_OK) == -1)
-    {
-        ft_putstr_fd("bash: ", 2);
-        ft_putstr_fd(": Permission denied\n", 2);
-        free(path);
-        data->last_exit_status = CMD_NOT_EXECUTABLE;
-        data->error = 1;
-        return (CMD_NOT_EXECUTABLE);
-    }
-    cmd->full_path = ft_strdup(path);
-    free(path);
-    if (!cmd->full_path)
-        return (1);
-    return (0);
+	(void)data;
+	if (!path)
+		return (1);
+	if (access(path, F_OK) == -1)
+	{
+		free(path);
+		return (1);
+	}
+	if (access(path, X_OK) == -1)
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		free(path);
+		data->last_exit_status = CMD_NOT_EXECUTABLE;
+		data->error = 1;
+		return (CMD_NOT_EXECUTABLE);
+	}
+	cmd->full_path = ft_strdup(path);
+	free(path);
+	if (!cmd->full_path)
+		return (1);
+	return (0);
 }
 
-char    *join_path_cmd(char  *path, char *cmd)
+char	*join_path_cmd(char *path, char *cmd)
 {
-    char    *temp;
-    char    *path_with_cmd;
+	char	*temp;
+	char	*path_with_cmd;
 
-    if (!path || !cmd)
-    {
-        printf("no path\n");
-        return (NULL);
-    }
-    temp = ft_strjoin(path, "/");
-    if (!temp)
-        return (NULL);
-    path_with_cmd = ft_strjoin(temp, cmd);
-    if (!path_with_cmd)
-    {
-        free(temp);
-        return (NULL);
-    }
-    free(temp);
-    if (!path_with_cmd)
-        return (NULL);
-    return (path_with_cmd);
+	if (!path || !cmd)
+	{
+		printf("no path\n");
+		return (NULL);
+	}
+	temp = ft_strjoin(path, "/");
+	if (!temp)
+		return (NULL);
+	path_with_cmd = ft_strjoin(temp, cmd);
+	if (!path_with_cmd)
+	{
+		free(temp);
+		return (NULL);
+	}
+	free(temp);
+	if (!path_with_cmd)
+		return (NULL);
+	return (path_with_cmd);
 }
 
-int    get_cmd_path(t_command *cmd, t_data *data)
+int	get_cmd_path(t_command *cmd, t_data *data)
 {
-    char    *path;
-    char    **paths;
-    int     i;
-    
-    if (is_abs_path(cmd->exe_cmd[0]))
-        return(handle_abs_path(cmd));
-    paths = find_path(data);
-    if (!paths)
-        return (1);
-    while (cmd)
-    {
-        i = -1;
-        while (paths[++i])
-        {
-            path = join_path_cmd(paths[i], cmd->exe_cmd[0]);
-            if (check_access(data, cmd, path) == 0)
-            {
-                free_2d(paths);
-                return (0);
-            }
-        }
-        cmd = cmd->next;
-    }
-    free_2d(paths);
-    return (1);
-}
+	char	*path;
+	char	**paths;
+	int		i;
 
+	if (is_abs_path(cmd->exe_cmd[0]))
+		return (handle_abs_path(cmd));
+	paths = find_path(data);
+	if (!paths)
+		return (1);
+	while (cmd)
+	{
+		i = -1;
+		while (paths[++i])
+		{
+			path = join_path_cmd(paths[i], cmd->exe_cmd[0]);
+			if (check_access(data, cmd, path) == 0)
+			{
+				free_2d(paths);
+				return (0);
+			}
+		}
+		cmd = cmd->next;
+	}
+	free_2d(paths);
+	return (1);
+}

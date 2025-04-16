@@ -1,6 +1,0 @@
-//closing fds
-ls > out
-ls | cat -e > out
-ls | cat -e >> out
-
-//leak in heredoc expander 

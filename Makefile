@@ -4,7 +4,7 @@ NAME = minishell
 LIBFT_DIR = ./libft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I./include
+CFLAGS = -Wall -Wextra -Werror -g3 -I./include
 
 OBJS = $(SRCS:.c=.o)
 

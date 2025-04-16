@@ -5,33 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/04/15 18:53:11 by rsham            ###   ########.fr       */
+/*   Created: 2025/04/16 14:23:33 by rsham             #+#    #+#             */
+/*   Updated: 2025/04/16 14:25:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-static void	print_export_error(char *arg)
+static int	copy_envp(t_data *data, char **new_envp, int size)
 {
-	ft_putstr_fd("bash: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-}
+	int	i;
 
-static int	add_new_var(t_data *data, char *var)
-{
-	int		size;
-	char	**new_envp;
-	int		i;
-
-	size = 0;
-	while (data->envp[size])
-		size++;
-	new_envp = malloc(sizeof(char *) * (size + 2));
-	if (!new_envp)
-		return (0);
 	i = 0;
 	while (i < size)
 	{
@@ -46,13 +30,28 @@ static int	add_new_var(t_data *data, char *var)
 		}
 		i++;
 	}
+	return (1);
+}
+
+static int	add_new_var(t_data *data, char *var)
+{
+	int		size;
+	char	**new_envp;
+
+	size = 0;
+	while (data->envp[size])
+		size++;
+	new_envp = malloc(sizeof(char *) * (size + 2));
+	if (!new_envp)
+		return (0);
+	if (!copy_envp(data, new_envp, size))
+		return (0);
 	new_envp[size] = ft_strdup(var);
 	new_envp[size + 1] = NULL;
 	free(data->envp);
 	data->envp = new_envp;
 	return (1);
 }
-
 
 static void	add_or_update_env(t_data *data, char *var)
 {
@@ -79,7 +78,9 @@ static void	handle_export_arg(t_data *data, char *arg)
 	}
 	else if (!is_valid_identifier(arg))
 	{
-		print_export_error(arg);
+		ft_putstr_fd("bash: export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		data->last_exit_status = 1;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 11:37:58 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/12 12:11:38 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:26:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	print_env_sorted(char **envp)
 	{
 		eq_pos = ft_strchr(sorted[i], '=');
 		if (eq_pos)
-			printf("declare -x %.*s=\"%s\"\n", (int)(eq_pos - sorted[i]), sorted[i], eq_pos + 1);
+			printf("declare -x %.*s=\"%s\"\n", (int)(eq_pos - sorted[i]),
+				sorted[i], eq_pos + 1);
 		else
 			printf("declare -x %s\n", sorted[i]);
 		free(sorted[i]);
@@ -99,7 +100,8 @@ int	update_existing_var(t_data *data, char *var, char *eq_pos)
 	while (data->envp[i])
 	{
 		if (ft_strncmp(data->envp[i], var, name_len) == 0
-			&& (data->envp[i][name_len] == '=' || data->envp[i][name_len] == '\0'))
+			&& (data->envp[i][name_len] == '='
+			|| data->envp[i][name_len] == '\0'))
 		{
 			new_var = ft_strdup(var);
 			if (!new_var)

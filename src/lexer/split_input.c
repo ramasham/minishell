@@ -18,29 +18,28 @@ void	handle_quotes_lex(int *inside_quotes, char *token, int *i, char c)
 	token[(*i)++] = c;
 }
 
-void add_token_to_list_split(t_data *data, char *token, int *i)
+void	add_token_to_list_split(t_data *data, char *token, int *i)
 {
-    t_node *new_node;
+	t_node	*new_node;
 
-    token[*i] = '\0';
-    new_node = create_node(token);
-    if (!new_node)
-    {
-        free(token);
-        return;
-    }
-    if (!*data->node)
-        (*data->node) = new_node;
-    else
-        ft_nodeadd_back(data->node, new_node);
-    *i = 0;
+	token[*i] = '\0';
+	new_node = create_node(token);
+	if (!new_node)
+	{
+		free(token);
+		return ;
+	}
+	if (!*data->node)
+		(*data->node) = new_node;
+	else
+		ft_nodeadd_back(data->node, new_node);
+	*i = 0;
 }
-
 
 void	process_char(t_data *data, char c, char *token, int *i)
 {
-	static int inside_quotes;
-	
+	static int	inside_quotes;
+
 	if (c == '"' || c == '\'')
 		handle_quotes_lex(&inside_quotes, token, i, c);
 	else if (c == ' ' && !inside_quotes)
@@ -67,7 +66,7 @@ void	init_token_and_node(t_data *data, char **token)
 		ft_putstr_fd("Memory allocation failed\n", 2);
 		return ;
 	}
-	data->node = ft_calloc(1,sizeof(t_node));
+	data->node = ft_calloc(1, sizeof(t_node));
 	if (!data->node)
 	{
 		free(*token);

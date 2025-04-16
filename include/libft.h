@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 22:23:08 by rsham             #+#    #+#             */
-/*   Updated: 2025/02/25 16:32:49 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:11:08 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,5 @@ char				*ft_strchr(const char *s, int c);
 char				*ft_strchr_gnl(char *s, int c);
 char				*ft_strtok(char *str, const char *delim);
 char				**ft_split(char const *s, char c);
-
-
 
 #endif

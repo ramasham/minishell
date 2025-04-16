@@ -12,47 +12,47 @@
 
 #include "minishell.h"
 
-int operator_at_end(t_data *data)
+int	operator_at_end(t_data *data)
 {
-    char    *ptr;
-    char    *operators;
-    int     i;
-    int     j;
+	char	*ptr;
+	char	*operators;
+	int		i;
+	int		j;
 
-    i = 0;
-    j = 0;
-    operators = "|";
-    ptr = data->input;
-    while (ptr[j])
-        j++;
-    j--;
-    while (operators[i])
-    {
-        if (ptr[j] == operators[i] && ptr[j + 1] == '\0')
-        {
-            ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-            ft_putchar_fd(ptr[j], 2);
-            ft_putstr_fd("'\n", 2);
-            return (1);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	j = 0;
+	operators = "|";
+	ptr = data->input;
+	while (ptr[j])
+		j++;
+	j--;
+	while (operators[i])
+	{
+		if (ptr[j] == operators[i] && ptr[j + 1] == '\0')
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+			ft_putchar_fd(ptr[j], 2);
+			ft_putstr_fd("'\n", 2);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
-int    check_multiple_pipes(t_data *data)
+int	check_multiple_pipes(t_data *data)
 {
-    char    *ptr;
+	char	*ptr;
 
-    ptr = data->input;
-    while(*ptr)
-    {
-        if (*ptr == '|' && *(ptr + 1) == '|')
-        {
-            ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
-            return (1);
-        }
-        ptr++;
-    }
-    return (0);
+	ptr = data->input;
+	while (*ptr)
+	{
+		if (*ptr == '|' && *(ptr + 1) == '|')
+		{
+			ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
+			return (1);
+		}
+		ptr++;
+	}
+	return (0);
 }
