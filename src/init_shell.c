@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:23:13 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:28:00 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 18:01:26 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	init_data(t_data *data)
 	data->error = 0;
 	data->stop = 0;
 	data->empty = 0;
+	data->quoted_ope = 0;
 }
 
 void	free_env(char **envp)

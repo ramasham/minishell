@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 19:15:16 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 19:55:00 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ int	handle_output_redirection(t_data *data, t_command *cmd, char *filename,
 		perror(filename);
 		return (1);
 	}
-	//if (cmd->outfile_fd != -1 && cmd->outfile_fd != fd)
-
-		//close(cmd->outfile_fd);
-	
+	if (cmd->outfile_fd != -1 && cmd->outfile_fd != fd)
+		close(cmd->outfile_fd);
 	cmd->outfile_fd = fd;
 	cmd->output_file = filename;
 	

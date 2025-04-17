@@ -56,7 +56,6 @@ int	execute_pipeline(t_data *data)
 		return (data->last_exit_status);
 	}
 	wait_for_children(data, data->cmd_count, &(data->last_exit_status));
-	// fprintf(stderr, "execute_pipeline = %d\n", (*data->commands)->outfile_fd);
 	clean_pids_pipes(data);
 	free_list_exec(data->commands);
 	free(data->commands);

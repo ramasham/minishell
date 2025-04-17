@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/09 16:21:16 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 19:29:45 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,6 @@ static int	handle_exit_status(t_node *current, t_data *data)
 		return (1);
 	free(current->content);
 	current->content = exit_status;
-	return (0);
-}
-
-static int	handle_quotes_and_trim(t_node *current, int in_double)
-{
-	char	*trimmed;
-	char	*tmp;
-
-	if (ft_strncmp(current->content, "<<", 2) == 0)
-		return (1);
-	if (!in_double && current->content[0] == '"'
-		&& current->content[ft_strlen(current->content) - 1] == '"')
-	{
-		tmp = ft_strtrim(current->content, "\"");
-		if (!tmp)
-			return (1);
-		trimmed = ft_strremove(tmp, "\"");
-		free(tmp);
-		if (!trimmed)
-			return (1);
-		free(current->content);
-		current->content = trimmed;
-	}
 	return (0);
 }
 
@@ -69,7 +46,7 @@ int	process_node(t_node *current, t_data *data)
 				return (1);
 		}
 	}
-	return (handle_quotes_and_trim(current, in_double));
+	return (0);
 }
 
 int	detect_env(t_data *data)
@@ -81,11 +58,8 @@ int	detect_env(t_data *data)
 	{
 		if (!current->content || !*(current->content))
 			return (1);
-		if (trim_quotes(current) == 1)
-		{
-			if (process_node(current, data))
-				return (1);
-		}
+		if (process_node(current, data))
+			return (1);
 		current = current->next;
 	}
 	return (0);

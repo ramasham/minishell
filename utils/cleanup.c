@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 11:30:54 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 19:26:46 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 20:52:10 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ void	close_fds_and_cleanup(t_command *cmd)
 {
 	if (cmd->outfile_fd != -1)
 	{
-		fprintf (stderr, " close in child %d\n", cmd->outfile_fd);
 		close(cmd->outfile_fd);
 	}
 	if (cmd->infile_fd != -1)
 	{
-		fprintf (stderr, "close in child %d\n", cmd->infile_fd);
 		close(cmd->infile_fd);
 	}
 	cleanup_heredoc(cmd);
@@ -73,18 +71,15 @@ void	cleanup_redirections(t_command *cmd)
 {
 	if (cmd->infile_fd != -1)
 	{
-		fprintf(stderr, "%d\n", cmd->infile_fd);
 		close(cmd->infile_fd);
 	}
-	fprintf(stderr, "THE FIRST: %d\n", cmd->outfile_fd);
 	if (cmd->outfile_fd != -1)
 	{
 		close(cmd->outfile_fd);
-		fprintf(stderr, "THE SECOND: %d\n", cmd->outfile_fd);
 	}
 	cleanup_heredoc(cmd);
-	// cmd->infile_fd = -1;
-	// cmd->outfile_fd = -1;
+	cmd->infile_fd = -1;
+	cmd->outfile_fd = -1;
 	cmd->heredoc_fd = -1;
 	cmd->input_file = NULL;
 	cmd->output_file = NULL;

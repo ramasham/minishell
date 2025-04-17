@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:50:08 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 20:50:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,38 @@ static int	handle_cleanup_and_exit(t_data *data)
 	return (1);
 }
 
+void	trim_cmd_quotes(t_command *cmd)
+{
+	int		i;
+	char	*trimmed;
+
+	i = 0;
+	while (cmd->exe_cmd && cmd->exe_cmd[i])
+	{
+		char *arg = cmd->exe_cmd[i];
+		int len = ft_strlen(arg);
+
+		if ((arg[0] == '\'' && arg[len - 1] == '\'')
+			|| (arg[0] == '"' && arg[len - 1] == '"'))
+		{
+			trimmed = ft_strtrim(arg, (arg[0] == '\'') ? "'" : "\"");
+			if (trimmed)
+			{
+				free(cmd->exe_cmd[i]);
+				cmd->exe_cmd[i] = trimmed;
+			}
+		}
+		i++;
+	}
+}
+
+
 int	set_commands(t_data *data)
 {
 	t_command	*cmd;
-	int			error;
 
 	get_command(data, *(data->node));
-	remove_quotes_from_command(*data->commands);
 	cmd = *(data->commands);
-	error = 0;
 	while (cmd)
 	{
 		init_cmd_fields(cmd);
@@ -58,6 +81,8 @@ int	set_commands(t_data *data)
 			return (handle_redirection_error(data));
 		if (create_exec_cmd(data, cmd))
 			return (1);
+		remove_quotes_from_command(cmd);
+		trim_cmd_quotes(cmd);
 		cmd = cmd->next;
 	}
 	if (data->empty)

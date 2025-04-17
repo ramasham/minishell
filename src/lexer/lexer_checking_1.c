@@ -44,12 +44,26 @@ int	has_invalid_redirection(char *ptr)
 	char	*operators;
 	int		i;
 	int		j;
+	int		in_quotes;
+	char	quote_char;
 
 	i = 0;
+	in_quotes = 0;
+	quote_char = 0;
 	operators = "<>|";
 	while (ptr[i])
 	{
-		if (ft_strchr(operators, ptr[i]))
+		if ((ptr[i] == '"' || ptr[i] == '\'') && !in_quotes)
+		{
+			in_quotes = 1;
+			quote_char = ptr[i];
+		}
+		else if (ptr[i] == quote_char && in_quotes)
+		{
+			in_quotes = 0;
+			quote_char = 0;
+		}
+		if (!in_quotes && ft_strchr(operators, ptr[i]))
 		{
 			j = i + 1;
 			while (ptr[j] && is_space(ptr[j]))

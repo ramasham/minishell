@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:29:29 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:29:32 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 19:03:48 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	minishell_loop(t_data *data)
 	data->error = 0;
 	data->stop = 0;
 	data->empty = 0;
+	data->quoted_ope = 0;
 	g_exit_status = 0;
 	if (!tokenizer(data))
 	{

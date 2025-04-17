@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 15:41:18 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/17 19:12:55 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ extern int				g_exit_status;
 // enum
 typedef enum s_type
 {
+	NONE,
 	DQUOTES,
 	SQUOTES,
 }						t_type;
@@ -81,6 +82,7 @@ typedef struct s_data
 	int					error;
 	int					stop;
 	int					empty;
+	int					quoted_ope;
 }						t_data;
 
 // shell
@@ -257,5 +259,7 @@ void					print_command_exec(t_data *newcmd);
 void					print_list(t_node *head);
 void					print_command(t_data *newcmd);
 void					ft_error(const char *cmd, const char *msg);
+char	*remove_quotes(const char *str, int remove_all);
+
 
 #endif

@@ -14,7 +14,7 @@
 
 void	handle_child_failure(t_command *cmd, t_data *data, int exit_code)
 {
-	// cleanup_redirections(cmd);
+	cleanup_redirections(cmd);
 	cleanup_exe(data);
 	exit(exit_code);
 }
@@ -31,7 +31,6 @@ void	child_process(t_data *data, t_command *cmd)
 	}
 	if (setup_fds(cmd) != 0)
 		handle_child_failure(cmd, data, 1);
-	// close_fds_and_cleanup(cmd);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	pre_exec_checks(cmd, data);
@@ -43,7 +42,6 @@ void	setup_pipes(t_data *data, int i)
 {
 	if (i > 0)
 	{
-		//printf ("HERE: %d", data->pipe_fd[0]);
 		if (dup2(data->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
 		{
 			perror("dup2 failed for input pipe");
@@ -71,24 +69,34 @@ int	forking(t_data *data, t_command *cmd, int i)
 	if (data->pids[i] == 0)
 	{
 		setup_pipes(data, i);
-		printf("ASFASF\n");
 		close_pipes(data, data->cmd_count);
-		printf("AS\n");
+		t_command *tmp = *data->commands;
+		while (tmp)
+		{
+			if (tmp != cmd)
+			{
+				if (tmp->outfile_fd != -1)
+					close(tmp->outfile_fd);
+				if (tmp->infile_fd != -1)
+					close(tmp->infile_fd);
+			}
+			tmp = tmp->next;
+		}
 		child_process(data, cmd);
 	}
-	// else
-	// {
-	// 	if (cmd->outfile_fd != -1)
-	// 	{
-	// 		close(cmd->outfile_fd);
-	// 		cmd->outfile_fd = -1;
-	// 	}
-	// 	if (cmd->infile_fd != -1)
-	// 	{
-	// 		close(cmd->infile_fd);
-	// 		cmd->infile_fd = -1;
-	// 	}
-	// }
+	else
+	{
+		if (cmd->outfile_fd != -1)
+		{
+			close(cmd->outfile_fd);
+			cmd->outfile_fd = -1;
+		}
+		if (cmd->infile_fd != -1)
+		{
+			close(cmd->infile_fd);
+			cmd->infile_fd = -1;
+		}
+	}
 	return (0);
 }
 
