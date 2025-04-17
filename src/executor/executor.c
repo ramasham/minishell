@@ -78,7 +78,7 @@ int	executor(t_data *data)
 	if (data->stop == 1)
 	{
 		cleanup_redirections(*data->commands);
-		cleanup_exe(data);
+		clean_exe_list(data);
 		return (1);
 	}
 	cmd_num = count_commands(*(data)->commands);

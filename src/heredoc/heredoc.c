@@ -55,11 +55,13 @@ int	handle_heredoc_input(t_command *cmd, int pipe_fd[2], char *expanded,
 		if (stop(cmd, cmd->heredoc_input))
 		{
 			free(cmd->heredoc_input);
+			cmd->heredoc_input = NULL;
 			cleanup_heredoc(cmd);
 			return (1);
 		}
 		write_to_pipe(cmd, pipe_fd, expanded, data);
 		free(cmd->heredoc_input);
+		cmd->heredoc_input = NULL;
 	}
 	return (0);
 }

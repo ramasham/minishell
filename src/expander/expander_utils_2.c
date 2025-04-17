@@ -12,18 +12,25 @@
 
 #include "minishell.h"
 
-char	*trim_if_quotes(char *res)
+char *trim_if_quotes(char *res)
 {
-	char	*new;
+	char *trimmed;
+	char *new;
 
 	if (res[0] == '"' || res[ft_strlen(res) - 1] == '"')
 	{
-		new = ft_strremove(ft_strtrim(res, "\""), "\"");
+		trimmed = ft_strtrim(res, "\"");
+		if (!trimmed)
+			return (free(res), NULL);
+		new = ft_strremove(trimmed, "\"");
+		free(trimmed);
 		free(res);
 		return (new);
 	}
 	return (res);
 }
+
+
 
 char	*replace_env_var(t_data *data, char *content, int i)
 {
