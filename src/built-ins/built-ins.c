@@ -36,8 +36,6 @@ void	execute_builtins(t_command *command, t_data *data)
 		ft_unset(data, command);
 	else if (!ft_strcmp(command->exe_cmd[0], "env"))
 		ft_env(data->envp);
-	else if (!ft_strcmp(command->exe_cmd[0], "exit"))
-		ft_exit(command, data);
 }
 
 int	save_fds(int *stdin_backup, int *stdout_backup)

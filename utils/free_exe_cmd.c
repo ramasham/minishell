@@ -56,7 +56,7 @@ void	cleanup_exe(t_data *data)
 		free(data->pipe_fd);
 	if (data->pids)
 		free(data->pids);
-	free_exec_cmd(*data->commands);
+	free_list_exec(data->commands);
 	free(data->commands);
 	free_env(data->envp);
 }

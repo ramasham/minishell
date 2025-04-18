@@ -82,7 +82,6 @@ typedef struct s_data
 	int					error;
 	int					stop;
 	int					empty;
-	int					quoted_ope;
 }						t_data;
 
 // shell

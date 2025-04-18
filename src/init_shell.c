@@ -25,7 +25,6 @@ void	init_data(t_data *data)
 	data->error = 0;
 	data->stop = 0;
 	data->empty = 0;
-	data->quoted_ope = 0;
 }
 
 void	free_env(char **envp)

@@ -60,6 +60,8 @@ void	setup_pipes(t_data *data, int i)
 
 int	forking(t_data *data, t_command *cmd, int i)
 {
+	t_command *tmp;
+
 	data->pids[i] = fork();
 	if (data->pids[i] == -1)
 	{
@@ -70,7 +72,7 @@ int	forking(t_data *data, t_command *cmd, int i)
 	{
 		setup_pipes(data, i);
 		close_pipes(data, data->cmd_count);
-		t_command *tmp = *data->commands;
+		tmp = *data->commands;
 		while (tmp)
 		{
 			if (tmp != cmd)

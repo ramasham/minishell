@@ -36,8 +36,6 @@ char	**find_path(t_data *data)
 		free_2d(paths);
 		return (NULL);
 	}
-	if (!paths)
-		return (NULL);
 	return (paths);
 }
 
@@ -60,6 +58,8 @@ int	check_access(t_data *data, t_command *cmd, char *path)
 		data->error = 1;
 		return (CMD_NOT_EXECUTABLE);
 	}
+	if (cmd->full_path)
+		free(cmd->full_path);
 	cmd->full_path = ft_strdup(path);
 	free(path);
 	if (!cmd->full_path)
