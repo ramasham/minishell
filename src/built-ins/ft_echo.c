@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
+/*   By: laburomm <laburomm@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:49:36 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/15 18:53:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:29:50 by laburomm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_echo(t_data *data, t_command *cmd)
 	}
 	while (cmd->exe_cmd[i])
 	{
+		while (ft_strcmp(cmd->exe_cmd[i], "-n") == 0)
+			i++;
 		write(STDOUT_FILENO, cmd->exe_cmd[i], ft_strlen(cmd->exe_cmd[i]));
 		if (cmd->exe_cmd[i + 1])
 			write(STDOUT_FILENO, " ", 1);
