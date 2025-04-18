@@ -1,8 +1,6 @@
 SRCS= \
 	src/minishell.c \
 	src/init_shell.c \
-	src/lexer/lexer_checking_1.c \
-	src/lexer/lexer_checking_2.c \
 	src/lexer/split_input.c \
 	src/lexer/split_operators.c \
 	src/lexer/lexer.c \

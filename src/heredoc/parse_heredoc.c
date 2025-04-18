@@ -60,9 +60,11 @@ void	heredoc_delim(t_command *cmd, int *i)
 	}
 }
 
+
 int	parse_heredoc(t_command *cmd, int *i, t_data *data)
 {
-	if (!cmd->full_cmd[*i + 1])
+
+	if (!cmd->full_cmd[*i + 1]) 
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (1);

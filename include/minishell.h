@@ -93,11 +93,6 @@ int						extract_word(const char *content, int i, char *token,
 int						extract_operator(const char *content, int i, char *op,
 							int inside_quotes);
 int						check_unclosed_quotes(t_data *data);
-int						has_invalid_redirection(char *ptr);
-int						check_redirection(t_data *data);
-int						check_append_heredoc(t_data *data);
-int						operator_at_end(t_data *data);
-int						check_multiple_pipes(t_data *data);
 int						validate_input(t_data *data);
 int						tokenizer(t_data *data);
 void					handle_quotes_lex(int *inside_quotes, char *token,

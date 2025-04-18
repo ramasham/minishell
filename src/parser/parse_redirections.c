@@ -68,52 +68,6 @@ static int	handle_redirection(t_command *cmd, t_data *data, int *i)
 	return (0);
 }
 
-// static int	is_redirection(char *str)
-// {
-// 	return (ft_strcmp(str, ">") == 0
-// 		|| ft_strcmp(str, ">>") == 0
-// 		|| ft_strcmp(str, "<") == 0
-// 		|| ft_strcmp(str, "<<") == 0);
-// }
-
-// static void	update_quotes(char *token, int *in_quotes, char *quote_char)
-// {
-// 	if (!*in_quotes && (token[0] == '"' || token[0] == '\''))
-// 	{
-// 		*in_quotes = 1;
-// 		*quote_char = token[0];
-// 	}
-// 	else if (*in_quotes && token[0] == *quote_char)
-// 	{
-// 		*in_quotes = 0;
-// 		*quote_char = 0;
-// 	}
-// }
-
-// int	parse_redirection(t_command *cmd, t_data *data)
-// {
-// 	int		i;
-// 	int		in_quotes;
-// 	char	quote_char;
-
-// 	if (!cmd || !cmd->full_cmd)
-// 		return (1);
-// 	i = 0;
-// 	in_quotes = 0;
-// 	quote_char = 0;
-// 	while (cmd->full_cmd[i])
-// 	{
-// 		update_quotes(cmd->full_cmd[i], &in_quotes, &quote_char);
-// 		if (!in_quotes && is_redirection(cmd->full_cmd[i]))
-// 		{
-// 			if (handle_redirection(cmd, data, &i))
-// 				return (1);
-// 		}
-// 		else
-// 			i++;
-// 	}
-// 	return (0);
-// }
 
 int	parse_redirection(t_command *cmd, t_data *data)
 {
