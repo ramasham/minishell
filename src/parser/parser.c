@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 01:05:37 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 20:50:37 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/18 01:06:19 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,22 @@ static int	handle_cleanup_and_exit(t_data *data)
 void	trim_cmd_quotes(t_command *cmd)
 {
 	int		i;
+	int		len;
+	char	*arg;
 	char	*trimmed;
 
 	i = 0;
 	while (cmd->exe_cmd && cmd->exe_cmd[i])
 	{
-		char *arg = cmd->exe_cmd[i];
-		int len = ft_strlen(arg);
-
+		arg = cmd->exe_cmd[i];
+		len = ft_strlen(arg);
 		if ((arg[0] == '\'' && arg[len - 1] == '\'')
 			|| (arg[0] == '"' && arg[len - 1] == '"'))
 		{
-			trimmed = ft_strtrim(arg, (arg[0] == '\'') ? "'" : "\"");
+			if (arg[0] == '\'')
+				trimmed = ft_strtrim(arg, "'");
+			else
+				trimmed = ft_strtrim(arg, "\"");
 			if (trimmed)
 			{
 				free(cmd->exe_cmd[i]);
@@ -66,7 +70,6 @@ void	trim_cmd_quotes(t_command *cmd)
 		i++;
 	}
 }
-
 
 int	set_commands(t_data *data)
 {

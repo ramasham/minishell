@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/17 19:29:45 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/18 01:03:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ static int	handle_exit_status(t_node *current, t_data *data)
 	return (0);
 }
 
+static void	reset_expansion_state(int *i, int *in_single, int *in_double)
+{
+	*i = -1;
+	*in_single = 0;
+	*in_double = 0;
+}
+
 int	process_node(t_node *current, t_data *data)
 {
 	int	i;
@@ -35,15 +42,17 @@ int	process_node(t_node *current, t_data *data)
 	i = -1;
 	in_single = 0;
 	in_double = 0;
-	while (current->content[++i])
+	while (++i < (int)ft_strlen(current->content))
 	{
 		handle_quotes(current->content[i], &in_single, &in_double);
-		if (!in_single && current->content[i] == '$' && current->content[i + 1])
+		if (!in_single && current->content[i] == '$')
 		{
+			if (!current->content[i + 1])
+				break;
 			if (current->content[i + 1] == '?')
 				return (handle_exit_status(current, data));
 			else if (process_env_if_needed(current, &i, in_single, data))
-				return (1);
+				reset_expansion_state(&i, &in_single, &in_double);
 		}
 	}
 	return (0);
