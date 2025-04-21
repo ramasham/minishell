@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 19:12:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:16:32 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,8 @@ int						extract_word(const char *content, int i, char *token,
 int						extract_operator(const char *content, int i, char *op,
 							int inside_quotes);
 int						check_unclosed_quotes(t_data *data);
-int						validate_input(t_data *data);
 int						tokenizer(t_data *data);
-void					handle_quotes_lex(int *inside_quotes, char *token,
-							int *i, char c);
+void					handle_quotes_lex(char *inside_quotes, char *token, int *i, char c);
 void					add_token_to_list(t_node **new_lst, char *token);
 void					process_char(t_data *data, char c, char *token, int *i);
 void					process_content(t_node **new_lst, char *content);
@@ -108,7 +106,6 @@ void					init_token_and_node(t_data *data, char **token);
 
 // expander
 int						is_q(char c);
-int						trim_quotes(t_node *node);
 int						process_env_var(t_node *current, int *i, int in_single,
 							t_data *data);
 int						process_env_if_needed(t_node *current, int *i,
@@ -156,6 +153,8 @@ t_command				*create_new_command(void);
 t_command				*create_and_initialize_cmd(void);
 int						is_operator(char *str);
 int						create_exec_cmd(t_data *data, t_command *cmd);
+void					trim_cmd_quotes(t_command *cmd);
+char					*remove_quotes(char *str);
 
 // heredoc
 int						handle_heredoc(t_command *cmd, t_data *data);
@@ -172,7 +171,6 @@ int						stop(t_command *cmd, char *line);
 // built-ins
 int						built_ins(t_command *command, t_data *data);
 int						is_valid_identifier(const char *str);
-
 int						update_existing_var(t_data *data, char *var,
 							char *eq_pos);
 int						update_existing_var(t_data *data, char *var,
@@ -183,13 +181,18 @@ void					ft_export(t_data *data, t_command *command);
 void					ft_swap(char **a, char **b);
 char					**sort_env(char **envp);
 void					print_env_sorted(char **envp);
-
 void					ft_pwd(void);
 void					ft_env(char **env);
 void					ft_echo(t_data *data, t_command *command);
 void					ft_unset(t_data *data, t_command *command);
+int						built_ins_pipline(t_command *command, t_data *data);
+int						is_built_in(char *cmd);
+void					execute_builtins(t_command *command, t_data *data);
+int						save_fds(int *stdin_backup, int *stdout_backup);
+void					restore_fds(int stdin_backup, int stdout_backup);
 
 // exectuter
+void					execute_builtins(t_command *command, t_data *data);
 int						count_commands(t_command *cmds);
 int						executor(t_data *data);
 int						execution_process(t_data *data);
@@ -202,7 +205,12 @@ int						setup_children(t_data *data);
 int						forking(t_data *data, t_command *cmd, int i);
 int						setup_fds(t_command *cmd);
 void					setup_pipes(t_data *data, int i);
-
+void					handle_execve_error(t_command *cmd, t_data *data);
+void					pre_exec_checks(t_command *cmd, t_data *data);
+void					clean_pids_pipes(t_data *data);
+int						check_pre_exec_errors(t_data *data);
+int						is_single_exit_cmd(t_data *data);
+int						handle_exit_case(t_data *data);
 
 // signals
 int						handle_eof(char *input);
@@ -243,17 +251,13 @@ void					free_exec_cmd(t_command *cmd);
 void					free_list_exec(t_command **cmds);
 void					cleanup_exe(t_data *data);
 void					cleanup_cmd(t_data *data);
-void					handle_execve_error(t_command *cmd, t_data *data);
-void					pre_exec_checks(t_command *cmd, t_data *data);
-void					clean_pids_pipes(t_data *data);
 void					remove_quotes_from_command(t_command *cmd);
-
-// other
-void					print_command_exec(t_data *newcmd);
-void					print_list(t_node *head);
-void					print_command(t_data *newcmd);
 void					ft_error(const char *cmd, const char *msg);
-char	*remove_quotes(const char *str, int remove_all);
+const char				*skip_whitespace(const char *str);
 
+void	print_command(t_data *newcmd);
+void	print_command_exec(t_data *newcmd);
+void	print_list(t_node *head);
 
 #endif
+

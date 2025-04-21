@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 17:17:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:26:39 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,15 @@ void	clean_exe_list(t_data *data)
 	data->commands = NULL;
 }
 
-
 int	executor(t_data *data)
 {
 	int	exit_status;
-	int	cmd_num;
 
-	if (data->stop == 1)
-	{
-		cleanup_redirections(*data->commands);
-		clean_exe_list(data);
+	if (check_pre_exec_errors(data))
 		return (1);
-	}
-	cmd_num = count_commands(*(data)->commands);
-	if (cmd_num < 1 || data->error == 1)
-		return (1);
-	data->cmd_count = cmd_num;
-	if (data->commands && data->commands[0]
-		&& ft_strcmp(data->commands[0]->exe_cmd[0], "exit") == 0
-		&& data->cmd_count == 1)
-	{
-		ft_exit(data->commands[0], data);
-		clean_exe_list(data); 
-		return (data->last_exit_status);
-	}
+	data->cmd_count = count_commands(*data->commands);
+	if (is_single_exit_cmd(data))
+		return (handle_exit_case(data));
 	exit_status = not_pipeline(data);
 	if (exit_status != -1)
 	{
@@ -103,4 +88,3 @@ int	executor(t_data *data)
 	execute_pipeline(data);
 	return (data->last_exit_status);
 }
-

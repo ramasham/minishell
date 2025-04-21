@@ -6,15 +6,17 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:26:16 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 13:59:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 11:03:39 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_space(char c)
+const char	*skip_whitespace(const char *str)
 {
-	return (c == ' ' || c == '\t');
+	while (*str && strchr(SPACES, *str))
+		str++;
+	return (str);
 }
 
 int	is_space_str(char *str)

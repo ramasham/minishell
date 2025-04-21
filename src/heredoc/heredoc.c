@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 03:48:26 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/16 12:59:10 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 16:26:26 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	handle_heredoc_input(t_command *cmd, int pipe_fd[2], char *expanded,
 {
 	while (1)
 	{
-		if (g_exit_status == 130)
+		if (data->last_exit_status == 130)
 			return (1);
 		cmd->heredoc_input = readline("> ");
 		if (!cmd->heredoc_input)
@@ -68,13 +68,12 @@ int	handle_heredoc_input(t_command *cmd, int pipe_fd[2], char *expanded,
 
 int	handle_parent_process(int pipe_fd[2], t_data *data, int *status)
 {
-	(void)data;
 	signal(SIGINT, SIG_IGN);
 	close(pipe_fd[1]);
 	wait(status);
 	if (WIFSIGNALED(*status) || WIFEXITED(*status))
 	{
-		g_exit_status = WEXITSTATUS(*status);
+		 data->last_exit_status = WEXITSTATUS(*status);
 		return (pipe_fd[0]);
 	}
 	signal(SIGINT, SIG_DFL);
@@ -100,7 +99,7 @@ int	handle_heredoc(t_command *cmd, t_data *data)
 			cleanup_heredoc(cmd);
 			cleanup_cmd(data);
 			close(pipe_fd[1]);
-			exit(g_exit_status);
+			exit(data->last_exit_status);
 		}
 	}
 	else

@@ -6,12 +6,27 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 01:49:36 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/15 18:53:41 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 15:50:23 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	is_valid_n_flag(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i++] != '-')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n' && str[i] != 'e' && str[i] != 'E')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 void	ft_echo(t_data *data, t_command *cmd)
 {
 	int	i;
@@ -19,7 +34,7 @@ void	ft_echo(t_data *data, t_command *cmd)
 
 	i = 1;
 	newline = 1;
-	if (cmd->exe_cmd[1] && ft_strcmp(cmd->exe_cmd[1], "-n") == 0)
+	if (cmd->exe_cmd[1] && is_valid_n_flag(cmd->exe_cmd[i]))
 	{
 		newline = 0;
 		i++;

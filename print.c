@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 19:04:28 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/15 16:22:36 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 14:51:05 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_list(t_node *head)
 {
 	while (head)
 	{
-		printf("token: %s\n", head->content);
+		printf("token: %s \n", head->content);
 		head = head->next;
 	}
 }

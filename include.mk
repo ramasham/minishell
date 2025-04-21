@@ -17,6 +17,7 @@ SRCS= \
 	src/parser/remove_quotes.c\
 	src/parser/parser.c \
 	src/built-ins/built-ins.c \
+	src/built-ins/builtins_utils.c \
 	src/parser/parse_redirections.c \
 	src/built-ins/ft_cd.c \
 	src/built-ins/ft_cd_utils.c \
@@ -43,4 +44,4 @@ SRCS= \
 	utils/free_full_cmd.c \
 	utils/linked_list.c \
 	utils/utils1.c \
-	utils/print.c \
+	print.c 

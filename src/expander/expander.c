@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:33:44 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/18 01:03:11 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/19 10:29:11 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	process_node(t_node *current, t_data *data)
 		if (!in_single && current->content[i] == '$')
 		{
 			if (!current->content[i + 1])
-				break;
+				break ;
 			if (current->content[i + 1] == '?')
 				return (handle_exit_status(current, data));
 			else if (process_env_if_needed(current, &i, in_single, data))

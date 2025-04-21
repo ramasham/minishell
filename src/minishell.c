@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:29:29 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/18 00:52:27 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:31:30 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	minishell_loop(t_data *data)
 		expander(data);
 		if (set_commands(data))
 		{
+			free(data->input);
 			return ;
 		}
 		executor(data);

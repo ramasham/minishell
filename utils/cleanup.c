@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 11:30:54 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 20:52:10 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/19 10:36:46 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,9 @@
 void	close_fds_and_cleanup(t_command *cmd)
 {
 	if (cmd->outfile_fd != -1)
-	{
 		close(cmd->outfile_fd);
-	}
 	if (cmd->infile_fd != -1)
-	{
 		close(cmd->infile_fd);
-	}
 	cleanup_heredoc(cmd);
 }
 
@@ -70,13 +66,9 @@ void	cleanup_shell(t_data *data)
 void	cleanup_redirections(t_command *cmd)
 {
 	if (cmd->infile_fd != -1)
-	{
 		close(cmd->infile_fd);
-	}
 	if (cmd->outfile_fd != -1)
-	{
 		close(cmd->outfile_fd);
-	}
 	cleanup_heredoc(cmd);
 	cmd->infile_fd = -1;
 	cmd->outfile_fd = -1;

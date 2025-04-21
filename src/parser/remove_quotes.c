@@ -6,18 +6,48 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:16:34 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 19:51:02 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 17:47:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_quotes(const char *str, int remove_all)
+void	trim_cmd_quotes(t_command *cmd)
+{
+	int		i;
+	int		len;
+	char	*arg;
+	char	*trimmed;
+
+	i = 0;
+	while (cmd->exe_cmd && cmd->exe_cmd[i])
+	{
+		arg = cmd->exe_cmd[i];
+		len = ft_strlen(arg);
+		if ((arg[0] == '\'' && arg[len - 1] == '\'') || (arg[0] == '"' && arg[len - 1] == '"'))
+		{
+			if (arg[0] == '\'')
+				trimmed = ft_strtrim(arg, "'");
+			else
+				trimmed = ft_strtrim(arg, "\"");
+			if (trimmed)
+			{
+				free(cmd->exe_cmd[i]);
+				cmd->exe_cmd[i] = trimmed;
+			}
+		}
+		i++;
+	}
+}
+
+char	*remove_quotes(char *str)
 {
 	char	*result;
-	int		i, j;
-	char	quote = 0;
-	(void)remove_all;
+	int		i;
+	int		j;
+	char	quote;
+
+	quote = 0;
 	if (!str)
 		return (NULL);
 	result = malloc(ft_strlen(str) + 1);
@@ -50,7 +80,7 @@ void	remove_quotes_from_command(t_command *cmd)
 	while (cmd->exe_cmd[i])
 	{
 		if (i == 0)
-			stripped = remove_quotes(cmd->exe_cmd[i], 1);
+			stripped = remove_quotes(cmd->exe_cmd[i]);
 		else if (cmd->exe_cmd[i])
 			stripped = ft_strdup(cmd->exe_cmd[i]);
 		else

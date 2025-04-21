@@ -12,7 +12,6 @@ INCLUDES = -I$(LIBFT_DIR)/include
 LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline -lhistory
 CFLAGS += $(INCLUDES)
 
-# ANSI color codes
 YELLOW = \033[33m
 RESET  = \033[0m
 

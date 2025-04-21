@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:37:55 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 20:49:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 17:49:44 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,44 @@ void	redirection_syntax_error(void)
 
 int	parse_output(t_data *data, t_command *cmd, int *i)
 {
+	char	*filename;
+
 	if (!cmd->full_cmd[*i + 1])
 	{
 		redirection_syntax_error();
 		return (1);
 	}
-	if (handle_output_redirection(data, cmd, cmd->full_cmd[*i + 1],
-			cmd->append))
+	filename = remove_quotes(cmd->full_cmd[*i + 1]);
+	if (!filename)
 		return (1);
+	if (handle_output_redirection(data, cmd, filename, cmd->append))
+	{
+		free(filename);
+		return (1);
+	}
+	free(filename);
 	*i += 2;
 	return (0);
 }
 
 int	parse_input(t_command *cmd, int *i)
 {
+	char	*filename;
+
 	if (!cmd->full_cmd[*i + 1])
 	{
 		redirection_syntax_error();
 		return (1);
 	}
-	if (handle_input_redirection(cmd, cmd->full_cmd[*i + 1]))
+	filename = remove_quotes(cmd->full_cmd[*i + 1]);
+	if (!filename)
 		return (1);
+	if (handle_input_redirection(cmd, filename))
+	{
+		free(filename);
+		return (1);
+	}
+	free(filename);
 	*i += 2;
 	return (0);
 }
@@ -62,12 +79,9 @@ static int	handle_redirection(t_command *cmd, t_data *data, int *i)
 	else if (ft_strcmp(cmd->full_cmd[*i], "<<") == 0)
 		result = parse_heredoc(cmd, i, data);
 	if (result != 0)
-	{
 		return (1);
-	}
 	return (0);
 }
-
 
 int	parse_redirection(t_command *cmd, t_data *data)
 {
@@ -83,9 +97,7 @@ int	parse_redirection(t_command *cmd, t_data *data)
 			|| ft_strcmp(cmd->full_cmd[i], "<<") == 0)
 		{
 			if (handle_redirection(cmd, data, &i))
-			{
 				return (1);
-			}
 		}
 		else
 			i++;

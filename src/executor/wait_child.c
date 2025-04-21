@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:02:03 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 19:20:31 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/19 10:43:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ static void	handle_wait_status(int status, int *exit_status, t_data *data)
 
 void	wait_for_children(t_data *data, int cmd_count, int *exit_status)
 {
-	int	i;
-	int	status;
-	t_command *cmd;
+	int			i;
+	int			status;
+	t_command	*cmd;
 
 	i = 0;
 	while (i < cmd_count)
 	{
-		// fprintf(stderr, "close before wait%d\n", (*data->commands)->outfile_fd);
 		cleanup_redirections((*data->commands));
 		signal(SIGINT, SIG_IGN);
 		waitpid(data->pids[i], &status, 0);

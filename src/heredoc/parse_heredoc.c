@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:36:34 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:19:21 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 18:25:16 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,15 @@ void	heredoc_delim(t_command *cmd, int *i)
 	}
 }
 
-
 int	parse_heredoc(t_command *cmd, int *i, t_data *data)
 {
-
-	if (!cmd->full_cmd[*i + 1]) 
+	if (!cmd->full_cmd[*i + 1])
 	{
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (1);
 	}
 	heredoc_delim(cmd, i);
 	cmd->heredoc_fd = handle_heredoc(cmd, data);
-	data->last_exit_status = g_exit_status;
 	if (data->last_exit_status == 130)
 		data->stop = 1;
 	if (cmd->heredoc_fd == -1)

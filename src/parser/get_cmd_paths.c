@@ -6,11 +6,18 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:41:39 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/14 19:02:20 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 13:05:14 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	print_path_error(t_data *data)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd((*data->commands)->exe_cmd[0], 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
 
 char	**find_path(t_data *data)
 {
@@ -27,7 +34,7 @@ char	**find_path(t_data *data)
 		i++;
 	if (!data->envp[i])
 	{
-		ft_putstr_fd("Error: PATH variable not found\n", 2);
+		print_path_error(data);
 		return (NULL);
 	}
 	paths = ft_split(data->envp[i] + 5, ':');
@@ -101,8 +108,8 @@ int	get_cmd_path(t_command *cmd, t_data *data)
 	if (is_abs_path(cmd->exe_cmd[0]))
 		return (handle_abs_path(cmd));
 	paths = find_path(data);
-	if (!paths)
-		return (1);
+	if (paths == NULL)
+		return (2);
 	while (cmd)
 	{
 		i = -1;

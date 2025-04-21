@@ -6,17 +6,21 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 17:50:40 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:49 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_quotes_lex(int *inside_quotes, char *token, int *i, char c)
+void	handle_quotes_lex(char *inside_quotes, char *token, int *i, char c)
 {
-	*inside_quotes = !(*inside_quotes);
+	if (*inside_quotes == 0)
+		*inside_quotes = c;
+	else if (*inside_quotes == c)
+		*inside_quotes = 0;
 	token[(*i)++] = c;
 }
+
 
 void	add_token_to_list_split(t_data *data, char *token, int *i)
 {
@@ -38,7 +42,7 @@ void	add_token_to_list_split(t_data *data, char *token, int *i)
 
 void	process_char(t_data *data, char c, char *token, int *i)
 {
-	static int	inside_quotes;
+	static char	inside_quotes = 0;
 
 	if (c == '"' || c == '\'')
 		handle_quotes_lex(&inside_quotes, token, i, c);
@@ -57,6 +61,7 @@ void	process_char(t_data *data, char c, char *token, int *i)
 	else
 		token[(*i)++] = c;
 }
+
 
 void	init_token_and_node(t_data *data, char **token)
 {
