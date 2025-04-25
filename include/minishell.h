@@ -264,4 +264,8 @@ void					remove_quotes_from_command(t_command *cmd);
 void					ft_error(const char *cmd, const char *msg);
 const char				*skip_whitespace(const char *str);
 
+void					print_command(t_data *newcmd);
+void					print_command_exec(t_data *newcmd);
+void					print_list(t_node *head);
+
 #endif

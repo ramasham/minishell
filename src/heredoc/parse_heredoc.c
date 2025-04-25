@@ -81,8 +81,6 @@ int	parse_heredoc(t_command *cmd, int *i, t_data *data)
 	if (cmd->heredoc_fd == -1)
 	{
 		cleanup_redirections(cmd);
-		// free(cmd->heredoc_delim);
-		// cmd->heredoc_delim = NULL;
 		return (1);
 	}
 	if (cmd->infile_fd != -1)

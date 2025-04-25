@@ -14,6 +14,7 @@
 
 void	handle_child_failure(t_command *cmd, t_data *data, int exit_code)
 {
+	printf("ffj\n");
 	cleanup_redirections(cmd);
 	cleanup_exe(data);
 	exit(exit_code);
@@ -21,6 +22,7 @@ void	handle_child_failure(t_command *cmd, t_data *data, int exit_code)
 
 void	child_process(t_data *data, t_command *cmd)
 {
+	printf("child\n");
 	if (ft_strcmp(cmd->exe_cmd[0], "exit") == 0)
 		ft_exit(cmd, data);
 	if (!built_ins_pipline(cmd, data))
@@ -76,7 +78,7 @@ int	forking(t_data *data, t_command *cmd, int i)
 	data->pids[i] = fork();
 	if (data->pids[i] == -1)
 	{
-		cleanup_exe(data);
+		// cleanup_exe(data);
 		return (1);
 	}
 	if (data->pids[i] == 0)
@@ -86,8 +88,8 @@ int	forking(t_data *data, t_command *cmd, int i)
 		close_unused_fds(data, cmd);
 		child_process(data, cmd);
 	}
-	else
-		cleanup_redirections(cmd);
+	// else
+	// 	cleanup_redirections(cmd);
 	return (0);
 }
 

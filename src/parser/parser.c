@@ -44,13 +44,14 @@ static int	handle_cleanup_and_exit(t_data *data)
 
 int	set_commands(t_data *data)
 {
+	int			empty_found;
 	t_command	*cmd;
 
+	empty_found = 1;
 	get_command(data, *(data->node));
 	cmd = *(data->commands);
 	while (cmd)
 	{
-		data->empty = 0;
 		init_cmd_fields(cmd);
 		if (parse_redirection(cmd, data))
 			return (handle_redirection_error(data));
@@ -58,10 +59,13 @@ int	set_commands(t_data *data)
 			return (1);
 		remove_quotes_from_command(cmd);
 		trim_cmd_quotes(cmd);
+		if (cmd->exe_cmd && cmd->exe_cmd[0])
+			empty_found = 0;
 		cmd = cmd->next;
 	}
-	if (data->empty)
+	if (empty_found)
 	{
+		// return (1);
 		return (handle_cleanup_and_exit(data));
 	}
 	return (0);

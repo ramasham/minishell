@@ -58,9 +58,9 @@ int	execute_pipeline(t_data *data)
 	}
 	wait_for_children(data, data->cmd_count, &(data->last_exit_status));
 	clean_pids_pipes(data);
-	free_list_exec(data->commands);
-	free(data->commands);
-	data->commands = NULL;
+	// free_list_exec(data->commands);
+	// free(data->commands);
+	// data->commands = NULL;
 	return (data->last_exit_status);
 }
 

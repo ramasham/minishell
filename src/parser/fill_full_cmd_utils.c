@@ -34,8 +34,8 @@ t_command	*create_new_command(void)
 	new_cmd->exe_cmd = NULL;
 	new_cmd->full_path = NULL;
 	new_cmd->next = NULL;
-	// new_cmd->infile_fd = -1;
-	// new_cmd->outfile_fd = -1;
+	new_cmd->infile_fd = -1;
+	new_cmd->outfile_fd = -1;
 	return (new_cmd);
 }
 

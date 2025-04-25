@@ -46,10 +46,11 @@ static int	count_non_operators(char **full_cmd)
 
 static int	handle_empty_cmd(t_data *data, t_command *cmd)
 {
+	(void)data;
 	int	i;
 
 	i = 0;
-	data->empty = 1;
+	// data->empty = 1;
 	cleanup_redirections(cmd);
 	while (cmd->full_cmd[i])
 	{
@@ -60,6 +61,7 @@ static int	handle_empty_cmd(t_data *data, t_command *cmd)
 	cmd->full_cmd = NULL;
 	return (0);
 }
+
 
 static void	fill_exe_cmd(t_command *cmd)
 {
@@ -97,7 +99,10 @@ int	create_exec_cmd(t_data *data, t_command *cmd)
 		return (1);
 	count = count_non_operators(cmd->full_cmd);
 	if (count == 0)
-		return (handle_empty_cmd(data, cmd));
+	{
+		if (!cmd->exe_cmd || !cmd->exe_cmd[0])
+			return (handle_empty_cmd(data, cmd));
+	}
 	cmd->exe_cmd = malloc((count + 1) * sizeof(char *));
 	if (!cmd->exe_cmd)
 		return (1);

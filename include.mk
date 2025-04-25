@@ -46,4 +46,4 @@ SRCS= \
 	utils/free_full_cmd.c \
 	utils/linked_list.c \
 	utils/utils1.c \
-	
+	print.c 

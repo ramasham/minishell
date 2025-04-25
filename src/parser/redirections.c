@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+static void	safe_str_assign(char **dst, const char *src)
+{
+	if (*dst)
+		free(*dst);
+	*dst = ft_strdup(src);
+}
 int	handle_output_redirection(t_data *data, t_command *cmd, char *filename,
 		int append)
 {
@@ -37,7 +43,7 @@ int	handle_output_redirection(t_data *data, t_command *cmd, char *filename,
 		cmd->outfile_fd = -1;
 	}
 	cmd->outfile_fd = fd;
-	cmd->output_file = filename;
+	safe_str_assign(&cmd->output_file, filename);
 	return (0);
 }
 
@@ -58,7 +64,7 @@ int	handle_input_redirection(t_data *data, t_command *cmd, char *filename)
 		cmd->infile_fd = -1;
 	}
 	cmd->infile_fd = fd;
-	cmd->input_file = filename;
+	safe_str_assign(&cmd->input_file, filename);
 	return (0);
 }
 
