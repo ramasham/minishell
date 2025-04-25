@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:03:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:32:19 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:28:31 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_exit_status;
+int		g_signo;
 
 void	handle_sigint(int sig)
 {
@@ -21,14 +21,14 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_exit_status = 130;
+	g_signo = 130;
 }
 
 void	handle_sigquit(int sig)
 {
 	(void)sig;
 	ft_putstr_fd("Quit (core dumped)\n", 2);
-	g_exit_status = 131;
+	g_signo = 131;
 }
 
 int	handle_eof(char *input)

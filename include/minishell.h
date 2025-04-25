@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 01:14:51 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 18:16:32 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:28:31 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
+    
 # include "ft_printf.h"
 # include "libft.h"
 # include <errno.h>
@@ -31,7 +31,7 @@
 # define CMD_NOT_EXECUTABLE 126
 # define SPACES " \t\n\v\f\r"
 
-extern int				g_exit_status;
+extern int				g_signo;
 
 // enum
 typedef enum s_type
@@ -82,6 +82,7 @@ typedef struct s_data
 	int					error;
 	int					stop;
 	int					empty;
+	char				*last_arg;
 }						t_data;
 
 // shell
@@ -94,7 +95,8 @@ int						extract_operator(const char *content, int i, char *op,
 							int inside_quotes);
 int						check_unclosed_quotes(t_data *data);
 int						tokenizer(t_data *data);
-void					handle_quotes_lex(char *inside_quotes, char *token, int *i, char c);
+void					handle_quotes_lex(char *inside_quotes, char *token,
+							int *i, char c);
 void					add_token_to_list(t_node **new_lst, char *token);
 void					process_char(t_data *data, char c, char *token, int *i);
 void					process_content(t_node **new_lst, char *content);
@@ -103,6 +105,9 @@ void					add_token_to_list_split(t_data *data, char *token,
 void					trim_operators(t_data *data);
 void					split_input(t_data *data);
 void					init_token_and_node(t_data *data, char **token);
+int						is_operator_check(char c);
+int						skip_quotes(const char *str, int i);
+int						check_operators(t_data *data);
 
 // expander
 int						is_q(char c);
@@ -112,7 +117,6 @@ int						process_env_if_needed(t_node *current, int *i,
 							int in_single, t_data *data);
 int						expander(t_data *data);
 int						detect_env(t_data *data);
-char					*trim_if_quotes(char *res);
 char					*replace_env_var(t_data *data, char *content, int i);
 int						process_env_var(t_node *current, int *i, int in_single,
 							t_data *data);
@@ -142,10 +146,10 @@ int						set_commands(t_data *data);
 void					get_command(t_data *node_lst, t_node *current);
 int						is_abs_path(char *cmd);
 int						handle_abs_path(t_command *cmd);
+int						get_abs_path(t_command *cmd, t_data *data);
 int						parse_redirection(t_command *cmd, t_data *data);
 void					cleanup_redirections(t_command *cmd);
-int						handle_input_redirection(t_command *cmd,
-							char *filename);
+int						handle_input_redirection(t_data *data, t_command *cmd, char *filename);
 int						parse_output(t_data *data, t_command *cmd, int *i);
 int						handle_output_redirection(t_data *data, t_command *cmd,
 							char *filename, int append);
@@ -155,6 +159,7 @@ int						is_operator(char *str);
 int						create_exec_cmd(t_data *data, t_command *cmd);
 void					trim_cmd_quotes(t_command *cmd);
 char					*remove_quotes(char *str);
+int	parse_input(t_data *data, t_command *cmd, int *i);
 
 // heredoc
 int						handle_heredoc(t_command *cmd, t_data *data);
@@ -190,6 +195,11 @@ int						is_built_in(char *cmd);
 void					execute_builtins(t_command *command, t_data *data);
 int						save_fds(int *stdin_backup, int *stdout_backup);
 void					restore_fds(int stdin_backup, int stdout_backup);
+void					handle_with_equal(t_data *data, char *var);
+void					add_or_update_env(t_data *data, char *var);
+int						copy_envp(t_data *data, char **new_envp, int size);
+int						add_new_var(t_data *data, char *var);
+void					handle_export_arg(t_data *data, char *arg);
 
 // exectuter
 void					execute_builtins(t_command *command, t_data *data);
@@ -240,7 +250,6 @@ void					handle_child_failure(t_command *cmd, t_data *data,
 void					clean_exe_list(t_data *data);
 
 // utils
-int						is_space(char c);
 char					*ft_strremove(char *str, const char *remove);
 void					ft_nodeadd_back(t_node **head, t_node *new_node);
 void					init_data(t_data *data);
@@ -255,9 +264,4 @@ void					remove_quotes_from_command(t_command *cmd);
 void					ft_error(const char *cmd, const char *msg);
 const char				*skip_whitespace(const char *str);
 
-void	print_command(t_data *newcmd);
-void	print_command_exec(t_data *newcmd);
-void	print_list(t_node *head);
-
 #endif
-

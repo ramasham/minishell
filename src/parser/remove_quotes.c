@@ -6,38 +6,30 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:16:34 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 17:47:25 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 10:34:29 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	trim_cmd_quotes(t_command *cmd)
+void trim_cmd_quotes(t_command *cmd)
 {
-	int		i;
-	int		len;
-	char	*arg;
-	char	*trimmed;
+    int		i;
+    char	*trimmed;
 
-	i = 0;
-	while (cmd->exe_cmd && cmd->exe_cmd[i])
-	{
-		arg = cmd->exe_cmd[i];
-		len = ft_strlen(arg);
-		if ((arg[0] == '\'' && arg[len - 1] == '\'') || (arg[0] == '"' && arg[len - 1] == '"'))
-		{
-			if (arg[0] == '\'')
-				trimmed = ft_strtrim(arg, "'");
-			else
-				trimmed = ft_strtrim(arg, "\"");
-			if (trimmed)
-			{
-				free(cmd->exe_cmd[i]);
-				cmd->exe_cmd[i] = trimmed;
-			}
-		}
-		i++;
-	}
+	i = 1;
+    if (!cmd || !cmd->exe_cmd)
+        return;
+    while (cmd->exe_cmd[i])
+    {
+        trimmed = remove_quotes(cmd->exe_cmd[i]);
+        if (trimmed)
+        {
+            free(cmd->exe_cmd[i]);
+            cmd->exe_cmd[i] = trimmed;
+        }
+        i++;
+    }
 }
 
 char	*remove_quotes(char *str)

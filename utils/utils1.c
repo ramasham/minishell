@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 19:26:16 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 11:03:39 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 10:02:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,22 @@ int	count_commands(t_command *cmds)
 
 void	ft_error(const char *cmd, const char *msg)
 {
+	char	buffer[256];
+	int		i;
+
+	i = 0;
 	if (cmd)
 	{
-		ft_putstr_fd((char *)cmd, 2);
-		ft_putstr_fd(": ", 2);
+		while (*cmd && i < 254)
+			buffer[i++] = *cmd++;
+		if (i < 254)
+			buffer[i++] = ':';
+		if (i < 254)
+			buffer[i++] = ' ';
 	}
-	ft_putstr_fd((char *)msg, 2);
-	ft_putstr_fd("\n", 2);
+	while (*msg && i < 254)
+		buffer[i++] = *msg++;
+	if (i < 255)
+		buffer[i++] = '\n';
+	write(2, buffer, i);
 }

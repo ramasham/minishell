@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:02:03 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/19 10:43:56 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 14:23:36 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ static void	handle_wait_status(int status, int *exit_status, t_data *data)
 	{
 		*exit_status = 128 + WTERMSIG(status);
 		if (WTERMSIG(status) == SIGQUIT)
+		{
 			ft_putstr_fd("Quit (core dumped)\n", 2);
+			data->last_exit_status = 131;
+		}
 	}
 	else
 		*exit_status = 1;
@@ -48,7 +51,7 @@ void	wait_for_children(t_data *data, int cmd_count, int *exit_status)
 	cmd = *data->commands;
 	while (cmd)
 	{
-		close_fds_and_cleanup(cmd);
+		cleanup_redirections(cmd);
 		cmd = cmd->next;
 	}
 }

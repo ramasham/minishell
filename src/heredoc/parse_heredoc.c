@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:36:34 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 18:25:16 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:21:15 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	heredoc_delim(t_command *cmd, int *i)
 		tmp = ft_strremove(cmd->heredoc_delim, "'");
 		update_heredoc_delim(cmd, tmp);
 	}
+	else
+		cmd->quoted = 1;
 }
 
 int	parse_heredoc(t_command *cmd, int *i, t_data *data)
@@ -67,14 +69,20 @@ int	parse_heredoc(t_command *cmd, int *i, t_data *data)
 		ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 		return (1);
 	}
+	if (data->stop)
+	{
+		cleanup_redirections(cmd);
+		return (1);
+	}
 	heredoc_delim(cmd, i);
+	if (cmd->heredoc_fd != -1)
+		close(cmd->heredoc_fd);
 	cmd->heredoc_fd = handle_heredoc(cmd, data);
-	if (data->last_exit_status == 130)
-		data->stop = 1;
 	if (cmd->heredoc_fd == -1)
 	{
-		free(cmd->heredoc_delim);
-		cmd->heredoc_delim = NULL;
+		cleanup_redirections(cmd);
+		// free(cmd->heredoc_delim);
+		// cmd->heredoc_delim = NULL;
 		return (1);
 	}
 	if (cmd->infile_fd != -1)

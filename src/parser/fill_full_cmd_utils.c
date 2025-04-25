@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:46:52 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:31:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:36:03 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_command	*create_new_command(void)
 	new_cmd->exe_cmd = NULL;
 	new_cmd->full_path = NULL;
 	new_cmd->next = NULL;
+	// new_cmd->infile_fd = -1;
+	// new_cmd->outfile_fd = -1;
 	return (new_cmd);
 }
 

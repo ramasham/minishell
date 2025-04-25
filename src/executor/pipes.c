@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 20:37:59 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/19 10:38:53 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:52:13 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	piping(t_data *data)
 	data->pipe_fd = malloc(sizeof(int) * 2 * (data->cmd_count - 1));
 	if (!data->pipe_fd)
 	{
-		perror("malloc fot pipe failed");
+		perror("pipe allocation failed");
 		return (1);
 	}
 	i = 0;
@@ -27,7 +27,7 @@ int	piping(t_data *data)
 	{
 		if (pipe(data->pipe_fd + (i * 2)) == -1)
 		{
-			perror("pipe failed");
+			perror("pipe");
 			free(data->pipe_fd);
 			data->pipe_fd = NULL;
 			return (1);

@@ -3,6 +3,7 @@ SRCS= \
 	src/init_shell.c \
 	src/lexer/split_input.c \
 	src/lexer/split_operators.c \
+	src/lexer/ope_check.c \
 	src/lexer/lexer.c \
 	src/expander/expander_utils.c \
 	src/expander/expander_utils_2.c \
@@ -26,6 +27,7 @@ SRCS= \
 	src/built-ins/ft_exit.c \
 	src/built-ins/ft_export.c \
 	src/built-ins/ft_export_utils.c \
+	src/built-ins/ft_export_utils1.c \
 	src/built-ins/ft_pwd.c \
 	src/built-ins/ft_unset.c \
 	src/executor/executor.c \
@@ -44,4 +46,4 @@ SRCS= \
 	utils/free_full_cmd.c \
 	utils/linked_list.c \
 	utils/utils1.c \
-	print.c 
+	

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:15:58 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 19:54:04 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 13:45:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	handle_empty_cmd(t_data *data, t_command *cmd)
 
 	i = 0;
 	data->empty = 1;
+	cleanup_redirections(cmd);
 	while (cmd->full_cmd[i])
 	{
 		free(cmd->full_cmd[i]);
@@ -57,7 +58,6 @@ static int	handle_empty_cmd(t_data *data, t_command *cmd)
 	}
 	free(cmd->full_cmd);
 	cmd->full_cmd = NULL;
-	cleanup_redirections(cmd);
 	return (0);
 }
 

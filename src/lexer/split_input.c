@@ -21,7 +21,6 @@ void	handle_quotes_lex(char *inside_quotes, char *token, int *i, char c)
 	token[(*i)++] = c;
 }
 
-
 void	add_token_to_list_split(t_data *data, char *token, int *i)
 {
 	t_node	*new_node;
@@ -61,7 +60,6 @@ void	process_char(t_data *data, char c, char *token, int *i)
 	else
 		token[(*i)++] = c;
 }
-
 
 void	init_token_and_node(t_data *data, char **token)
 {

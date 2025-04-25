@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:09:04 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/19 10:05:39 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 16:52:37 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,9 @@ void	handle_quotes(char c, int *in_single, int *in_double)
 	else if (is_q(c) == 2 && !(*in_single))
 		*in_double = !*in_double;
 }
+
+// void	update_last_arg(t_data *data, char *last_arg)
+// {
+// 	int	i;
+// 	char	*new_entry
+// }

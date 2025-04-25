@@ -6,13 +6,12 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 13:59:53 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 16:26:54 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/22 17:21:20 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// free a single command structure and its full_cmd array
 void	free_full_cmd(t_command *cmd)
 {
 	int	i;
@@ -35,7 +34,6 @@ void	free_full_cmd(t_command *cmd)
 	free(cmd);
 }
 
-// free a list of commands
 void	free_list_cmd(t_command **cmds)
 {
 	t_command	*tmp;

@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:27:57 by laburomm          #+#    #+#             */
-/*   Updated: 2025/04/21 18:15:25 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 14:20:35 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ int	built_ins_pipline(t_command *command, t_data *data)
 	}
 	execute_builtins(command, data);
 	restore_fds(stdin_backup, stdout_backup);
+	clean_pids_pipes(data);
 	cleanup_redirections(command);
+	free_env(data->envp);
+	clean_exe_list(data);
 	exit(1);
 }

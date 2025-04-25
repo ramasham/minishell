@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 19:22:07 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/19 10:43:29 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 18:16:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	pre_exec_checks(t_command *cmd, t_data *data)
 	if (stat(cmd->full_path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
 	{
 		ft_error(cmd->exe_cmd[0], "Is a directory");
-		cleanup_redirections(cmd);
-		cleanup_exe(data);
-		exit(126);
+		handle_child_failure(cmd, data, 126);
 	}
 }
 

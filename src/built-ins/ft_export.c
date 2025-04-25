@@ -6,13 +6,13 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:23:33 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/16 14:25:16 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/22 17:53:18 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	copy_envp(t_data *data, char **new_envp, int size)
+int	copy_envp(t_data *data, char **new_envp, int size)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ static int	copy_envp(t_data *data, char **new_envp, int size)
 	return (1);
 }
 
-static int	add_new_var(t_data *data, char *var)
+int	add_new_var(t_data *data, char *var)
 {
 	int		size;
 	char	**new_envp;
@@ -53,21 +53,7 @@ static int	add_new_var(t_data *data, char *var)
 	return (1);
 }
 
-static void	add_or_update_env(t_data *data, char *var)
-{
-	char	*eq_pos;
-
-	eq_pos = ft_strchr(var, '=');
-	if (!eq_pos || !update_existing_var(data, var, eq_pos))
-	{
-		if (!add_new_var(data, var))
-		{
-			perror("minishell: export");
-		}
-	}
-}
-
-static void	handle_export_arg(t_data *data, char *arg)
+void	handle_export_arg(t_data *data, char *arg)
 {
 	char	*var;
 

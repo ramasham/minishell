@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 18:26:39 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:17:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	not_pipeline(t_data *data)
 	if (data->cmd_count == 0)
 	{
 		free_list_exec(data->commands);
+		data->commands = NULL;
 		return (data->last_exit_status);
 	}
 	if (data->cmd_count == 1 && built_ins(*data->commands, data))

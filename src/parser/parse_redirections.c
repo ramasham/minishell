@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:37:55 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 17:49:44 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:11:52 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	parse_output(t_data *data, t_command *cmd, int *i)
 	return (0);
 }
 
-int	parse_input(t_command *cmd, int *i)
+int	parse_input(t_data *data, t_command *cmd, int *i)
 {
 	char	*filename;
 
@@ -52,7 +52,7 @@ int	parse_input(t_command *cmd, int *i)
 	filename = remove_quotes(cmd->full_cmd[*i + 1]);
 	if (!filename)
 		return (1);
-	if (handle_input_redirection(cmd, filename))
+	if (handle_input_redirection(data, cmd, filename))
 	{
 		free(filename);
 		return (1);
@@ -75,7 +75,7 @@ static int	handle_redirection(t_command *cmd, t_data *data, int *i)
 		result = parse_output(data, cmd, i);
 	}
 	else if (ft_strcmp(cmd->full_cmd[*i], "<") == 0)
-		result = parse_input(cmd, i);
+		result = parse_input(data, cmd, i);
 	else if (ft_strcmp(cmd->full_cmd[*i], "<<") == 0)
 		result = parse_heredoc(cmd, i, data);
 	if (result != 0)

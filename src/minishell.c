@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:29:29 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 18:31:30 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:13:53 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	minishell_loop(t_data *data)
 	data->error = 0;
 	data->stop = 0;
 	data->empty = 0;
-	g_exit_status = 0;
+	g_signo = 0;
 	if (!tokenizer(data))
 	{
 		expander(data);
@@ -61,10 +61,10 @@ int	main(int argc, char **argv, char **envp)
 			data.input = readline("\033[1;35mminishell$\033[0m ");
 		if (handle_eof(data.input))
 			break ;
-		if (g_exit_status == 130 || g_exit_status == 131)
+		if (g_signo == 130 || g_signo == 131)
 		{
-			data.last_exit_status = g_exit_status;
-			g_exit_status = 0;
+			data.last_exit_status = g_signo;
+			g_signo = 0;
 		}
 		if (process_empty_input(data.input))
 			continue ;

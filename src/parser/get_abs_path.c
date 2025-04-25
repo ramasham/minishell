@@ -36,3 +36,17 @@ int	handle_abs_path(t_command *cmd)
 	}
 	return (1);
 }
+
+int	get_abs_path(t_command *cmd, t_data *data)
+{
+	if (!cmd || !cmd->exe_cmd[0])
+		return (1);
+	if (!is_abs_path(cmd->exe_cmd[0]))
+		return (0);
+	if (handle_abs_path(cmd))
+	{
+		cleanup_exe(data);
+		return (1);
+	}
+	return (0);
+}

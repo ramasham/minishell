@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 15:49:24 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 17:48:40 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:09:25 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,20 @@ int	handle_output_redirection(t_data *data, t_command *cmd, char *filename,
 	{
 		data->error = 1;
 		perror(filename);
+		data->last_exit_status = 1;
 		return (1);
 	}
 	if (cmd->outfile_fd != -1 && cmd->outfile_fd != fd)
+	{
 		close(cmd->outfile_fd);
+		cmd->outfile_fd = -1;
+	}
 	cmd->outfile_fd = fd;
 	cmd->output_file = filename;
 	return (0);
 }
 
-int	handle_input_redirection(t_command *cmd, char *filename)
+int	handle_input_redirection(t_data *data, t_command *cmd, char *filename)
 {
 	int	fd;
 
@@ -45,10 +49,14 @@ int	handle_input_redirection(t_command *cmd, char *filename)
 	if (fd == -1)
 	{
 		perror(filename);
+		data->last_exit_status = 1;
 		return (1);
 	}
 	if (cmd->infile_fd != -1)
+	{
 		close(cmd->infile_fd);
+		cmd->infile_fd = -1;
+	}
 	cmd->infile_fd = fd;
 	cmd->input_file = filename;
 	return (0);
@@ -64,6 +72,7 @@ int	setup_fds(t_command *cmd)
 			return (1);
 		}
 		close(cmd->infile_fd);
+		cmd->infile_fd = -1;
 	}
 	if (cmd->outfile_fd != -1)
 	{
@@ -73,6 +82,7 @@ int	setup_fds(t_command *cmd)
 			return (1);
 		}
 		close(cmd->outfile_fd);
+		cmd->outfile_fd = -1;
 	}
 	return (0);
 }

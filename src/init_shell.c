@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/08 23:23:13 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/17 18:01:26 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/22 17:55:33 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	free_env(char **envp)
 	free(envp);
 }
 
-static int	copy_envp(t_data *data, char **envp, int size)
+static int	copy_env(t_data *data, char **envp, int size)
 {
 	int	i;
 
@@ -71,7 +71,7 @@ void	get_env(t_data *data, char **envp)
 	data->envp = malloc(sizeof(char *) * (size + 1));
 	if (!data->envp)
 		return ;
-	if (!copy_envp(data, envp, size))
+	if (!copy_env(data, envp, size))
 	{
 		free(data->envp);
 		data->envp = NULL;

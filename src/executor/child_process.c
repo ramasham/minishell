@@ -6,7 +6,7 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 02:23:23 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/21 18:27:43 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:10:22 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	child_process(t_data *data, t_command *cmd)
 	}
 	if (setup_fds(cmd) != 0)
 		handle_child_failure(cmd, data, 1);
+	pre_exec_checks(cmd, data);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	pre_exec_checks(cmd, data);
 	execve(cmd->full_path, cmd->exe_cmd, data->envp);
 	handle_execve_error(cmd, data);
 }
@@ -52,9 +52,20 @@ static void	close_unused_fds(t_data *data, t_command *current)
 		if (tmp != current)
 		{
 			if (tmp->outfile_fd != -1)
+			{
 				close(tmp->outfile_fd);
+				tmp->outfile_fd = -1;
+			}
 			if (tmp->infile_fd != -1)
+			{
 				close(tmp->infile_fd);
+				tmp->infile_fd = -1;
+			}
+			if (tmp->heredoc_fd != -1 && tmp != current)
+			{
+				close(tmp->heredoc_fd);
+				tmp->heredoc_fd = -1;
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -64,7 +75,10 @@ int	forking(t_data *data, t_command *cmd, int i)
 {
 	data->pids[i] = fork();
 	if (data->pids[i] == -1)
-		return (cleanup_exe(data), 1);
+	{
+		cleanup_exe(data);
+		return (1);
+	}
 	if (data->pids[i] == 0)
 	{
 		setup_pipes(data, i);
@@ -73,7 +87,7 @@ int	forking(t_data *data, t_command *cmd, int i)
 		child_process(data, cmd);
 	}
 	else
-		close_fds_and_cleanup(cmd);
+		cleanup_redirections(cmd);
 	return (0);
 }
 
