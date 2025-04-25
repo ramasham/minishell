@@ -1,39 +1,49 @@
 SRCS= \
 	src/minishell.c \
 	src/init_shell.c \
-	src/lexer/lexer_checking_1.c \
-	src/lexer/lexer_checking_2.c \
 	src/lexer/split_input.c \
-	src/lexer/split_input2.c \
 	src/lexer/split_operators.c \
+	src/lexer/ope_check.c \
 	src/lexer/lexer.c \
 	src/expander/expander_utils.c \
 	src/expander/expander_utils_2.c \
+	src/expander/expander_utils_3.c \
 	src/expander/expander.c \
-	src/parser/parser.c \
 	src/parser/redirections.c \
-	src/parser/handle_pipes.c \
 	src/parser/get_cmd_paths.c \
-	src/parser/parser_utils.c \
+	src/parser/fill_full_cmd_utils.c \
 	src/parser/get_abs_path.c \
+	src/parser/fill_exe_cmd.c\
+	src/parser/fill_full_cmd.c\
+	src/parser/remove_quotes.c\
+	src/parser/parser.c \
 	src/built-ins/built-ins.c \
+	src/built-ins/builtins_utils.c \
+	src/parser/parse_redirections.c \
 	src/built-ins/ft_cd.c \
+	src/built-ins/ft_cd_utils.c \
 	src/built-ins/ft_echo.c \
 	src/built-ins/ft_env.c \
 	src/built-ins/ft_exit.c \
 	src/built-ins/ft_export.c \
+	src/built-ins/ft_export_utils.c \
+	src/built-ins/ft_export_utils1.c \
 	src/built-ins/ft_pwd.c \
 	src/built-ins/ft_unset.c \
 	src/executor/executor.c \
-	src/executor/executor_utils.c \
 	src/executor/pipes.c \
+	src/executor/checks.c \
+	src/executor/wait_child.c \
 	src/executor/child_process.c \
-	src/executor/dot_slash_cmd.c \
 	src/heredoc/heredoc.c \
-	src/heredoc/heredoc_utils.c \
-	src/env.c \
+	src/heredoc/heredoc_expander.c \
+	src/heredoc/parse_heredoc.c \
+	src/heredoc/heredoc_signals.c \
 	src/signals.c \
 	utils/free.c \
+	utils/cleanup.c \
+	utils/free_exe_cmd.c \
+	utils/free_full_cmd.c \
 	utils/linked_list.c \
 	utils/utils1.c \
-	utils/print.c \
+	

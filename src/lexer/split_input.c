@@ -6,41 +6,43 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:47:06 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/15 21:10:07 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/21 14:57:49 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_quotes_lex(int *inside_quotes, char *token, int *i, char c)
+void	handle_quotes_lex(char *inside_quotes, char *token, int *i, char c)
 {
-	*inside_quotes = !(*inside_quotes);
+	if (*inside_quotes == 0)
+		*inside_quotes = c;
+	else if (*inside_quotes == c)
+		*inside_quotes = 0;
 	token[(*i)++] = c;
 }
 
-void add_token_to_list_split(t_data *data, char *token, int *i)
+void	add_token_to_list_split(t_data *data, char *token, int *i)
 {
-    t_node *new_node;
+	t_node	*new_node;
 
-    token[*i] = '\0';
-    new_node = create_node(token);
-    if (!new_node)
-    {
-        free(token);
-        return;
-    }
-    if (!*data->node)
-        (*data->node) = new_node;
-    else
-        ft_nodeadd_back(data->node, new_node);
-    *i = 0;
+	token[*i] = '\0';
+	new_node = create_node(token);
+	if (!new_node)
+	{
+		free(token);
+		return ;
+	}
+	if (!*data->node)
+		(*data->node) = new_node;
+	else
+		ft_nodeadd_back(data->node, new_node);
+	*i = 0;
 }
-
 
 void	process_char(t_data *data, char c, char *token, int *i)
 {
-	static int inside_quotes;
-	
+	static char	inside_quotes = 0;
+
 	if (c == '"' || c == '\'')
 		handle_quotes_lex(&inside_quotes, token, i, c);
 	else if (c == ' ' && !inside_quotes)
@@ -67,7 +69,7 @@ void	init_token_and_node(t_data *data, char **token)
 		ft_putstr_fd("Memory allocation failed\n", 2);
 		return ;
 	}
-	data->node = ft_calloc(1,sizeof(t_node));
+	data->node = ft_calloc(1, sizeof(t_node));
 	if (!data->node)
 	{
 		free(*token);

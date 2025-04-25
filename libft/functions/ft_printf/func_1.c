@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   func_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rsham <rsham@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 12:41:53 by rsham             #+#    #+#             */
-/*   Updated: 2025/01/20 19:38:34 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/16 14:14:43 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_print_char(char c)
 int	ft_print_num(int n, char format)
 {
 	long	i;
-	int	count;
+	int		count;
 
 	i = n;
 	count = 0;

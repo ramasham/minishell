@@ -6,31 +6,47 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 21:59:18 by rsham             #+#    #+#             */
-/*   Updated: 2025/03/11 22:02:49 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/14 18:21:38 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_abs_path(char *cmd)
+int	is_abs_path(char *cmd)
 {
-    if (!cmd)
-        return (0);
-    if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
-        return (1);
-    return (0);
+	if (!cmd)
+		return (0);
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+		return (1);
+	return (0);
 }
 
-int handle_abs_path(t_command *cmd)
+int	handle_abs_path(t_command *cmd)
 {
-    if (!cmd || !cmd->full_cmd[0])
-        return (1);
-    if (access(cmd->full_cmd[0], X_OK) == 0)
-    {
-        cmd->full_path = ft_strdup(cmd->full_cmd[0]);
-        if(!cmd->full_path)
-            return (1);
-        return (0);
-    }
-    return (1);
+	if (!cmd || !cmd->exe_cmd[0])
+		return (1);
+	if (access(cmd->exe_cmd[0], X_OK) == 0)
+	{
+		if (cmd->full_path)
+			free(cmd->full_path);
+		cmd->full_path = ft_strdup(cmd->exe_cmd[0]);
+		if (!cmd->full_path)
+			return (1);
+		return (0);
+	}
+	return (1);
+}
+
+int	get_abs_path(t_command *cmd, t_data *data)
+{
+	if (!cmd || !cmd->exe_cmd[0])
+		return (1);
+	if (!is_abs_path(cmd->exe_cmd[0]))
+		return (0);
+	if (handle_abs_path(cmd))
+	{
+		cleanup_exe(data);
+		return (1);
+	}
+	return (0);
 }

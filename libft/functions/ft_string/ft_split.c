@@ -82,35 +82,3 @@ char	**ft_split(char const *s, char c)
 	result[i] = NULL;
 	return (result);
 }
-/*int	main(void)
-{
-	char str[] = "Hello,,world, this,is,a,test";
-	char delimiter = ',';
-	char **result;
-	int i;
-
-	// Split the string
-	result = ft_split(str, delimiter);
-
-	// Check if the split operation was successful
-	if (!result)
-	{
-		fprintf(stderr, "Memory allocation failed.\n");
-		return (1); // Exit with error code
-	}
-
-	// Print the result
-	for (i = 0; result[i] != NULL; i++)
-	{
-		printf("Word %d: %s\n", i, result[i]);
-	}
-
-	// Free the allocated memory
-	for (i = 0; result[i] != NULL; i++)
-	{
-		free(result[i]);
-	}
-	free(result);
-
-	return (0); // Exit successfully
-}*/

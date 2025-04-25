@@ -6,36 +6,46 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 12:26:31 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/08 17:09:55 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/22 18:29:56 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int    validate_input(t_data *data)
+int	check_unclosed_quotes(t_data *data)
 {
-    // if (operator_at_start(data))
-    //     return (1);   
-    if (check_unclosed_quotes(data))
-        return (1);
-    if (check_multiple_pipes(data))
-        return (1);
-    if (check_redirection(data))
-        return (1);
-    if (operator_at_end(data))
-        return (1);
-    if (check_append_heredoc(data))
-        return (1);
-    return (0);
+	char	*ptr;
+	int		double_quotes;
+	int		single_quotes;
+
+	ptr = data->input;
+	double_quotes = 0;
+	single_quotes = 0;
+	while (*ptr)
+	{
+		if (*ptr == '"' && single_quotes == 0)
+		{
+			double_quotes = !double_quotes;
+		}
+		else if (*ptr == '\'' && double_quotes == 0)
+			single_quotes = !single_quotes;
+		ptr++;
+	}
+	if (double_quotes || single_quotes)
+	{
+		ft_putstr_fd("Syntax error: Unclosed quotes\n", 2);
+		return (1);
+	}
+	return (0);
 }
 
-int  tokenizer(t_data *data)
+int	tokenizer(t_data *data)
 {
-    if (validate_input(data))
-        return (1);
-    split_input(data);
-    trim_operators(data);
-    printf("tokens:\n");
-    print_list(*data->node);
-    return (0);
+	if (check_unclosed_quotes(data))
+		return (1);
+	if (check_operators(data))
+		return (1);
+	split_input(data);
+	trim_operators(data);
+	return (0);
 }

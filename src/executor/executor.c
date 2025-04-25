@@ -6,120 +6,86 @@
 /*   By: rsham <rsham@student.42amman.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 12:12:21 by rsham             #+#    #+#             */
-/*   Updated: 2025/04/06 20:05:03 by rsham            ###   ########.fr       */
+/*   Updated: 2025/04/23 19:17:41 by rsham            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int execution_process(t_data *data)
+int	execution_process(t_data *data)
 {
-    if (piping(data))
-    {
-        free(data->pipe_fd);
-        data->pipe_fd = NULL;
-        return (1);
-    }
-    if (setup_children(data))
-    {
-        free(data->pipe_fd);
-        free(data->pids);
-        data->pipe_fd = NULL;
-        data->pids = NULL;
-        return (1);
-    }
-    close_pipes(data, data->cmd_count);
-    return (0);
+	if (piping(data))
+	{
+		free(data->pipe_fd);
+		data->pipe_fd = NULL;
+		return (1);
+	}
+	if (setup_children(data))
+	{
+		clean_pids_pipes(data);
+		return (1);
+	}
+	close_pipes(data, data->cmd_count);
+	return (0);
 }
 
-int not_pipeline(t_data *data)
+int	not_pipeline(t_data *data)
 {
-    data->cmd_count = count_commands(*data->commands);
-    if (data->cmd_count == 0)
-    {
-        free_list_cmd(data->commands);
-        return (data->last_exit_status);
-    }
-    if (data->cmd_count == 1 && built_ins(*data->commands, data))
-    {
-        return (data->last_exit_status);
-    }
-    return (-1);
+	data->cmd_count = count_commands(*data->commands);
+	if (data->cmd_count == 0)
+	{
+		free_list_exec(data->commands);
+		data->commands = NULL;
+		return (data->last_exit_status);
+	}
+	if (data->cmd_count == 1 && built_ins(*data->commands, data))
+		return (data->last_exit_status);
+	return (-1);
 }
 
-int execute_pipeline(t_data *data)
+int	execute_pipeline(t_data *data)
 {
-
-    data->pids = malloc(sizeof(pid_t) * data->cmd_count);
-    if (!data->pids)
-    {
-        free_list_cmd(data->commands);
-        return(1);
-    }
-    if (execution_process(data))
-    {
-        free(data->pids);
-        data->pids = NULL;
-        free(data->pipe_fd);
-        data->pipe_fd = NULL;
-        return (data->last_exit_status);
-    }
-    wait_for_children(data, data->cmd_count, &(data->last_exit_status));
-    free(data->pids);
-    free(data->pipe_fd);
-    free_list_cmd(data->commands);
-    free(data->commands);
-    data->pids = NULL;
-    data->pipe_fd = NULL;
-    data->commands = NULL;
-    return (data->last_exit_status);
+	data->pids = malloc(sizeof(pid_t) * data->cmd_count);
+	if (!data->pids)
+	{
+		free_list_exec(data->commands);
+		return (1);
+	}
+	if (execution_process(data))
+	{
+		clean_pids_pipes(data);
+		return (data->last_exit_status);
+	}
+	wait_for_children(data, data->cmd_count, &(data->last_exit_status));
+	clean_pids_pipes(data);
+	free_list_exec(data->commands);
+	free(data->commands);
+	data->commands = NULL;
+	return (data->last_exit_status);
 }
 
-int prepare_heredocs(t_data *data)
+void	clean_exe_list(t_data *data)
 {
-    t_command *cmd = *(data->commands);
-    while (cmd)
-    {
-        if (cmd->heredoc_delim)
-        {
-            cmd->heredoc_fd = handle_heredoc(cmd);
-            if (cmd->heredoc_fd == -1)
-                return (1);
-        }
-        cmd = cmd->next;
-    }
-    return (0);
-}
-void prepare_redirections(t_data *data)
-{
-    t_command *cmd = *data->commands;
-    while (cmd)
-    {
-        // Call parse_redirection once in the parent process
-        parse_redirection(cmd, data);
-        cmd = cmd->next;
-    }
+	free_list_exec(data->commands);
+	free(data->commands);
+	data->commands = NULL;
 }
 
-int executor(t_data *data)
+int	executor(t_data *data)
 {
-    int exit_status;
-    int dot_slash_status;
-    dot_slash_status = handle_dot_slash_exec(data);
-    if (dot_slash_status != 0)
-    {
-        return (dot_slash_status);
-    }
-    exit_status = not_pipeline(data);
-    if (exit_status != -1)
-    {
-        free_list_cmd(data->commands);
-        free(data->commands);
-        data->commands = NULL;
-        return (exit_status);
-    }
-    // if (prepare_heredocs(data))
-    //     return (1);
-    execute_pipeline(data);
-    return (data->last_exit_status);
+	int	exit_status;
+
+	if (check_pre_exec_errors(data))
+		return (1);
+	data->cmd_count = count_commands(*data->commands);
+	if (is_single_exit_cmd(data))
+		return (handle_exit_case(data));
+	exit_status = not_pipeline(data);
+	if (exit_status != -1)
+	{
+		clean_exe_list(data);
+		return (exit_status);
+	}
+	execute_pipeline(data);
+	return (data->last_exit_status);
 }

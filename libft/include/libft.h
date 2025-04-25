@@ -78,6 +78,4 @@ char				*ft_strchr_gnl(char *s, int c);
 char				*ft_strtok(char *str, const char *delim);
 char				**ft_split(char const *s, char c);
 
-
-
 #endif

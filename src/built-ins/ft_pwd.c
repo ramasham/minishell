@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-void ft_pwd()
+void	ft_pwd(void)
 {
-    char cwd[1024];
+	char	cwd[1024];
 
-    if (getcwd(cwd, sizeof(cwd)))
-    {
-        write(1, cwd, ft_strlen(cwd));
-        write(1, "\n", 1);
-    }
-    else
-        perror("minishell: pwd");
+	if (getcwd(cwd, sizeof(cwd)))
+	{
+		write(1, cwd, ft_strlen(cwd));
+		write(1, "\n", 1);
+	}
+	else
+		perror("minishell: pwd");
 }

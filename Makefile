@@ -4,7 +4,7 @@ NAME = minishell
 LIBFT_DIR = ./libft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I./include
+CFLAGS = -Wall -Wextra -Werror -g3 -I./include
 
 OBJS = $(SRCS:.c=.o)
 
@@ -12,7 +12,6 @@ INCLUDES = -I$(LIBFT_DIR)/include
 LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline -lhistory
 CFLAGS += $(INCLUDES)
 
-# ANSI color codes
 YELLOW = \033[33m
 RESET  = \033[0m
 
