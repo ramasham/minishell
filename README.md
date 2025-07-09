@@ -46,7 +46,7 @@ It replicates many core functionalities of Bash, including command parsing, pipi
   - Handles edge cases like open quotes or invalid identifiers
 
 ---
-
+```
 ## 📂 Project Structure
 minishell/
 ├── src/
@@ -60,3 +60,4 @@ minishell/
 ├── libft/ # Custom standard library functions
 ├── Makefile
 └── README.md
+```
