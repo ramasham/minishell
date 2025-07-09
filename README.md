@@ -90,6 +90,11 @@ minishell/
 
 ---
 
+\## 🙏 Final Notes
+
+Thank you for exploring this project!  
+Minishell was a challenging yet rewarding journey into the heart of Unix shells and systems programming.
+
 ## 👥 Team
 This project was developed as part of the 42 School curriculum by:  
 🧑‍💻 [@ramasham](https://github.com/ramasham)  
