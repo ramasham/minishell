@@ -12,6 +12,22 @@ It replicates many core functionalities of Bash, including command parsing, pipi
 
 ---
 
+## 📂 Project Structure
+```
+minishell/
+├── src/
+│ ├── lexer/ # Tokenizer logic
+│ ├── parser/ # Command structure builder
+│ ├── executor/ # Builtins, piping, redirection
+│ ├── signals/ # Signal handling
+│ └── utils/ # String, memory, and helper tools
+├── include/
+│ └── minishell.h
+├── libft/ # Custom standard library functions
+├── Makefile
+└── README.md
+```
+
 ## 🚀 Features
 
 - 🧾 **Lexical Analysis & Parsing**
@@ -46,18 +62,20 @@ It replicates many core functionalities of Bash, including command parsing, pipi
   - Handles edge cases like open quotes or invalid identifiers
 
 ---
-```
-## 📂 Project Structure
-minishell/
-├── src/
-│ ├── lexer/ # Tokenizer logic
-│ ├── parser/ # Command structure builder
-│ ├── executor/ # Builtins, piping, redirection
-│ ├── signals/ # Signal handling
-│ └── utils/ # String, memory, and helper tools
-├── include/
-│ └── minishell.h
-├── libft/ # Custom standard library functions
-├── Makefile
-└── README.md
-```
+
+## ⌨️ Supported Built-ins
+
+| Command | Description                 |
+|---------|-----------------------------|
+| `echo`  | Print to stdout             |
+| `cd`    | Change current directory    |
+| `pwd`   | Print current directory     |
+| `export`| Set environment variable    |
+| `unset` | Remove environment variable |
+| `env`   | Display environment         |
+| `exit`  | Exit the shell              |
+
+## 👥 Team
+This project was developed as part of the 42 School curriculum by:  
+🧑‍💻 [@ramasha,](https://github.com/ramasham)  
+🧑‍💻 [@sarahayman22](https://github.com/lujaburomman)  
