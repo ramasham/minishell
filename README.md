@@ -91,6 +91,7 @@ minishell/
 ---
 
 ## 🙏 Final Notes
+
 Thank you for exploring this project!  
 Minishell was a challenging yet rewarding journey into the heart of Unix shells and systems programming.
 
