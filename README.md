@@ -98,4 +98,4 @@ Minishell was a challenging yet rewarding journey into the heart of Unix shells 
 ## 👥 Team
 This project was developed as part of the 42 School curriculum by:  
 🧑‍💻 [@ramasham](https://github.com/ramasham)  
-🧑‍💻 [@sarahayman22](https://github.com/lujaburomman)  
+🧑‍💻 [https://github.com/lujaburomman](https://github.com/lujaburomman)
